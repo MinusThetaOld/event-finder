@@ -1,0 +1,51 @@
+.navigation-bar {
+    background-color: #101010;
+}
+.nav-brand-logo {
+    height: 45px;
+}
+.navbar-toggler {
+    background-color: #E7EEF1 !important;
+}
+.search-btn {
+    background-color: #EBEBEB;
+    border-radius: 0px;
+    font-weight: 400;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+.search-btn:hover {
+    font-weight: 600;
+}
+@media (min-width: 1200px) {
+    .search-bar-list {
+        margin-left: 55px;
+    }
+}
+.search-bar {
+    background-color: rgba(49, 49, 49, 40);
+    border: 0;
+    border-radius: 0px;
+    width: 520px;
+    color: #E7EEF1;
+}
+.search-bar:focus {
+    background-color: rgba(49, 49, 49, 40) !important;
+    color: #E7EEF1;
+}
+.btn-register, .btn-login {
+    background-color: #201F1F;
+    color: #E7EEF1;
+    width: 150px;
+    height: 38px;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+.btn-register:hover, .btn-login:hover, .btn-active {
+    background-color: #E7EEF1;
+    color: #201F1F;
+    font-weight: bold;
+}
+.btn-register {
+    margin-right: 10px;
+}
