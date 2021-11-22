@@ -1,4 +1,5 @@
 from flask import Blueprint, redirect, render_template, request, url_for
+from flaskr.users.forms import LoginForm, RegisterForm, ResetPassword
 from flaskr.users.utils import generate_token
 
 users = Blueprint("users", __name__)
@@ -18,9 +19,10 @@ def register_user():
 def login_user():
     if request.method == "GET":
         # GET REQUEST
-        return render_template("users/login.html")
+        form = LoginForm()
+        return render_template("users/login.html", form=form)
     # POST REQUEST
-    return render_template("users/login.html")
+    return redirect(url_for('mains.homepage'))
 
 
 # Alam

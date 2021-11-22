@@ -11,10 +11,10 @@
             </div>
             <div class="mt-4">
                 <form method="POST">
+                    {{ form.hidden_tag() }}
                     <div class="mt-2">
-                        <label for="email" class="form-label mb-0">Email Address</label>
-                        <input type="email" class="form-control login-input-box" id="email"
-                            placeholder="ex. alenwalker123@gmail.com" name="email">
+                        {{ form.email.label(class="form-label mb-0") }}
+                        {{ form.email(class="form-control login-input-box", id="email") }}
                     </div>
                     <div class="mt-2">
                         <label for="password" class="form-label mb-0">Password</label>
