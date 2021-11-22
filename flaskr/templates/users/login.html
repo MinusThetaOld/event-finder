@@ -17,15 +17,14 @@
                         {{ form.email(class="form-control login-input-box", id="email") }}
                     </div>
                     <div class="mt-2">
-                        <label for="password" class="form-label mb-0">Password</label>
-                        <input type="password" class="form-control login-input-box" id="password"
-                            placeholder="type password here" name="password">
+                        {{form.password.label(class="form-label mb-0")}}
+                        {{form.password(class="form-control login-input-box", id="password")}}
                     </div>
                     <div class="mt-2">
                         Do not have an account? <a href="{{ url_for('users.register_user') }}" class="link-dark" style="text-decoration: none"><b>Create One!</b></a>
                     </div>
                     <div class="mt-2">
-                        <button type="submit" class="btn btn-dark form-control">Submit</button>
+                        {{form.submit(class="btn btn-dark form-control")}}
                     </div>
                 </form>
                 <div class="mt-2">
