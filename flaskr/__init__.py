@@ -2,6 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from flask import Flask
+from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
@@ -26,6 +27,13 @@ db = SQLAlchemy(app)
 
 # Migration
 migrate = Migrate(app, db)
+
+# Encryption
+bcrypt = Bcrypt(app)
+
+import flaskr.models
+
+db.create_all()
 
 from flaskr.mains.routes import mains
 from flaskr.profiles.routes import profiles

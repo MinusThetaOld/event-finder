@@ -25,29 +25,52 @@
     <nav class="navbar navbar-expand-lg navbar-light navigation-bar">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('mains.homepage') }}">
-                <img src="{{ url_for('static', filename='images/default/Logos/FINDER-Light.png') }}" alt="Brand Logo" class="nav-brand-logo">
+                <img src="{{ url_for('static', filename='images/default/Logos/FINDER-Light.png') }}" alt="Brand Logo"
+                    class="nav-brand-logo">
             </a>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item search-bar-list">
-                    <!-- Search Result -->
-                    <form action="#" method="post" class="d-flex">
-                        <input type="text" class="form-control search-bar" placeholder="Search..." />
-                        <button type="submit" class="btn search-btn">
-                            Search
-                        </button>
-                    </form>
-                </li>
-            </ul>
-            <div class="d-flex">
-                <a href="{{ url_for('users.register_user') }}" class="btn btn-register">Register</a>
-                <a href="{{ url_for('users.login_user') }}" class="btn btn-login">Login</a>
-            </div>
+
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item search-bar-list">
+                        <!-- Search Result -->
+                        <form action="#" method="post" class="d-flex">
+                            <input type="text" class="form-control search-bar" placeholder="Search..." />
+                            <button type="submit" class="btn search-btn">
+                                Search
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="{{ url_for('users.register_user') }}" class="btn btn-register">Register</a>
+                    <a href="{{ url_for('users.login_user') }}" class="btn btn-login">Login</a>
+                </div>
+            </div>   
         </div>
     </nav>
     <!-- End Navigation -->
 
     <!-- Content -->
     <section id="content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        <div class="row mt-3">
+            <div class="col-xl-6 offset-xl-3 col-md-10 offset-md-1">
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        {% endwith %}
+
         {% block content %} {% endblock %}
     </section>
     <!-- End Content -->

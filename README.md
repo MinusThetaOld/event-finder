@@ -1,2 +1,2 @@
-After installing a package: `pip freez > requirement.tx`
+After installing a package: `pip freeze > requirement.txt`
 Installing packages from requirement.txt: `pip install -r requirements.txt`
