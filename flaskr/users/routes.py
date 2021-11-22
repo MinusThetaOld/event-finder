@@ -2,6 +2,7 @@ from flask import Blueprint, redirect, render_template, request, url_for
 from flaskr.users.forms import LoginForm, RegisterForm, ResetPassword
 from flaskr.users.utils import generate_token
 
+
 users = Blueprint("users", __name__)
 
 # Shamsu

@@ -13,7 +13,8 @@ class LoginForm(FlaskForm):
     email = StringField("Email Address", validators=[
         DataRequired()
     ], render_kw={"placeholder": "ex. alenwalker123@gmail.com"})
-
+    password = PasswordField("Password", validators=[DataRequired()], render_kw={"placeholder": "type password here"})
+    submit = SubmitField("Login")
 
 # Alam
 class ResetPassword(FlaskForm):
