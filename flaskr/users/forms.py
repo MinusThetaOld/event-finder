@@ -30,17 +30,14 @@ class RegisterForm(FlaskForm):
     ], render_kw={"placeholder": "Create a new password"})
 
     c_password = PasswordField("Confirm Password", validators=[
-        DataRequired(), Length(min=6), EqualTo("password", "Confirm password did not matched")
+        DataRequired(), Length(min=6), EqualTo(
+            "password", "Confirm password did not matched")
     ], render_kw={"placeholder": "Retype the password"})
 
     submit = SubmitField("Register")
 
     condition_check = BooleanField("Agree", validators=[DataRequired()])
-    
-    def validate_email(self, email: str):
-        fetched_user = User.query.filter_by(email=email.data).first()
-        if fetched_user:
-            raise ValidationError("Email is already taken")
+
 
 
 class LoginForm(FlaskForm):
