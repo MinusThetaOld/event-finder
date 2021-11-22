@@ -10,7 +10,8 @@ users = Blueprint("users", __name__)
 def register_user():
     if request.method == "GET":
         # GET REQUEST
-        return render_template("users/register.html")
+        form = RegisterForm()
+        return render_template("users/register.html", form=form)
     # POST REQUEST
     return render_template("users/register.html")
 
