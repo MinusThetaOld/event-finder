@@ -58,11 +58,11 @@ def forget_password():
         user = User.query.filter_by(email=form.email.data).first()
         if not user:
             flash(f"No user found with email {form.email.data}", "danger")
-            return redirect(url_for("forget_password"))
+            return redirect(url_for("users.forget_password"))
         # Email sending
         # @TODO
-        flash(f"A email has been sent to {user.email}", "info")
-        return redirect(url_for('login_user'))
+        flash(f"A verification link is sent to '{user.email}'", "primary")
+        return redirect(url_for('users.login_user'))
     return render_template("users/forget_password.html", form=form)
 
 
