@@ -39,6 +39,11 @@ class RegisterForm(FlaskForm):
 
     condition_check = BooleanField("Agree", validators=[DataRequired()])
 
+    def validate_email(self,email):
+        user = User.query.filter_by(email = email.data).first()
+        if user:
+            raise ValidationError("This Email Already Registered.")
+            
 
 class LoginForm(FlaskForm):
     email = EmailField("Email Address", validators=[
