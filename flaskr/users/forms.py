@@ -2,7 +2,8 @@ from flask_wtf import FlaskForm
 from flaskr.models import Profile, User
 from wtforms import (BooleanField, DateField, EmailField, PasswordField,
                      SelectField, StringField, SubmitField)
-from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
+from wtforms.validators import (DataRequired, Email, EqualTo, Length,
+                                ValidationError)
 
 
 class RegisterForm(FlaskForm):
@@ -55,9 +56,14 @@ class LoginForm(FlaskForm):
 
 class ForgetPassword(FlaskForm):
     email = EmailField("Email Address", validators=[
-        DataRequired(), Length(min=4, max=150)
+        DataRequired(), Length(min=4, max=150), Email()
     ], render_kw={"placeholder": "Enter your associated email address"})
     submit = SubmitField("Send Email")
+
+    def validate_email(self, email: str):
+        user = User.query.filter_by(email=email.data).first()
+        if not user:
+            raise ValidationError("Email is not valid. Try another one.")
 
 
 class ResetPassword(FlaskForm):
