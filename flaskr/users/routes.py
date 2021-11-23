@@ -56,9 +56,6 @@ def forget_password():
     form = ForgetPassword()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if not user:
-            flash(f"No user found with email {form.email.data}", "danger")
-            return redirect(url_for("users.forget_password"))
         # Email sending
         # @TODO
         flash(f"A verification link is sent to '{user.email}'", "primary")
