@@ -7,7 +7,8 @@
     <div class="row">
         <div class="col-xl-6 offset-xl-3 col-md-10 offset-md-1">
             <div class="text-center">
-                <img src="{{ url_for('static', filename='images/default/Logos/FINDER-Dark.png') }}" alt="Brand Logo" width="180px">
+                <img src="{{ url_for('static', filename='images/default/Logos/FINDER-Dark.png') }}" alt="Brand Logo"
+                    width="180px">
             </div>
             <div class="mt-4">
                 <form method="POST">
@@ -21,14 +22,16 @@
                         {{form.password(class="form-control login-input-box", id="password")}}
                     </div>
                     <div class="mt-2">
-                        Do not have an account? <a href="{{ url_for('users.register_user') }}" class="link-dark" style="text-decoration: none"><b>Create One!</b></a>
+                        Do not have an account? <a href="{{ url_for('users.register_user') }}" class="link-dark"
+                            style="text-decoration: none"><b>Create One!</b></a>
                     </div>
                     <div class="mt-2">
                         {{form.submit(class="btn btn-dark form-control")}}
                     </div>
                 </form>
                 <div class="mt-2">
-                    <a href="{{ url_for('users.forget_password') }}" class="link-dark" style="text-decoration: none"><b><u>Forgot your password</u></b></a>
+                    <a href="{{ url_for('users.forget_password') }}" class="link-dark"
+                        style="text-decoration: none"><b><u>Forgot your password</u></b></a>
                 </div>
             </div>
         </div>

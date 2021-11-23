@@ -39,14 +39,20 @@ class RegisterForm(FlaskForm):
     condition_check = BooleanField("Agree", validators=[DataRequired()])
 
 
-
 class LoginForm(FlaskForm):
     email = EmailField("Email Address", validators=[
         DataRequired(), Length(min=4, max=150)
     ], render_kw={"placeholder": "ex. alenwalker123@gmail.com"})
-    password = PasswordField("Password", validators=[DataRequired(), Length(min=6)
-                                                     ], render_kw={"placeholder": "type password here"})
+    password = PasswordField("Password", validators=[DataRequired(), Length(min=6)],
+                             render_kw={"placeholder": "type password here"})
     submit = SubmitField("Login")
+
+
+class ForgetPassword(FlaskForm):
+    email = EmailField("Email Address", validators=[
+        DataRequired(), Length(min=4, max=150)
+    ], render_kw={"placeholder": "Enter your associated email address"})
+    submit = SubmitField("Send Email")
 
 
 class ResetPassword(FlaskForm):
