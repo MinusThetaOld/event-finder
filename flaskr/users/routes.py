@@ -45,6 +45,7 @@ def login_user():
         is_matched = bcrypt.check_password_hash(
             fetched_user.password, form.password.data)
         if not is_matched:
+            flash(f"Invalid credentials", "danger")
             return redirect(url_for("users.login_user"))
         flash(f"Successfully loged in to {form.email.data}", "success")
         return redirect(url_for('mains.homepage'))

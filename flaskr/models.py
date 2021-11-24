@@ -11,6 +11,12 @@ class Role(enum.Enum):
     ADMIN = "admin"
 
 
+class ComplainCategory(enum.Enum):
+    CHEATER = "cheater"
+    SCAMER = "scammer"
+    HARASSMENT = "harassment"
+    OTHER = "other"
+
 
 # Models
 class User(db.Model):
@@ -23,7 +29,7 @@ class User(db.Model):
     profile = db.relationship("Profile", backref="user", uselist=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
-    
+
     def __init__(self, email: str, password: str, verified_code: str, role: str) -> None:
         self.email = email
         self.password = password
@@ -44,13 +50,29 @@ class Profile(db.Model):
     rating = db.Column(db.Float, default=0.0)
     bio = db.Column(db.String(500))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    complains = db.Column(db.String)
+    complains = db.relationship("Complain", backref="profile")
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
-    
+
     def __init__(self, first_name: str, last_name: str, date_of_birth: date, gender: str, user_id: int) -> None:
         self.first_name = first_name
         self.last_name = last_name
         self.date_of_birth = date_of_birth
         self.gender = gender
         self.user_id = user_id
+
+
+class Complain(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String, nullable=False)
+    complain_type = db.Column(db.Enum(Role), nullable=False)
+    profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
+    complained_by = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __init__(self, text: str, complain_type: ComplainCategory, profile_id: int, complained_by: int) -> None:
+        self.text = text
+        self.complain_type = complain_type
+        self.profile_id = profile_id
+        self.complained_by = complained_by
