@@ -65,14 +65,14 @@ class Profile(db.Model):
 class Complain(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String, nullable=False)
-    complain_type = db.Column(db.Enum(Role), nullable=False)
+    category = db.Column(db.Enum(ComplainCategory), nullable=False)
     profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
     complained_by = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self, text: str, complain_type: ComplainCategory, profile_id: int, complained_by: int) -> None:
+    def __init__(self, text: str, complain_category, profile_id: int, complained_by: int) -> None:
         self.text = text
-        self.complain_type = complain_type
+        self.category = complain_category
         self.profile_id = profile_id
         self.complained_by = complained_by
