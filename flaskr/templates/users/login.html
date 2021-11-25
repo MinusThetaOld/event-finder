@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container login-brand">
     <div class="row">
-        <div class="col-xl-6 offset-xl-3 col-md-10 offset-md-1">
+        <div class="col-xl-6 offset-xl-3 col-md-8 offset-md-2">
             <div class="text-center">
                 <img src="{{ url_for('static', filename='images/default/Logos/FINDER-Dark.png') }}" alt="Brand Logo"
                     width="180px">
@@ -39,7 +39,6 @@
                         {%else%}
                         {{form.password(class="form-control login-input-box", id="password")}}
                         {%endif%}
-
                     </div>
                     <div div class="mt-2">
                         {{ form.remember_me(class="form-check-input") }}

@@ -2,50 +2,106 @@
     background-color: #101010;
 }
 .nav-brand-logo {
-    height: 45px;
+    height: 30px;
 }
 .navbar-toggler {
-    background-color: #E7EEF1 !important;
+    background-color: #e7eef1 !important;
 }
+
+.search-btn-sm,
 .search-btn {
-    background-color: #EBEBEB;
+    background-color: #ebebeb;
     border-radius: 0px;
     font-weight: 400;
-    padding-left: 25px;
-    padding-right: 25px;
 }
-.search-btn:hover {
-    font-weight: 600;
-}
-@media (min-width: 1200px) {
-    .search-bar-list {
-        margin-left: 55px;
-    }
-}
+
+.search-bar-sm,
 .search-bar {
     background-color: rgba(49, 49, 49, 40);
     border: 0;
     border-radius: 0px;
-    width: 520px;
-    color: #E7EEF1;
+    color: #e7eef1;
 }
-.search-bar:focus {
+
+.search-bar:focus,
+.search-bar-sm:focus {
     background-color: rgba(49, 49, 49, 40) !important;
-    color: #E7EEF1;
+    color: #e7eef1;
 }
-.btn-register, .btn-login {
-    background-color: #201F1F;
-    color: #E7EEF1;
-    width: 150px;
-    height: 38px;
-    text-transform: uppercase;
-    font-size: 14px;
+
+.btn-infos,
+.btn-auth {
+    background-color: transparent;
+    color: #e7eef1;
+    padding: 0 auto;
+    border: #e7eef1;
 }
-.btn-register:hover, .btn-login:hover, .btn-active {
-    background-color: #E7EEF1;
-    color: #201F1F;
-    font-weight: bold;
+
+.btn-active {
+    background-color: #e7eef1;
+    color: #101010;
 }
-.btn-register {
-    margin-right: 10px;
+
+.btn-infos:hover,
+.btn-auth:hover {
+    background-color: #e7eef1;
+}
+
+.search-bar,
+.search-btn {
+    display: none;
+}
+
+.big-screen {
+    display: none !important;
+}
+
+.sm-screen {
+    margin-top: 5px;
+}
+
+.search-bar-sm,
+.search-btn-sm {
+    margin-top: 5px;
+    display: block;
+}
+
+@media only screen and (min-width: 451px) {
+    .xsm-screen {
+        display: none !important;
+    }
+    .search-bar,
+    .search-btn {
+        display: block;
+    }
+    .search-btn:hover {
+        font-weight: 600;
+    }
+    .search-bar {
+        min-width: 250px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .search-bar {
+        min-width: 400px;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .sm-screen {
+        display: none !important;
+    }
+    .big-screen {
+        display: block !important;
+    }
+    .search-btn {
+        min-width: 120px;
+    }
+    .search-bar {
+        min-width: 380px;
+    }
+    .badge {
+        margin: 5px -5px;
+    }
 }

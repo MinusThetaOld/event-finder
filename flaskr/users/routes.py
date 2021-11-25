@@ -32,7 +32,7 @@ def register_user():
         flash(
             f"Account created for {fetched_user.profile.first_name} {fetched_user.profile.last_name}", "success")
         return redirect(url_for("users.login_user"))
-    return render_template("users/register.html", form=form)
+    return render_template("users/register.html", form=form, active='register')
 
 
 @users.route("/users/login", methods=["GET", "POST"])
@@ -49,7 +49,12 @@ def login_user():
             return redirect(url_for("users.login_user"))
         flash(f"Successfully loged in to {form.email.data}", "success")
         return redirect(url_for('mains.homepage'))
-    return render_template("users/login.html", form=form)
+    return render_template("users/login.html", form=form, active='login')
+
+
+@users.route("/users/logout")
+def logout_user():
+    return redirect(url_for("users.login_user"))
 
 
 @users.route("/users/forget_password", methods=["GET", "POST"])
