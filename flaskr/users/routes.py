@@ -3,6 +3,7 @@ from flaskr import bcrypt, db
 from flaskr.models import Profile, Role, User
 from flaskr.users.forms import *
 from flaskr.users.utils import generate_token
+import flask_login as fl
 from flaskr.mails import send_mail
 
 users = Blueprint("users", __name__)
@@ -42,15 +43,12 @@ def login_user():
     form = LoginForm()
     if form.validate_on_submit():
         fetched_user = User.query.filter_by(email=form.email.data).first()
-        if not fetched_user:
-            return redirect(url_for("users.login_user"))
-        is_matched = bcrypt.check_password_hash(
-            fetched_user.password, form.password.data)
-        if not is_matched:
-            flash(f"Invalid credentials", "danger")
-            return redirect(url_for("users.login_user"))
-        flash(f"Successfully loged in to {form.email.data}", "success")
-        return redirect(url_for('mains.homepage'))
+        if fetched_user and bcrypt.check_password_hash(fetched_user.password, form.password.data):
+            fl.login_user(fetched_user, remember=form.remember_me.data)
+            flash("Login Successfull!", "success")
+            return redirect(url_for('mains.homepage'))
+        else:
+            flash("Login Failed! Invalid Credentials.", "danger") 
     return render_template("users/login.html", form=form, active='login')
 
 
