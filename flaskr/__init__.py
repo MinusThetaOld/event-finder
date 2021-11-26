@@ -1,7 +1,3 @@
-from flaskr.users.routes import users
-from flaskr.profiles.routes import profiles
-from flaskr.mains.routes import mains
-import flaskr.models
 import os
 
 from dotenv import load_dotenv
@@ -33,6 +29,7 @@ app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
 app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
 
+
 # Mail Configuration
 
 
@@ -54,8 +51,15 @@ bcrypt = Bcrypt(app)
 # Mail
 mail = Mail(app)
 
+
+
+import flaskr.models
+
 db.create_all()
 
+from flaskr.mains.routes import mains
+from flaskr.profiles.routes import profiles
+from flaskr.users.routes import users
 
 # Registering blueprints
 app.register_blueprint(users)
