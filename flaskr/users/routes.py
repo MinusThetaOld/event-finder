@@ -3,6 +3,7 @@ from flaskr import bcrypt, db
 from flaskr.models import Profile, Role, User
 from flaskr.users.forms import *
 from flaskr.users.utils import generate_token
+from flaskr.mails import send_mail
 
 users = Blueprint("users", __name__)
 
@@ -28,6 +29,7 @@ def register_user():
                           form.dob.data, form.gender.data, user.id)
         db.session.add(profile)
         db.session.commit()
+        send_mail(user.email, "Email Verification Code", f"Your Token is {generated_token_for_email}")
         fetched_user = User.query.filter_by(id=user.id).first()
         flash(
             f"Account created for {fetched_user.profile.first_name} {fetched_user.profile.last_name}", "success")
