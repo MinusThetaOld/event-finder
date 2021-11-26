@@ -11,18 +11,23 @@ from flaskr import users
 load_dotenv()
 
 
-# create and configure the app
+# Create and Configure the App
 app = Flask(__name__)
 
-# secret keys
+# Secret Keys
 app.secret_key = os.getenv("SECRET_KEY")
 
-# configuration
+# Configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_SERVER')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = "static/images/uploads"
+# Mail Configuration
 
-# database
+
+# Login
+
+
+# Database
 db = SQLAlchemy(app)
 
 # Migration
@@ -30,6 +35,14 @@ migrate = Migrate(app, db)
 
 # Encryption
 bcrypt = Bcrypt(app)
+
+# Login-Manager
+
+
+# Mail
+
+
+
 
 import flaskr.models
 
