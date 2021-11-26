@@ -103,7 +103,7 @@
                         {% if form.c_password.errors %}
                         {{ form.c_password(class="form-control reg-input-box is-invalid")}}
                         <div class="invalid-feedback">
-                            {% for error in form.c_username.errors %}
+                            {% for error in form.c_password.errors %}
                             <span>{{ error }}</span>
                             {% endfor %}
                         </div>
