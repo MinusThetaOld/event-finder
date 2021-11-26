@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, url_for
 from flaskr import bcrypt, db
 from flaskr.models import Profile, Role, User
 from flaskr.users.forms import *
@@ -69,6 +69,9 @@ def forget_password():
     return render_template("users/forget_password.html", form=form)
 
 
-@users.route("/users/reset_password/<string:token>")
+@users.route("/users/reset_password/<string:token>", methods=["GET", "POST"])
 def reset_password(token: str):
-    return redirect(url_for('login_user'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        pass
+    return render_template("users/reset_password.html", form=form)

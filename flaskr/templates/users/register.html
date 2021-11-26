@@ -16,7 +16,6 @@
                     <div class="row g-2">
                         <div class="col">
                             {{ form.first_name.label(class="form-label mb-0") }}
-
                             {% if form.first_name.errors %}
                             {{ form.first_name(class="form-control reg-input-box is-invalid")}}
                             <div class="invalid-feedback">
@@ -45,7 +44,6 @@
                     </div>
                     <div class="mt-2">
                         {{ form.email.label(class="form-label mb-0") }}
-
                         {% if form.email.errors %}
                         {{ form.email(class="form-control reg-input-box is-invalid")}}
                         <div class="invalid-feedback">
@@ -74,7 +72,6 @@
                         </div>
                         <div class="col">
                             {{ form.gender.label(class="form-label mb-0") }}
-
                             {% if form.gender.errors %}
                             {{ form.gender(class="form-control reg-input-box is-invalid")}}
                             <div class="invalid-feedback">
@@ -89,7 +86,6 @@
                     </div>
                     <div class="mt-2">
                         {{ form.password.label(class="form-label mb-0") }}
-
                         {% if form.password.errors %}
                         {{ form.password(class="form-control reg-input-box is-invalid")}}
                         <div class="invalid-feedback">
@@ -117,7 +113,6 @@
                     </div>
                     <div div class="mt-2">
                         {{ form.condition_check(class="form-check-input") }}
-
                         {% if form.condition_check.errors %}
                         {{ form.condition_check(class="form-control reg-input-box is-invalid")}}
                         <div class="invalid-feedback">
