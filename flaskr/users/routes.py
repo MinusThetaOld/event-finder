@@ -83,8 +83,7 @@ def reset_password(id: int, token: str):
     veridication_result = User.verify_reset_key(
         id, token, int(os.getenv("EXPIRE_TIME")))
     if not veridication_result["is_authenticate"]:
-        flash(f"{veridication_result['message']}", "danger")
-        return redirect(url_for("users.login_user"))
+        return render_template("mains/errors.html", status=400, message=f"{veridication_result['message']}")
     form = ResetPasswordForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(
