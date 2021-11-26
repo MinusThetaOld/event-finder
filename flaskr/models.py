@@ -1,12 +1,16 @@
 import enum
 from datetime import date, datetime
 
-from flaskr import db, login_manager
 from flask_login import UserMixin
+from itsdangerous import TimedSerializer
+from itsdangerous.exc import BadTimeSignature, SignatureExpired
+
+from flaskr import app, db, login_manager
+
 
 @login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+def load_user(id):
+    return User.query.get(int(id))
 
 
 # defining enum
@@ -40,6 +44,37 @@ class User(db.Model, UserMixin):
         self.password = password
         self.verified_code = verified_code
         self.role = role
+
+    def get_reset_token(self):
+        ## https://stackoverflow.com/questions/46486062/the-dumps-method-of-itsdangerous-throws-a-typeerror
+        serializer = TimedSerializer(app.config["SECRET_KEY"], "confirmation")
+        return serializer.dumps(self.id)
+    
+    @staticmethod
+    def verify_reset_key(id: int, token: str, max_age=1800):
+        # 1800 seconds means 30 minutes
+        serializer = TimedSerializer(app.config["SECRET_KEY"], "confirmation")
+        try:
+            result = serializer.loads(token, max_age=max_age)
+        except SignatureExpired:
+            return {
+                "is_authenticate": False,
+                "message": "Token is expired! Please re-generate the token"
+            }
+        except BadTimeSignature:
+            return {
+                "is_authenticate": False,
+                "message": "Token is not valid"
+            }
+        if result != id:
+            return {
+                "is_authenticate": False,
+                "message": "Token is not valid for this user"
+            }
+        return {
+                "is_authenticate": True,
+                "message": "Token matched and not expired"
+            }
 
 
 class Profile(db.Model):

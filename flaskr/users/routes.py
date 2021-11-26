@@ -1,10 +1,12 @@
+import os
+
 from flask import Blueprint, flash, redirect, render_template, url_for
+from flask_login import login_user as login_user_function
 from flaskr import bcrypt, db
+from flaskr.mails import send_mail
 from flaskr.models import Profile, Role, User
 from flaskr.users.forms import *
-from flaskr.users.utils import generate_token
-import flask_login as fl
-from flaskr.mails import send_mail
+from flaskr.users.utils import generate_token, password_reset_key_mail_body
 
 users = Blueprint("users", __name__)
 
@@ -13,24 +15,26 @@ users = Blueprint("users", __name__)
 def register_user():
     form = RegisterForm()
     if form.validate_on_submit():
-        # generating token
+        # Generating token
         generated_token_for_email = generate_token(6)
-        # hashing
+        # Hashing
         hashed_password = bcrypt.generate_password_hash(
             form.password.data).decode("utf-8")
         hashed_token = bcrypt.generate_password_hash(
             generated_token_for_email).decode("utf-8")
-        # creating user
+        # Creating user
         user = User(form.email.data, hashed_password,
                     hashed_token, Role.GENERAL)
         db.session.add(user)
         db.session.commit()
-        # creating profile
+        # Creating profile
         profile = Profile(form.first_name.data, form.last_name.data,
                           form.dob.data, form.gender.data, user.id)
         db.session.add(profile)
         db.session.commit()
-        send_mail(user.email, "Email Verification Code", f"Your Token is {generated_token_for_email}")
+        # Sending email
+        send_mail(user.email, "Email Verification Code",
+                  f"Your Token is {generated_token_for_email}")
         fetched_user = User.query.filter_by(id=user.id).first()
         flash(
             f"Account created for {fetched_user.profile.first_name} {fetched_user.profile.last_name}", "success")
@@ -42,13 +46,15 @@ def register_user():
 def login_user():
     form = LoginForm()
     if form.validate_on_submit():
+        # Fetching the user
         fetched_user = User.query.filter_by(email=form.email.data).first()
+        # Checking the email and password
         if fetched_user and bcrypt.check_password_hash(fetched_user.password, form.password.data):
-            fl.login_user(fetched_user, remember=form.remember_me.data)
+            login_user_function(fetched_user, remember=form.remember_me.data)
             flash("Login Successfull!", "success")
             return redirect(url_for('mains.homepage'))
         else:
-            flash("Login Failed! Invalid Credentials.", "danger") 
+            flash("Login Failed! Invalid Credentials.", "danger")
     return render_template("users/login.html", form=form, active='login')
 
 
@@ -59,19 +65,33 @@ def logout_user():
 
 @users.route("/users/forget_password", methods=["GET", "POST"])
 def forget_password():
-    form = ForgetPassword()
+    form = ForgetPasswordForm()
     if form.validate_on_submit():
+        # Fetching the user
         user = User.query.filter_by(email=form.email.data).first()
-        # Email sending
-        # @TODO
+        # Sending email
+        send_mail(user.email, "Password Reset Token",
+                  password_reset_key_mail_body(user.id, user.get_reset_token(), int(os.getenv("EXPIRE_TIME"))))
         flash(f"A verification link is sent to '{user.email}'", "primary")
         return redirect(url_for('users.login_user'))
     return render_template("users/forget_password.html", form=form)
 
 
-@users.route("/users/reset_password/<string:token>", methods=["GET", "POST"])
-def reset_password(token: str):
+@users.route("/users/reset_password/<int:id>/<string:token>", methods=["GET", "POST"])
+def reset_password(id: int, token: str):
+    # Verifying the token
+    veridication_result = User.verify_reset_key(
+        id, token, int(os.getenv("EXPIRE_TIME")))
+    if not veridication_result["is_authenticate"]:
+        flash(f"{veridication_result['message']}", "danger")
+        return redirect(url_for("users.login_user"))
     form = ResetPasswordForm()
     if form.validate_on_submit():
-        pass
+        hashed_password = bcrypt.generate_password_hash(
+            form.password.data).decode("utf-8")
+        user = User.query.get(id)
+        user.password = hashed_password
+        db.session.commit()
+        flash(f"{veridication_result['message']}", "success")
+        return redirect(url_for("users.login_user"))
     return render_template("users/reset_password.html", form=form)

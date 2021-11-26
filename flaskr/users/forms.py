@@ -48,7 +48,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Login")
 
 
-class ForgetPassword(FlaskForm):
+class ForgetPasswordForm(FlaskForm):
     email = EmailField("Email Address", validators=[
         DataRequired(), Length(min=4, max=150), Email()
     ], render_kw={"placeholder": "Enter your associated email address"})
