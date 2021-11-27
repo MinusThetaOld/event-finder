@@ -1,7 +1,9 @@
 import os
 
 from flask import Blueprint, flash, redirect, render_template, url_for
-from flask_login import login_user as login_user_function, current_user, logout_user as logout_user_function
+from flask_login import current_user
+from flask_login import login_user as login_user_function
+from flask_login import logout_user as logout_user_function
 from flaskr import bcrypt, db
 from flaskr.mails import send_mail
 from flaskr.models import Profile, Role, User
@@ -76,6 +78,8 @@ def logout_user():
 
 @users.route("/users/forget_password", methods=["GET", "POST"])
 def forget_password():
+    if current_user.is_authenticated:
+        return redirect(url_for('mains.homepage'))
     form = ForgetPasswordForm()
     if form.validate_on_submit():
         # Fetching the user
