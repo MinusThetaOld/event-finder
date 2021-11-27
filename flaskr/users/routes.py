@@ -1,7 +1,7 @@
 import os
 
 from flask import Blueprint, flash, redirect, render_template, url_for
-from flask_login import login_user as login_user_function
+from flask_login import login_user as login_user_function, current_user, logout_user as logout_user_function
 from flaskr import bcrypt, db
 from flaskr.mails import send_mail
 from flaskr.models import Profile, Role, User
@@ -13,6 +13,8 @@ users = Blueprint("users", __name__)
 
 @users.route("/users/register", methods=["GET", "POST"])
 def register_user():
+    if current_user.is_authenticated:
+        return redirect(url_for('mains.homepage'))
     form = RegisterForm()
     if form.validate_on_submit():
         # Generating token
@@ -50,6 +52,8 @@ def register_user():
 
 @users.route("/users/login", methods=["GET", "POST"])
 def login_user():
+    if current_user.is_authenticated:
+        return redirect(url_for('mains.homepage'))
     form = LoginForm()
     if form.validate_on_submit():
         # Fetching the user
@@ -60,12 +64,13 @@ def login_user():
             flash("Login Successfull!", "success")
             return redirect(url_for('mains.homepage'))
         else:
-            flash("Login Failed! Invalid Credentials.", "danger")
+            flash("Login Failed! Please Check Email and Password.", "danger")
     return render_template("users/login.html", form=form, active='login')
 
 
 @users.route("/users/logout")
 def logout_user():
+    logout_user_function()
     return redirect(url_for("users.login_user"))
 
 
