@@ -109,3 +109,8 @@ def reset_password(id: int, token: str):
         flash(f"{veridication_result['message']}", "success")
         return redirect(url_for("users.login_user"))
     return render_template("users/reset_password.html", form=form)
+
+
+@users.route("/users/view-profile")
+def view_user_profile():
+    return redirect(url_for("profiles.view_profile", id=current_user.id))
