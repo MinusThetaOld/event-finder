@@ -73,7 +73,7 @@ class User(db.Model, UserMixin):
             }
         return {
                 "is_authenticate": True,
-                "message": "Token matched and not expired"
+                "message": "Password successfully changed"
             }
 
 

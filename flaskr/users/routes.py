@@ -23,7 +23,13 @@ def register_user():
         hashed_token = bcrypt.generate_password_hash(
             generated_token_for_email).decode("utf-8")
         # Creating user
-        user = User(form.email.data, hashed_password,
+        all_users = User.query.all()
+        user = None
+        if len(all_users) == 0:
+            user = User(form.email.data, hashed_password,
+                    hashed_token, Role.ADMIN)
+        else:
+            user = User(form.email.data, hashed_password,
                     hashed_token, Role.GENERAL)
         db.session.add(user)
         db.session.commit()
