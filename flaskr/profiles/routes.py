@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template
 from flaskr.models import User
 import datetime
+from flaskr.profiles.forms import *
 
 profiles = Blueprint("profiles", __name__)
 
@@ -16,7 +17,8 @@ def view_profile(id: int):
 
 @profiles.route("/profiles/change-info")
 def change_profile_info():
-    return render_template("profiles/edit-profile-info.html", active="edit-profile-info")
+    form = ProfileInfoForm()
+    return render_template("profiles/edit-profile-info.html", active="edit-profile-info", form=form)
 
 
 @profiles.route("/profiles/change-photos")
