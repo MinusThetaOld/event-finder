@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, flash, redirect, url_for
 from flaskr.models import User
-import datetime
+from flaskr.profiles.forms import *
+from flaskr import bcrypt, db
+from flask_login import current_user
 
 profiles = Blueprint("profiles", __name__)
 
@@ -29,6 +31,13 @@ def verify_email():
     return render_template("profiles/verify-email.html", active="verify-email")
 
 
-@profiles.route("/profiles/change-password")
+@profiles.route("/profiles/change-password", methods = ["POST","GET"])
 def change_password():
-    return render_template("profiles/change-password.html", active="change-password")
+    form=ChangePasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.new_password.data).decode("utf-8")
+        current_user.password = hashed_password
+        db.session.commit()
+        flash("Password changed successfully", "success")
+        return redirect(url_for("profiles.change_password"))
+    return render_template("profiles/change-password.html", active="change-password", form=form)
