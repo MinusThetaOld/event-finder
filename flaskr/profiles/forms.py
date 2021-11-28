@@ -1,9 +1,7 @@
 from flask_wtf import FlaskForm
 from flaskr.models import Profile, User
-from wtforms import (BooleanField, DateField, EmailField, PasswordField,
-                     SelectField, StringField, SubmitField)
-from wtforms.validators import (DataRequired, Email, EqualTo, Length,
-                                ValidationError)
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired, Length
 
 
 # Ashiq
@@ -11,8 +9,11 @@ class ProfileInfoForm():
     pass
 
 # Alam
-class VerifyEmailForm():
-    pass
+class VerifyEmailForm(FlaskForm):
+    token = StringField("Verification Token", validators=[
+        DataRequired(), Length(max=6)
+    ], render_kw={ "placeholder": "Enter your verification token here..." })
+    save = SubmitField("Save")
 
 # Shamsu
 class ChangePasswordForm():

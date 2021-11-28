@@ -3,5 +3,33 @@
 {% block title %} Verify email address {% endblock %}
 
 {% block settings %}
-This is content
+<h2 class="settings-header">Verify Email Address</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mt-2">
+        {{ form.token.label(class="form-label mb-0") }}
+        {% if form.token.errors%}
+        {{ form.token(class="form-control input-box is-invalid", id="token") }}
+        <div class="invalid-feeedback">
+            {% for error in form.token.errors %}
+            <span>{{ error }}</span>
+            {%endfor%}
+        </div>
+        {% else %}
+        {% if current_user.is_verified %}
+        <input type="text" placeholder="Enter your verification token here..." title="Already Verified" class="form-control input-box" readonly>
+        {% else %}
+        {{ form.token(class="form-control input-box", id="token") }}
+        {% endif %}
+        {%endif%}
+    </div>
+    <small class="text-muted">Token was sent via email to your email address. Please add that token and verify.</small>
+    <div class="mt-2">
+        {% if current_user.is_verified %}
+        <button disabled class="btn btn-dark">Save</button>
+        {% else %}
+        {{form.save(class="btn btn-dark")}}
+        {% endif %}
+    </div>
+</form>
 {% endblock %}
