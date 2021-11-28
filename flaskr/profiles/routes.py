@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, flash, redirect, url_for
+from flask import Blueprint, redirect, render_template, url_for
+from flask.helpers import flash
+from flask_login import current_user
+from flaskr import bcrypt, db
 from flaskr.models import User
 from flaskr.profiles.forms import *
-from flaskr import bcrypt, db
-from flask_login import current_user
 
 profiles = Blueprint("profiles", __name__)
 
@@ -26,9 +27,19 @@ def change_photos():
     return render_template("profiles/change-photos.html", active="change-photos")
 
 
-@profiles.route("/profiles/verify-email")
+@profiles.route("/profiles/verify-email", methods=["GET", "POST"])
 def verify_email():
-    return render_template("profiles/verify-email.html", active="verify-email")
+    form = VerifyEmailForm()
+    if form.validate_on_submit():
+        if not bcrypt.check_password_hash(current_user.verified_code, form.token.data):
+            flash("Token did not matched!", "danger")
+        else:
+            current_user.verified_code = None
+            current_user.is_verified = True
+            db.session.commit()
+            flash("Email verified successfully!", "success")
+        return redirect(url_for("profiles.verify_email"))
+    return render_template("profiles/verify-email.html", active="verify-email", form=form)
 
 
 @profiles.route("/profiles/change-password", methods = ["POST","GET"])
