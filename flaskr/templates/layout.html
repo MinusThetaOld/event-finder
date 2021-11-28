@@ -17,9 +17,8 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/base/index.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/base/nav.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/users/login.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/users/register.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/users/forget-password.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/base/form.css') }}">
+    {% block add_styles %} {% endblock %}
 </head>
 
 <body>
@@ -90,7 +89,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{ url_for('profiles.change_profile_info') }}">
                                             <i class="bi bi-gear-wide-connected"></i>
                                             <span class="ms-1">Account Settings</span>
                                         </a>
@@ -165,7 +164,7 @@
                                 <i class="bi bi-chat-right-dots-fill"></i>
                                 <span class="ms-1">Messages</span>
                             </a>
-                            <a href="#" class="btn mt-1 btn-infos">
+                            <a href="{{ url_for('profiles.change_profile_info') }}" class="btn mt-1 btn-infos">
                                 <i class="bi bi-gear-wide-connected"></i>
                                 <span class="ms-1">Account Settings</span>
                             </a>
