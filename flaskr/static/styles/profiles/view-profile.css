@@ -1,0 +1,39 @@
+.cover-photo {
+    border-radius: 10px;
+    height: 260px;
+    width: 100%;
+}
+
+.profile-photo {
+    border: 2px solid #f5f4f4;
+    margin-top: -110px;
+    margin-left: 30px;
+    margin-right: 15px;
+    border-radius: 50%;
+    height: 200px;
+    width: 200px;
+}
+
+.side-btn {
+    width: 120px;
+}
+
+.name {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 1px;
+}
+
+.info {
+    margin: 0;
+
+    font-size: 0.8rem;
+    text-align: justify;
+}
+
+.profile-header{
+    margin-left: 20px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}

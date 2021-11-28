@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template
 from flaskr.models import User
+import datetime
 
 profiles = Blueprint("profiles", __name__)
 
@@ -7,7 +8,10 @@ profiles = Blueprint("profiles", __name__)
 @profiles.route("/profiles/<int:id>")
 def view_profile(id: int):
     user = User.query.get(id)
-    return render_template("profiles/view-profile.html", user=user)
+    if not user:
+        return render_template("mains/errors.html", status=404, message="User not found!")
+    join_date = user.created_at.strftime("%B, %Y")
+    return render_template("profiles/view-profile.html", user=user, join_date=join_date)
 
 
 @profiles.route("/profiles/change-info")
