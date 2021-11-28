@@ -13,7 +13,6 @@
             {% for error in form.bio.errors %}
             <span>{{ error }}</span>
             {%endfor%}
-
         </div>
         {% else %}
         {{ form.bio(class="form-control input-box bio-edit", id="bio") }}
@@ -36,7 +35,6 @@
         </div>
         <div class="col">
             {{ form.last_name.label(class="form-label mb-0")}}
-
             {% if form.last_name.errors %}
             {{ form.last_name(class="form-control input-box is-invalid", id="last_name", value=current_user.profile.last_name)}}
             <div class="invalid-feedback">
@@ -52,7 +50,6 @@
     <div class="row g-2 mt-1">
         <div class="col-6">
             {{ form.dob.label(class="form-label mb-0") }}
-
             {% if form.dob.errors %}
             {{ form.dob(class="form-control input-box is-invalid", id="dob", value=current_user.profile.date_of_birth)}}
             <div class="invalid-feedback">
