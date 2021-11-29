@@ -8,14 +8,14 @@
     <div class="mt-2">
         {{ form.bio.label(class="form-label mb-0") }}
         {% if form.bio.errors%}
-        {{ form.bio(class="form-control input-box is-invalid bio-edit", id="bio") }}
+        {{ form.bio(class="form-control input-box is-invalid bio-edit", id="bio", value=current_user.profile.bio) }}
         <div class="invalid-feeedback">
             {% for error in form.bio.errors %}
             <span>{{ error }}</span>
             {%endfor%}
         </div>
         {% else %}
-        {{ form.bio(class="form-control input-box bio-edit", id="bio") }}
+        {{ form.bio(class="form-control input-box bio-edit", id="bio", value=current_user.profile.bio) }}
         {%endif%}
     </div>
 

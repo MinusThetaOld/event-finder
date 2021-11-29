@@ -17,9 +17,20 @@ def view_profile(id: int):
     return render_template("profiles/view-profile.html", user=user, join_date=join_date)
 
 
-@profiles.route("/profiles/change-info")
+@profiles.route("/profiles/change-info", methods=["GET", "POST"])
 def change_profile_info():
     form = ProfileInfoForm()
+    print(form.bio.data)
+    if form.validate_on_submit():
+        
+        current_user.bio = form.bio.data
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
+        current_user.date_of_birth = form.dob.data
+        db.session.commit()
+        flash("Information updated successfully!", "success")
+        return redirect(url_for("profiles.change_profile_info"))
+        
     return render_template("profiles/edit-profile-info.html", active="edit-profile-info", form=form)
 
 
