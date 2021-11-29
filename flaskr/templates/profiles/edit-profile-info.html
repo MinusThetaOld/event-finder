@@ -51,14 +51,14 @@
         <div class="col-6">
             {{ form.dob.label(class="form-label mb-0") }}
             {% if form.dob.errors %}
-            {{ form.dob(class="form-control input-box is-invalid", id="dob", value=current_user.profile.date_of_birth)}}
+            {{ form.dob(class="form-control input-box is-invalid", id="dob", value=current_user.profile.date_of_birth.strftime("%Y-%m-%d"))}}
             <div class="invalid-feedback">
                 {% for error in form.dob.errors %}
                 <span>{{ error }}</span>
                 {% endfor %}
             </div>
             {% else %}
-            {{ form.dob(class="form-control input-box", id="dob", value=current_user.profile.date_of_birth) }}
+            {{ form.dob(class="form-control input-box", id="dob", value=current_user.profile.date_of_birth.strftime("%Y-%m-%d")) }}
             {% endif %}
         </div>
     </div>
