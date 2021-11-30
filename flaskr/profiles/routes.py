@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, request, url_for
 from flask.helpers import flash
-from flask_login import current_user
+from flask_login import current_user, login_required
 from flaskr import bcrypt, db
 from flaskr.models import User
 from flaskr.profiles.forms import *
@@ -17,7 +17,8 @@ def view_profile(id: int):
     return render_template("profiles/view-profile.html", user=user, join_date=join_date)
 
 
-@profiles.route("/profiles/change-info", methods=["POST", "GET"])
+@profiles.route("/profiles/settings/change-info", methods=["GET", "POST"])
+@login_required
 def change_profile_info():
     form = ProfileInfoForm()
     if form.validate_on_submit():
@@ -26,7 +27,7 @@ def change_profile_info():
         current_user.profile.last_name = form.last_name.data
         current_user.profile.date_of_birth = form.dob.data
         db.session.commit()
-        flash("Profile information updated successfully!", "success")
+        flash("Profile information updated successfully.", "success")
         return redirect(url_for("profiles.change_profile_info"))
     elif request.method == "GET":
         form.bio.data = current_user.profile.bio
@@ -36,12 +37,14 @@ def change_profile_info():
     return render_template("profiles/edit-profile-info.html", active="edit-profile-info", form=form)
 
 
-@profiles.route("/profiles/change-photos")
+@profiles.route("/profiles/settings/change-photos", methods=["GET", "POST"])
+@login_required
 def change_photos():
     return render_template("profiles/change-photos.html", active="change-photos")
 
 
-@profiles.route("/profiles/verify-email", methods=["GET", "POST"])
+@profiles.route("/profiles/settings/verify-email", methods=["GET", "POST"])
+@login_required
 def verify_email():
     form = VerifyEmailForm()
     if form.validate_on_submit():
@@ -51,12 +54,13 @@ def verify_email():
             current_user.verified_code = None
             current_user.is_verified = True
             db.session.commit()
-            flash("Email verified successfully!", "success")
+            flash("Email verified successfully!=.", "success")
         return redirect(url_for("profiles.verify_email"))
     return render_template("profiles/verify-email.html", active="verify-email", form=form)
 
 
-@profiles.route("/profiles/change-password", methods=["POST", "GET"])
+@profiles.route("/profiles/settings/change-password", methods=["GET", "POST"])
+@login_required
 def change_password():
     form = ChangePasswordForm()
     if form.validate_on_submit():
@@ -64,6 +68,6 @@ def change_password():
             form.new_password.data).decode("utf-8")
         current_user.password = hashed_password
         db.session.commit()
-        flash("Password changed successfully", "success")
+        flash("Password changed successfully.", "success")
         return redirect(url_for("profiles.change_password"))
     return render_template("profiles/change-password.html", active="change-password", form=form)

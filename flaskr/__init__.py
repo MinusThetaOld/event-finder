@@ -41,6 +41,9 @@ bcrypt = Bcrypt(app)
 # Login-Manager
 login_manager = LoginManager(app)
 
+login_manager.login_view = "users.login_user"
+login_manager.login_message_category = "primary"
+
 
 # Mail
 mail = Mail(app)

@@ -59,21 +59,21 @@ class User(db.Model, UserMixin):
         except SignatureExpired:
             return {
                 "is_authenticate": False,
-                "message": "Token is expired! Please re-generate the token"
+                "message": "Token is expired! Please re-generate the token."
             }
         except BadTimeSignature:
             return {
                 "is_authenticate": False,
-                "message": "Token is not valid"
+                "message": "Token is not valid."
             }
         if result != id:
             return {
                 "is_authenticate": False,
-                "message": "Token is not valid for this user"
+                "message": "Token is not valid for this user."
             }
         return {
                 "is_authenticate": True,
-                "message": "Password successfully changed"
+                "message": "Password successfully changed."
             }
 
 

@@ -147,15 +147,6 @@
                             </button>
                         </form>
                         <div class="d-flex flex-column sm-screen {{'d-none' if not current_user.is_authenticated}}">
-                            <a href="#" class="btn mt-1 btn-infos">
-                                <i class="bi bi-person-bounding-box"></i>
-                                {% if current_user.is_authenticated %}
-                                <span class="ms-1">{{ current_user.profile.first_name + " " +
-                                    current_user.profile.last_name }}</span>
-                                {% else %}
-                                <span class="ms-1">Anonymous</span>
-                                {% endif %}
-                            </a>
                             <a href="{{ url_for('users.view_user_profile') }}" class="btn mt-1 btn-infos">
                                 <i class="bi bi-binoculars-fill"></i>
                                 <span class="ms-1">View Profile</span>

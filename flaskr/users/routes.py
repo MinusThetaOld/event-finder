@@ -1,6 +1,6 @@
 import os
 
-from flask import Blueprint, flash, redirect, render_template, url_for
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user
 from flask_login import login_user as login_user_function
 from flask_login import logout_user as logout_user_function
@@ -63,8 +63,9 @@ def login_user():
         # Checking the email and password
         if fetched_user and bcrypt.check_password_hash(fetched_user.password, form.password.data):
             login_user_function(fetched_user, remember=form.remember_me.data)
-            flash("Login Successfull!", "success")
-            return redirect(url_for('mains.homepage'))
+            next_page = request.args.get("next")
+            flash("Login Successfull.", "success")
+            return redirect(next_page) if next_page else redirect(url_for('mains.homepage'))
         else:
             flash("Login Failed! Please Check Email and Password.", "danger")
     return render_template("users/login.html", form=form, active='login')
@@ -87,7 +88,7 @@ def forget_password():
         # Sending email
         send_mail(user.email, "Password Reset Token",
                   password_reset_key_mail_body(user.id, user.get_reset_token(), int(os.getenv("EXPIRE_TIME"))))
-        flash(f"A verification link is sent to '{user.email}'", "primary")
+        flash(f"Check your email to continue.'", "primary")
         return redirect(url_for('users.login_user'))
     return render_template("users/forget_password.html", form=form)
 

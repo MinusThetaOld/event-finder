@@ -3,9 +3,8 @@ from flaskr.users.utils import generate_token
 
 mains = Blueprint("mains", __name__)
 
-# Shamsu
-@mains.route("/")
+
 @mains.route("/homepage")
+@mains.route("/")
 def homepage():
     return render_template("mains/homepage.html")
-
