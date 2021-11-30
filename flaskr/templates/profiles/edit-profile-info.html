@@ -3,47 +3,47 @@
 {% block title %} Change profile info {% endblock %}
 
 {% block settings %}
-<h2 class="settings-header"> Change profile info </h2>
-<form methhod="POST">
+<h2 class="settings-header">Change profile info</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
     <div class="mt-2">
         {{ form.bio.label(class="form-label mb-0") }}
-        {% if form.bio.errors%}
-        {{ form.bio(class="form-control input-box is-invalid bio-edit", id="bio", value=current_user.profile.bio) }}
+        {% if form.bio.errors %}
+        {{ form.bio(class="form-control input-box is-invalid bio-edit", id="bio") }}
         <div class="invalid-feeedback">
             {% for error in form.bio.errors %}
             <span>{{ error }}</span>
-            {%endfor%}
+            {% endfor %}
         </div>
         {% else %}
-        {{ form.bio(class="form-control input-box bio-edit", id="bio", value=current_user.profile.bio) }}
-        {%endif%}
+        {{ form.bio(class="form-control input-box bio-edit", id="bio") }}
+        {% endif %}
     </div>
-
     <div class="row g-2 mt-2">
         <div class="col">
             {{ form.first_name.label(class="form-label mb-0") }}
             {% if form.first_name.errors %}
-            {{ form.first_name(class="form-control input-box is-invalid", id="first_name", value=current_user.profile.first_name)}}
+            {{ form.first_name(class="form-control input-box is-invalid", id="first_name")}}
             <div class="invalid-feedback">
                 {% for error in form.first_name.errors %}
                 <span>{{ error }}</span>
                 {% endfor %}
             </div>
             {% else %}
-            {{ form.first_name(class="form-control input-box", value=current_user.profile.first_name, id="first_name") }}
+            {{ form.first_name(class="form-control input-box", id="first_name") }}
             {% endif %}
         </div>
         <div class="col">
             {{ form.last_name.label(class="form-label mb-0")}}
             {% if form.last_name.errors %}
-            {{ form.last_name(class="form-control input-box is-invalid", id="last_name", value=current_user.profile.last_name)}}
+            {{ form.last_name(class="form-control input-box is-invalid", id="last_name")}}
             <div class="invalid-feedback">
                 {% for error in form.last_name.errors %}
                 <span>{{ error }}</span>
                 {% endfor %}
             </div>
             {% else %}
-            {{ form.last_name(class="form-control input-box", id="last_name", value=current_user.profile.last_name)}}
+            {{ form.last_name(class="form-control input-box", id="last_name")}}
             {% endif %}
         </div>
     </div>
@@ -51,14 +51,14 @@
         <div class="col-6">
             {{ form.dob.label(class="form-label mb-0") }}
             {% if form.dob.errors %}
-            {{ form.dob(class="form-control input-box is-invalid", id="dob", value=current_user.profile.date_of_birth.strftime("%Y-%m-%d"))}}
+            {{ form.dob(class="form-control input-box is-invalid", id="dob")}}
             <div class="invalid-feedback">
                 {% for error in form.dob.errors %}
                 <span>{{ error }}</span>
                 {% endfor %}
             </div>
             {% else %}
-            {{ form.dob(class="form-control input-box", id="dob", value=current_user.profile.date_of_birth.strftime("%Y-%m-%d")) }}
+            {{ form.dob(class="form-control input-box", id="dob") }}
             {% endif %}
         </div>
     </div>
