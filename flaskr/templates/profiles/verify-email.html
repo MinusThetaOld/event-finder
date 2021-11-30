@@ -28,7 +28,7 @@
         {% if current_user.is_verified %}
         <button disabled class="btn btn-dark">Save</button>
         {% else %}
-        {{form.save(class="btn btn-dark")}}
+        {{form.save(class="btn btn-dark btn-update")}}
         {% endif %}
     </div>
 </form>

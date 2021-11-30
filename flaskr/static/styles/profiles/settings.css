@@ -29,18 +29,12 @@
 }
 
 .modal-custom {
-    background-color: #101010;
+    background-color: #1b1b1b;
     border-radius: 15px;
 }
 
-.clr-white, .clr-white:hover {
-    background-color: #101010;
+.clr-white, .clr-white:hover, .modal-body-custom, .modal-footer-custom {
     color: #F6F6F6;
-}
-
-.modal-body-custom, .modal-footer-custom  {
-    color: #F6F6F6;
-    background-color: #1b1b1b;
 }
 
 .modal-header-custom {
@@ -49,7 +43,6 @@
 
 .modal-footer-custom {
     border: 0 !important;
-    background-color: #101010;
     border-radius: 15px;
 }
 
@@ -73,4 +66,8 @@ p.heading {
     margin-top: 20px;
     font-size: 1.1rem;
     font-weight: bold;
+}
+
+.btn-update {
+    width: 125px;
 }

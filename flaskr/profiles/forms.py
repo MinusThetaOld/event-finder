@@ -19,14 +19,14 @@ class ProfileInfoForm(FlaskForm):
     dob = DateField("Date of Birth", validators=[
         DataRequired()
     ])
-    save = SubmitField("Save")
+    save = SubmitField("Update")
 
 
 class VerifyEmailForm(FlaskForm):
     token = StringField("Verification Token", validators=[
         DataRequired(), Length(max=6)
     ], render_kw={"placeholder": "Enter your verification token here..."})
-    save = SubmitField("Save")
+    save = SubmitField("Update")
 
 
 class ChangePasswordForm(FlaskForm):
@@ -43,7 +43,7 @@ class ChangePasswordForm(FlaskForm):
             "new_password", "Confirm password did not matched")
     ], render_kw={"placeholder": "Retype the password"})
 
-    submit = SubmitField("Save")
+    submit = SubmitField("Update")
 
     def validate_old_password(self, odl_password):
         user = User.query.get(current_user.id)
