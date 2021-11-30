@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, url_for
+from flask import Blueprint, redirect, render_template, request, url_for
 from flask.helpers import flash
 from flask_login import current_user
 from flaskr import bcrypt, db
@@ -17,9 +17,22 @@ def view_profile(id: int):
     return render_template("profiles/view-profile.html", user=user, join_date=join_date)
 
 
-@profiles.route("/profiles/change-info")
+@profiles.route("/profiles/change-info", methods=["POST", "GET"])
 def change_profile_info():
     form = ProfileInfoForm()
+    if form.validate_on_submit():
+        current_user.profile.bio = form.bio.data
+        current_user.profile.first_name = form.first_name.data
+        current_user.profile.last_name = form.last_name.data
+        current_user.profile.date_of_birth = form.dob.data
+        db.session.commit()
+        flash("Profile information updated successfully!", "success")
+        return redirect(url_for("profiles.change_profile_info"))
+    elif request.method == "GET":
+        form.bio.data = current_user.profile.bio
+        form.first_name.data = current_user.profile.first_name
+        form.last_name.data = current_user.profile.last_name
+        form.dob.data = current_user.profile.date_of_birth
     return render_template("profiles/edit-profile-info.html", active="edit-profile-info", form=form)
 
 
@@ -43,11 +56,12 @@ def verify_email():
     return render_template("profiles/verify-email.html", active="verify-email", form=form)
 
 
-@profiles.route("/profiles/change-password", methods = ["POST","GET"])
+@profiles.route("/profiles/change-password", methods=["POST", "GET"])
 def change_password():
-    form=ChangePasswordForm()
+    form = ChangePasswordForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.new_password.data).decode("utf-8")
+        hashed_password = bcrypt.generate_password_hash(
+            form.new_password.data).decode("utf-8")
         current_user.password = hashed_password
         db.session.commit()
         flash("Password changed successfully", "success")
