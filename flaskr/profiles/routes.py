@@ -40,7 +40,8 @@ def change_profile_info():
 @profiles.route("/profiles/settings/change-photos", methods=["GET", "POST"])
 @login_required
 def change_photos():
-    return render_template("profiles/change-photos.html", active="change-photos")
+    form = ChangePhoto()
+    return render_template("profiles/change-photos.html", active="change-photos", form=form)
 
 
 @profiles.route("/profiles/settings/verify-email", methods=["GET", "POST"])

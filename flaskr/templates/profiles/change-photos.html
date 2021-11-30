@@ -3,5 +3,8 @@
 {% block title %} Change photos {% endblock %}
 
 {% block settings %}
-Change Photos
+<h2 class="settings-header">Change Photo</h2>
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+</form>
 {% endblock %}

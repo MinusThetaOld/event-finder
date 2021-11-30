@@ -1,5 +1,6 @@
 from flask_login import current_user
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed, FileField
 from flaskr import bcrypt
 from flaskr.models import User
 from wtforms import (DateField, PasswordField, StringField, SubmitField,
@@ -45,11 +46,13 @@ class ChangePasswordForm(FlaskForm):
 
     submit = SubmitField("Update")
 
-    def validate_old_password(self, odl_password):
+    def validate_old_password(self, old_password):
         user = User.query.get(current_user.id)
-        if not bcrypt.check_password_hash(user.password, odl_password.data):
+        if not bcrypt.check_password_hash(user.password, old_password.data):
             raise ValidationError("Password did not matched.")
 
 
-class ChangePhoto():
-    pass
+class ChangePhoto(FlaskForm):
+    cover_photo = FileField("Cover Photo", validators=[ FileAllowed(["jpg", "jpeg", "png"]) ])
+    profile_photo = FileField("Profile Picture", validators=[ FileAllowed(["jpg", "jpeg", "png"]) ])
+    submit = SubmitField("Update")

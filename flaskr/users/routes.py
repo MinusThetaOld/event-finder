@@ -1,7 +1,7 @@
 import os
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-from flask_login import current_user
+from flask_login import current_user, login_required
 from flask_login import login_user as login_user_function
 from flask_login import logout_user as logout_user_function
 from flaskr import bcrypt, db
@@ -31,10 +31,10 @@ def register_user():
         user = None
         if len(all_users) == 0:
             user = User(form.email.data, hashed_password,
-                    hashed_token, Role.ADMIN)
+                        hashed_token, Role.ADMIN)
         else:
             user = User(form.email.data, hashed_password,
-                    hashed_token, Role.GENERAL)
+                        hashed_token, Role.GENERAL)
         db.session.add(user)
         db.session.commit()
         # Creating profile
@@ -72,6 +72,7 @@ def login_user():
 
 
 @users.route("/users/logout")
+@login_required
 def logout_user():
     logout_user_function()
     return redirect(url_for("users.login_user"))
@@ -95,6 +96,8 @@ def forget_password():
 
 @users.route("/users/reset_password/<int:id>/<string:token>", methods=["GET", "POST"])
 def reset_password(id: int, token: str):
+    if current_user.is_authenticated:
+        return redirect(url_for('mains.homepage'))
     # Verifying the token
     veridication_result = User.verify_reset_key(
         id, token, int(os.getenv("EXPIRE_TIME")))
@@ -113,5 +116,6 @@ def reset_password(id: int, token: str):
 
 
 @users.route("/users/view-profile")
+@login_required
 def view_user_profile():
     return redirect(url_for("profiles.view_profile", id=current_user.id))
