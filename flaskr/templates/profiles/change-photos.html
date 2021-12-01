@@ -6,5 +6,44 @@
 <h2 class="settings-header">Change Photo</h2>
 <form method="POST" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
+    <div class="mt-2">
+        {{ form.cover_photo.label(class="form-label mb-0") }} <br>
+        <img src="{{url_for('static', filename=current_user.profile.cover_photo)}}" alt="Cover Photo"
+            class="cover-photo">
+        <div class="mt-2">
+            {% if form.cover_photo.errors %}
+            {{ form.cover_photo(class="form-control is-invalid", id="cover_photo")}}
+            <div class="invalid-feedback">
+                {% for error in form.cover_photo.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+            {{ form.cover_photo(class="form-control", id="cover_photo") }}
+            {% endif %}
+        </div>
+    </div>
+    <div class="mt-2">
+        {{ form.profile_photo.label(class="form-label mb-0") }} <br>
+        <div class="text-center">
+            <img src="{{url_for('static', filename=current_user.profile.profile_photo)}}" alt="Profile Photo"
+                class="rounded-circle profile-photo">
+        </div>
+        <div class="mt-2">
+            {% if form.profile_photo.errors %}
+            {{ form.profile_photo(class="form-control is-invalid", id="profile_photo")}}
+            <div class="invalid-feedback">
+                {% for error in form.profile_photo.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+            {{ form.profile_photo(class="form-control", id="profile_photo") }}
+            {% endif %}
+        </div>
+    </div>
+    <div class="mt-2">
+        {{form.submit(class="btn btn-dark btn-update")}}
+    </div>
 </form>
 {% endblock %}

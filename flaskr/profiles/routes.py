@@ -41,6 +41,8 @@ def change_profile_info():
 @login_required
 def change_photos():
     form = ChangePhoto()
+    if form.validate_on_submit():
+        pass
     return render_template("profiles/change-photos.html", active="change-photos", form=form)
 
 
