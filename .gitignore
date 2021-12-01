@@ -14,5 +14,9 @@ dist/
 build/
 *.egg-info/
 
-flaskr/static/images/uploads/cover/*
-flaskr/static/images/uploads/profile/*
+flaskr/static/images/uploads/cover/*.jpg
+flaskr/static/images/uploads/cover/*.jpeg
+flaskr/static/images/uploads/cover/*.png
+flaskr/static/images/uploads/profile/*.jpg
+flaskr/static/images/uploads/profile/*jpeg
+flaskr/static/images/uploads/profile/*png
