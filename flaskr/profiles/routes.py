@@ -4,6 +4,7 @@ from flask_login import current_user, login_required
 from flaskr import bcrypt, db
 from flaskr.models import User
 from flaskr.profiles.forms import *
+from flaskr.profiles.utils import remove_photo, save_photos
 
 profiles = Blueprint("profiles", __name__)
 
@@ -42,7 +43,26 @@ def change_profile_info():
 def change_photos():
     form = ChangePhoto()
     if form.validate_on_submit():
-        pass
+        if form.profile_photo.data:
+            # deleting
+            file_path = current_user.profile.profile_photo
+            if not ("/images/default/ProfilePhotos/default.png" in file_path):
+                remove_photo(file_path)
+            # saving
+            photo_file = save_photos(
+                form.profile_photo.data, current_user.id, "profile", 250, 250)
+            current_user.profile.profile_photo = "/images/uploads/profile/" + photo_file
+            db.session.commit()
+        if form.cover_photo.data:
+            # deleting
+            file_path = current_user.profile.cover_photo
+            if not ("/images/default/CoverPhotos/default.png" in file_path):
+                remove_photo(file_path)
+            # saving
+            photo_file = save_photos(
+                form.cover_photo.data, current_user.id, "cover", 1040, 260)
+            current_user.profile.cover_photo = "/images/uploads/cover/" + photo_file
+            db.session.commit()
     return render_template("profiles/change-photos.html", active="change-photos", form=form)
 
 

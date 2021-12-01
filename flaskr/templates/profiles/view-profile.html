@@ -18,7 +18,7 @@ endblock %} {% block content %}
                 <p class="info mt-1">{{user.profile.bio if user.profile.bio}}</p>
             </div>
             {% if user.id == current_user.id %}
-            <div class="p-2 flex-shrink-1"><a href="#" class="btn btn-dark side-btn btn-sm"><i
+            <div class="p-2 flex-shrink-1"><a href="{{ url_for('profiles.change_profile_info') }}" class="btn btn-dark side-btn btn-sm"><i
                         class="bi bi-pencil-square me-1"></i> Edit Profile</a></div>
             {% else %}
             <div class="p-2 flex-shrink-1"><a href="#" class="btn btn-dark side-btn btn-sm"><i
