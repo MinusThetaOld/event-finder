@@ -94,3 +94,29 @@ def change_password():
         flash("Password changed successfully.", "success")
         return redirect(url_for("profiles.change_password"))
     return render_template("profiles/change-password.html", active="change-password", form=form)
+
+
+@profiles.route("/profiles/settings/remove-cover-photo")
+@login_required
+def remove_cover_photo():
+    if not ("/images/default/CoverPhotos/default.png" in current_user.profile.cover_photo):
+        remove_photo(current_user.profile.cover_photo)
+        current_user.profile.cover_photo = "/images/default/CoverPhotos/default.png"
+        db.session.commit()
+        flash("Cover photo removed.", "success")
+    else:
+        flash("Cannot remove default cover photo.", "danger")
+    return redirect(url_for("profiles.change_photos"))
+
+
+@profiles.route("/profiles/settings/remove-profile-photo")
+@login_required
+def remove_profile_photo():
+    if not ("/images/default/ProfilePhotos/default.png" in current_user.profile.profile_photo):
+        remove_photo(current_user.profile.profile_photo)
+        current_user.profile.profile_photo = "/images/default/ProfilePhotos/default.png"
+        db.session.commit()
+        flash("Profile photo removed.", "success")
+    else:
+        flash("Cannot remove default profile photo.", "danger")
+    return redirect(url_for("profiles.change_photos"))

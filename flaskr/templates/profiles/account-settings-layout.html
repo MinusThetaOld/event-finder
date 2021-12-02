@@ -39,14 +39,13 @@
                             class="list-group-item btn btn-settings my-1 {{ 'btn-settings-active' if active == 'change-password' }}">
                             Change Password
                         </a>
-
                         <!-- Button trigger modal -->
                         <button type="button" class="list-group-item btn btn-settings-danger my-1" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">
+                        data-bs-target="#deactive-account-modal">
                             Deactivate Account
                         </button>
                         <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="deactive-modal"
+                        <div class="modal fade" id="deactive-account-modal" tabindex="-1" aria-labelledby="deactive-modal"
                             aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content modal-custom">
@@ -54,7 +53,6 @@
                                         <h5 class="modal-title text-danger" id="deactive-modal">Deactive Account</h5>
                                         <button type="button" class="btn clr-white" data-bs-dismiss="modal"
                                             aria-label="Close"><i class="bi bi-x-lg"></i></button>
-
                                     </div>
                                     <div class="modal-body modal-body-custom">
                                         Are you sure? You want to deactivate your account?
@@ -69,7 +67,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </ul>
                 </div>
             </div>
