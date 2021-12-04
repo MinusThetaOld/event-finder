@@ -69,8 +69,7 @@
                                     aria-expanded="false">
                                     <i class="bi bi-person-bounding-box"></i>
                                     {% if current_user.is_authenticated %}
-                                    <span class="ms-1">{{ current_user.profile.first_name + " " +
-                                        current_user.profile.last_name }}</span>
+                                    <span class="ms-1">{{ current_user.profile.get_fullname() }}</span>
                                     {% else %}
                                     <span class="ms-1">Anonymous</span>
                                     {% endif %}

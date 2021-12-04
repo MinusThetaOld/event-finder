@@ -45,6 +45,9 @@ class User(db.Model, UserMixin):
         self.verified_code = verified_code
         self.role = role
 
+    def get_joindate(self):
+        return self.created_at.strftime("%B, %Y")
+    
     def get_reset_token(self):
         ## https://stackoverflow.com/questions/46486062/the-dumps-method-of-itsdangerous-throws-a-typeerror
         serializer = TimedSerializer(app.config["SECRET_KEY"], "confirmation")
@@ -100,6 +103,9 @@ class Profile(db.Model):
         self.date_of_birth = date_of_birth
         self.gender = gender
         self.user_id = user_id
+        
+    def get_fullname(self):
+        return f"{self.first_name} {self.last_name}"
 
 
 class Complain(db.Model):

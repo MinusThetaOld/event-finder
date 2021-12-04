@@ -14,8 +14,7 @@ def view_profile(id: int):
     user = User.query.get(id)
     if not user:
         return render_template("mains/errors.html", status=404, message="User not found!")
-    join_date = user.created_at.strftime("%B, %Y")
-    return render_template("profiles/view-profile.html", user=user, join_date=join_date)
+    return render_template("profiles/view-profile.html", user=user)
 
 
 @profiles.route("/profiles/settings/change-info", methods=["GET", "POST"])
