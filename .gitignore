@@ -20,3 +20,5 @@ flaskr/static/images/uploads/cover/*.png
 flaskr/static/images/uploads/profile/*.jpg
 flaskr/static/images/uploads/profile/*jpeg
 flaskr/static/images/uploads/profile/*png
+
+migrations

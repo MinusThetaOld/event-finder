@@ -8,6 +8,7 @@ from PIL import Image
 class _Image(Image.Image):
 
     def crop_to_aspect(self, aspect, divisor=1, alignx=0.5, aligny=0.5):
+        # https://stackoverflow.com/questions/43734194/pillow-create-thumbnail-by-cropping-instead-of-preserving-aspect-ratio/43738947
         """Crops an image to a given aspect ratio.
         Args:
             aspect (float): The desired aspect ratio.
@@ -29,21 +30,22 @@ class _Image(Image.Image):
                          aligny * (self.height - newheight) + newheight))
         return img
 
+
 Image.Image.crop_to_aspect = _Image.crop_to_aspect
+
 
 def save_photos(photo, id: int, folder_name: str, width: int, height: int):
     random_hex = token_hex(8)
     _, file_ext = os.path.splitext(photo.filename)
     photo_filename = random_hex + str(id) + file_ext
-    photo_path = os.path.join(app.root_path, f"static/images/uploads/{folder_name}/" + photo_filename)
-    
-    
+    photo_path = os.path.join(app.root_path,
+                              f"static/images/uploads/{folder_name}/" + photo_filename)
+
     image = Image.open(photo)
-    
+
     cropped = image.crop_to_aspect(width, height)
     cropped.thumbnail((width, height), Image.ANTIALIAS)
-    
-    
+
     cropped.save(photo_path)
     return photo_filename
 
