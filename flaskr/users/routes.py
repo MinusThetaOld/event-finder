@@ -89,7 +89,7 @@ def forget_password():
         # Sending email
         send_mail(user.email, "Password Reset Token",
                   password_reset_key_mail_body(user.id, user.get_reset_token(), int(os.getenv("EXPIRE_TIME"))))
-        flash(f"Check your email to continue.'", "primary")
+        flash(f"Check your email to continue.", "primary")
         return redirect(url_for('users.login_user'))
     return render_template("users/forget_password.html", form=form)
 

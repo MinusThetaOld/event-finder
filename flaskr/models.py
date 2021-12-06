@@ -101,9 +101,11 @@ class Profile(db.Model):
     hosted_events = db.relationship("Event", backref="host")
     joined_events = db.Column(db.ARRAY(db.Integer), default=[])
     pending_events = db.Column(db.ARRAY(db.Integer), default=[])
-    declined_events = db.Column(db.ARRAY(db.Integer), default=[])
+    declines = db.relationship("Decline", backref="profile")
+    pending_payments = db.relationship("PaymentPending", backref="profile")
     notifications = db.relationship("Notification", backref="profile")
-    complains = db.relationship("Complain", backref="profile")
+    message_sent = db.relationship("Message", backref="sender")
+    complains = db.relationship("Complain", backref="complained_by")
     logs = db.relationship("Log", backref="profile")
     profile_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
     event_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
@@ -119,25 +121,10 @@ class Profile(db.Model):
         return f"{self.first_name} {self.last_name}"
 
 
-class Complain(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String, nullable=False)
-    category = db.Column(db.Enum(ComplainCategory), nullable=False)
-    profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
-    complained_by = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow())
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
-
-    def __init__(self, text: str, complain_category, profile_id: int, complained_by: int) -> None:
-        self.text = text
-        self.category = complain_category
-        self.profile_id = profile_id
-        self.complained_by = complained_by
-
-
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)
+    description = db.Column(db.String, nullable=False)
     place_name = db.Column(db.String(100), nullable=False)
     event_time = db.Column(db.DateTime, nullable=False)
     day = db.Column(db.Integer, nullable=False)
@@ -145,58 +132,151 @@ class Event(db.Model):
     host_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
     members = db.Column(db.ARRAY(db.Integer), default=[])
     chat_room = db.relationship("Message", backref="event")
-    description = db.Column(db.String, nullable=False)
     plans = db.Column(db.ARRAY(db.String), default=[])
     photos = db.Column(db.ARRAY(db.String), default=[])
     cover_photo = db.Column(
         db.String, default="/images/default/CoverPhotos/event-default.png")
     max_member = db.Column(db.Integer, nullable=False)
     pending_members = db.Column(db.ARRAY(db.Integer), default=[])
+    pending_payments = db.relationship("PaymentPending", backref="event")
     hotel_name = db.Column(db.String(150))
-    declined_profiles = db.Column(db.ARRAY(db.Integer), default=[])
+    declines = db.relationship("Decline", backref="event")
     logs = db.relationship("Log", backref="event")
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self) -> None:
-        pass
+    def __init__(self, title: str, description: str, place_name: str, event_time: datetime,
+                 day: int, night: int, host_id: int, cover_photo: str,
+                 max_member: int, hotel_name: str, plans=[], photos=[]) -> None:
+        self.title = title
+        self.description = description
+        self.place_name = place_name
+        self.event_time = event_time
+        self.day = day
+        self.night = night
+        self.host_id = host_id
+        self.cover_photo = cover_photo
+        self.max_member = max_member
+        self.hotel_name = hotel_name
+        self.plans = plans
+        self.photos = photos
+
+
+class Complain(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String, nullable=False)
+    category = db.Column(db.Enum(ComplainCategory), nullable=False)
+    profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
+    complain_for = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __init__(self, text: str, complain_category, complained_by: int, complain_for: int) -> None:
+        self.text = text
+        self.category = complain_category
+        self.profile_id = complained_by
+        self.complain_for = complain_for
 
 
 class PaymentPending(db.Model):
-    # Approval for payment User to Host
     id = db.Column(db.Integer, primary_key=True)
+    profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
+    event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
+    trnx_id = db.Column(db.Integer, nullable=False)
+    is_approved = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __init__(self, trnx_id: str, profile_id: int, event_id: int) -> None:
+        self.trnx_id = trnx_id
+        self.profile_id = profile_id
+        self.event_id = event_id
 
 
 class Decline(db.Model):
-    # A person declined by a host after payment
     id = db.Column(db.Integer, primary_key=True)
+    profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
+    event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
+    message = db.Column(db.String, nullable=False)
+
+    def __init__(self, message: str, profile_id: int, event_id: int) -> None:
+        self.message = message
+        self.profile_id = profile_id
+        self.event_id = event_id
 
 
 class PromotionPending(db.Model):
-    # A general member wants to promote to host role
     id = db.Column(db.Integer, primary_key=True)
+    profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
+    is_approved = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __init__(self, profile_id: int) -> None:
+        self.profile_id = profile_id
+
+    def approved(self):
+        # promote the profile to host
+        pass
 
 
 class Notification(db.Model):
-    # A profile's notification
     id = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.String(250), nullable=False)
+    link = db.Column(db.String, nullable=False)
     profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
+    is_readed = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __init__(self, message: str, link: str, profile_id: int) -> None:
+        self.message = message
+        self.link = link
+        self.profile_id = profile_id
+
+    def mark_read(self):
+        self.is_readed = True
 
 
 class Message(db.Model):
-    # A group chat message
     id = db.Column(db.Integer, primary_key=True)
+    message_text = db.Column(db.String)
+    message_photo = db.Column(db.String)
+    sender_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
     event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __init__(self, text: str, photo: str, profile_id: int, event_id: int) -> None:
+        self.message_text = text
+        self.message_photo = photo
+        self.sender_id = profile_id
+        self.event_id = event_id
 
 
 class Log(db.Model):
-    # Audit Log of a profile
     id = db.Column(db.Integer, primary_key=True)
     profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
     event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
+    activity = db.Column(db.String)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __init__(self, activity: str, profile_id: int, event_id: int) -> None:
+        self.activity = activity
+        self.profile_id = profile_id
+        self.event_id = event_id
 
 
 class AccountRestriction(db.Model):
-    # A profile is banned or not with banned time
     id = db.Column(db.Integer, primary_key=True)
+    expire_date = db.Column(db.DateTime, nullable=False)
+    reason = db.Column(db.String, nullable=False)
     profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __init__(self, expire_date: datetime, reason: str, profile_id: int) -> None:
+        self.expire_date = expire_date
+        self.reason = reason
+        self.profile_id = profile_id
