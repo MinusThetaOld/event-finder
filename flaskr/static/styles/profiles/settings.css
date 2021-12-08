@@ -27,23 +27,6 @@
 .btn-settings-danger:hover {
     color: #9F0000;
 }
-
-.modal-custom {
-    background-color: #1b1b1b;
-    border-radius: 15px;
-}
-
-.clr-white, .clr-white:hover, .modal-body-custom, .modal-footer-custom {
-    color: #F6F6F6;
-}
-
-.modal-header-custom {
-    border: 0 !important;
-}
-
-.modal-footer-custom {
-    border: 0 !important;
-    border-radius: 15px;
 }
 
 .settings-head {

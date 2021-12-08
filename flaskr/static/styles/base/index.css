@@ -4,22 +4,27 @@
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif !important;
 }
+
 .page-footer {
     min-height: 150px;
     bottom: 0; 
     background-color: black;
     color: aliceblue;
 }
+
 #content {
     min-height: calc(100vh - 150px - 71px);
     margin-bottom: 45px;
 }
+
 footer {
     background-color: #101010;
 }
+
 footer a {
     text-decoration: none;
 }
+
 footer a:hover {
     text-decoration: none;
     color: aliceblue;
@@ -48,4 +53,29 @@ footer a:hover {
     border: 1 px solid #efefef;
     color: #000000;
     font-size: 1.1rem;
+}
+
+.modal-custom {
+    background-color: #1b1b1b;
+    border-radius: 15px;
+}
+
+.clr-white, .clr-white:hover, .modal-body-custom, .modal-footer-custom {
+    color: #F6F6F6;
+}
+
+.modal-header-custom {
+    border: 0 !important;
+}
+
+.modal-footer-custom {
+    border: 0 !important;
+    border-radius: 15px;
+}
+
+.shadow-card {
+    border: 0;
+    border-radius: 10px;
+    background-color: #F8F9FA;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 5px 0 rgba(0, 0, 0, 0.19);
 }
