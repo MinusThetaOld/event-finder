@@ -4,11 +4,35 @@
 endblock %} {% block content %}
 <div class="container">
     <img src="{{url_for('static', filename=user.profile.cover_photo)}}" alt="Cover photo" class="cover-photo">
-    <div class="d-flex">
-        <img src="{{url_for('static', filename=user.profile.profile_photo)}}" alt="Profile Photo"
-            class="profile-photo flex-shrink-1">
+    <div class="d-flex-custom">
+        <div class="flex-shrink-1 profile-photo-container d-flex">
+            <img src="{{url_for('static', filename=user.profile.profile_photo)}}" alt="Profile Photo"
+                class="profile-photo flex-grow-1">
+            <div class="sm-screen-only flex-row w-100">
+                {% if user.id == current_user.id %}
+                <div class="d-flex">
+                    <div class="mt-2 ms-auto">
+                        <a href="{{ url_for('profiles.change_profile_info') }}" class="btn btn-light btn-sm">
+                            <i class="fas fa-cog mx-1"></i>
+                        </a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="mt-2">
+                    <div class="d-flex">
+                        <a href="#" class="btn btn-light btn-sm ms-auto">
+                            <i class="bi bi-pin-angle-fill mx-1"></i>
+                        </a>
+                        <a href="#" class="btn btn-light btn-sm ms-1">
+                            <i class="bi bi-exclamation-triangle-fill mx-1"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
         <div class="d-flex w-100">
-            <div class="mt-2 w-100">
+            <div class="mt-2 w-100 profile-info">
                 <h2 class="name">{{user.profile.first_name}} {{user.profile.last_name}}</h2>
                 <p class="info text-capitalize"><i class="bi bi-award-fill"></i> {{user.role.value}}</p>
                 <p class="info"><i class="bi bi-envelope-fill"></i> {{user.email}}</p>
@@ -17,34 +41,38 @@ endblock %} {% block content %}
                 </p>
                 <p class="info mt-1">{{user.profile.bio if user.profile.bio}}</p>
             </div>
-            {% if user.id == current_user.id %}
-            <div class="mt-2 flex-shrink-1">
-                <a href="{{ url_for('profiles.change_profile_info') }}" class="btn btn-light side-btn btn-sm">
-                    <i class="bi bi-pencil-square me-1"></i><span>Edit Profile</span>
-                </a>
-            </div>
-            {% else %}
-            <div class="flex-shrink-1">
-                <div class="d-flex flex-column mt-2">
-                    <a href="#" class="btn btn-light side-btn btn-sm">
-                        <i class="bi bi-pin-angle-fill me-1"></i><span>Bookmark</span>
-                    </a>
-                    <a href="#" class="btn btn-light side-btn btn-sm mt-1">
-                        <i class="bi bi-exclamation-triangle-fill me-1"></i><span>Report</span>
+            <div class="sm-screen-hide">
+                {% if user.id == current_user.id %}
+                <div class="mt-2 flex-shrink-1">
+                    <a href="{{ url_for('profiles.change_profile_info') }}" class="btn btn-light side-btn btn-sm">
+                        <i class="fas fa-cog me-1"></i></i><span>Edit Profile</span>
                     </a>
                 </div>
+                {% else %}
+                <div class="flex-shrink-1">
+                    <div class="d-flex flex-column mt-2">
+                        <a href="#" class="btn btn-light side-btn btn-sm">
+                            <i class="bi bi-pin-angle-fill me-1"></i><span>Bookmark</span>
+                        </a>
+                        <a href="#" class="btn btn-light side-btn btn-sm mt-1">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i><span>Report</span>
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
             </div>
-            {% endif %}
         </div>
     </div>
     <div class="card card-body shadow-card mt-4 d-flex flex-row">
         <div class="d-flex flex-grow-1">
             <div>
                 <div class="info">
-                    <i class="fas fa-calendar-alt"></i><span class="mx-2">Joined on {{current_user.get_joindate()}}</span>
+                    <i class="fas fa-calendar-alt"></i><span class="mx-2">Joined on
+                        {{current_user.get_joindate()}}</span>
                 </div>
                 <div class="info">
-                    <i class="fas fa-lightbulb"></i><span class="mx-2">Born on {{user.profile.date_of_birth.strftime("%B, %Y")}}</span>
+                    <i class="fas fa-lightbulb"></i><span class="mx-2">Born on
+                        {{user.profile.date_of_birth.strftime("%B, %Y")}}</span>
                 </div>
                 <div class="info">
                     {% if user.profile.gender == "male" %}
@@ -57,7 +85,7 @@ endblock %} {% block content %}
                 </div>
             </div>
         </div>
-        <div class="align-self-center flex-shrink-1 d-flex flex-row">
+        <div class="align-self-center flex-shrink-1 d-flex flex-row sm-screen-hide social-link">
             <a href="#">
                 <i class="fab fa-facebook-square link-logo"></i>
             </a>
@@ -74,6 +102,23 @@ endblock %} {% block content %}
                 <i class="fas fa-globe-asia link-logo ms-2"></i>
             </a>
         </div>
+    </div>
+    <div class="d-flex justify-content-center sm-screen-only social-link mt-3">
+        <a href="#">
+            <i class="fab fa-facebook-square link-logo"></i>
+        </a>
+        <a href="#">
+            <i class="fab fa-twitter-square link-logo ms-2"></i>
+        </a>
+        <a href="#">
+            <i class="fab fa-github-square link-logo ms-2"></i>
+        </a>
+        <a href="#">
+            <i class="fab fa-linkedin link-logo ms-2"></i>
+        </a>
+        <a href="#">
+            <i class="fas fa-globe-asia link-logo ms-2"></i>
+        </a>
     </div>
     <div class="row mt-4">
         <div class="col-md-4">
@@ -104,7 +149,8 @@ endblock %} {% block content %}
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-custom">
                 <div class="modal-header modal-header-custom">
-                    <h5 class="modal-title text-light" id="review-modal">Writre a review of {{ user.profile.get_fullname() }}
+                    <h5 class="modal-title text-light" id="review-modal">Writre a review of {{
+                        user.profile.get_fullname() }}
                     </h5>
                     <button type="button" class="btn clr-white" data-bs-dismiss="modal" aria-label="Close"><i
                             class="bi bi-x-lg"></i></button>
