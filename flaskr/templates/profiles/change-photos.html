@@ -4,45 +4,48 @@
 
 {% block settings %}
 <h2 class="settings-header">Change Photo</h2>
-<form method="POST" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
-    <div class="mt-2">
-        {{ form.cover_photo.label(class="form-label mb-0") }} <br>
-        <img src="{{url_for('static', filename=current_user.profile.cover_photo)}}" alt="Cover Photo"
-            class="cover-photo">
-        <div class="mt-2">
-            {% if form.cover_photo.errors %}
-            <div class="d-flex">
-                {{ form.cover_photo(class="form-control is-invalid", id="cover_photo")}}
-                <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal"
-                    data-bs-target="#delete-cover-modal">Delete</button>
+<div class="card card-body shadow-card p-4">
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.cover_photo.label(class="form-label mb-0") }} <br>
+            <img src="{{url_for('static', filename=current_user.profile.cover_photo)}}" alt="Cover Photo"
+                class="cover-photo">
+            <div class="mt-2">
+                {% if form.cover_photo.errors %}
+                <div class="d-flex">
+                    {{ form.cover_photo(class="form-control is-invalid", id="cover_photo")}}
+                    <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal"
+                        data-bs-target="#delete-cover-modal">Delete</button>
+                </div>
+                <div class="invalid-feedback">
+                    {% for error in form.cover_photo.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="d-flex">
+                    {{ form.cover_photo(class="form-control", id="cover_photo") }}
+                    <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal"
+                        data-bs-target="#delete-cover-modal">Delete</button>
+                </div>
+                {% endif %}
             </div>
-            <div class="invalid-feedback">
-                {% for error in form.cover_photo.errors %}
-                <span>{{ error }}</span>
-                {% endfor %}
-            </div>
-            {% else %}
-            <div class="d-flex">
-                {{ form.cover_photo(class="form-control", id="cover_photo") }}
-                <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal"
-                    data-bs-target="#delete-cover-modal">Delete</button>
-            </div>
-            {% endif %}
         </div>
-    </div>
-    <div class="mt-2">
-        {{ form.profile_photo.label(class="form-label mb-0") }} <br>
-        <div class="text-center">
-            <img src="{{url_for('static', filename=current_user.profile.profile_photo)}}" alt="Profile Photo"
-                class="rounded-circle profile-photo">
-        </div>
-        <div class="mt-2">
-            {% if form.profile_photo.errors %}
-            <div class="d-flex">
-                {{ form.profile_photo(class="form-control is-invalid", id="profile_photo")}}
-                <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal"
-                    data-bs-target="#delete-profile-modal">Delete</ </div>
+        <div class="mt-4">
+            {{ form.profile_photo.label(class="form-label mb-0") }} <br>
+            <div class="text-center">
+                <img src="{{url_for('static', filename=current_user.profile.profile_photo)}}" alt="Profile Photo"
+                    class="rounded-circle profile-photo">
+            </div>
+            <div class="mt-2">
+                {% if form.profile_photo.errors %}
+                <div class="d-flex">
+                    {{ form.profile_photo(class="form-control is-invalid", id="profile_photo")}}
+                    <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal"
+                        data-bs-target="#delete-profile-modal">
+                        Delete
+                    </button>
                     <div class="invalid-feedback">
                         {% for error in form.profile_photo.errors %}
                         <span>{{ error }}</span>
@@ -52,14 +55,17 @@
                     <div class="d-flex">
                         {{ form.profile_photo(class="form-control", id="profile_photo") }}
                         <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal"
-                            data-bs-target="#delete-profile-modal">Delete</ </div>
-                            {% endif %}
+                            data-bs-target="#delete-profile-modal">Delete</button>
+                        {% endif %}
                     </div>
+                </div>
             </div>
             <div class="mt-2">
                 {{form.submit(class="btn btn-dark btn-update")}}
             </div>
-</form>
+        </div>
+    </form>
+</div>
 <!-- Modal Cover Photo -->
 <div class="modal fade" id="delete-cover-modal" tabindex="-1" aria-labelledby="delete-cover-modal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -77,7 +83,8 @@
             </div>
             <div class="modal-footer modal-footer-custom">
                 <button type="button" class="btn btn-sm btn-dark" data-bs-dismiss="modal">Close</button>
-                <a href="{{ url_for('profiles.remove_cover_photo') }}" type="button" class="btn btn-sm btn-danger">Delete</a>
+                <a href="{{ url_for('profiles.remove_cover_photo') }}" type="button"
+                    class="btn btn-sm btn-danger">Delete</a>
             </div>
         </div>
     </div>
@@ -100,7 +107,8 @@
             </div>
             <div class="modal-footer modal-footer-custom">
                 <button type="button" class="btn btn-sm btn-dark" data-bs-dismiss="modal">Close</button>
-                <a href="{{ url_for('profiles.remove_profile_photo') }}" type="button" class="btn btn-sm btn-danger">Delete</a>
+                <a href="{{ url_for('profiles.remove_profile_photo') }}" type="button"
+                    class="btn btn-sm btn-danger">Delete</a>
             </div>
         </div>
     </div>

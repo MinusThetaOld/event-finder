@@ -37,23 +37,42 @@ endblock %} {% block content %}
             {% endif %}
         </div>
     </div>
-    <div class="d-flex card card-body shadow-card mt-4">
-        <div>
-            <div class="info">
-                <i class="fas fa-calendar-alt"></i><span class="mx-2">Joined on {{current_user.get_joindate()}}</span>
+    <div class="card card-body shadow-card mt-4 d-flex flex-row">
+        <div class="d-flex flex-grow-1">
+            <div>
+                <div class="info">
+                    <i class="fas fa-calendar-alt"></i><span class="mx-2">Joined on {{current_user.get_joindate()}}</span>
+                </div>
+                <div class="info">
+                    <i class="fas fa-lightbulb"></i><span class="mx-2">Born on {{user.profile.date_of_birth.strftime("%B, %Y")}}</span>
+                </div>
+                <div class="info">
+                    {% if user.profile.gender == "male" %}
+                    <i class="fas fa-mars"></i><span class="mx-2">Male</span>
+                    {% elif user.profile.gender == "female" %}
+                    <i class="bi bi-gender-female"></i><span class="mx-2">Female</span>
+                    {% else %}
+                    <i class="bi bi-gender-trans"></i><span class="mx-2">Other</span>
+                    {% endif %}
+                </div>
             </div>
-            <div class="info">
-                <i class="fas fa-lightbulb"></i><span class="mx-2">Born on {{user.profile.date_of_birth.strftime("%B, %Y")}}</span>
-            </div>
-            <div class="info">
-                {% if user.profile.gender == "male" %}
-                <i class="fas fa-mars"></i><span class="mx-2">Male</span>
-                {% elif user.profile.gender == "female" %}
-                <i class="bi bi-gender-female"></i><span class="mx-2">Female</span>
-                {% else %}
-                <i class="bi bi-gender-trans"></i><span class="mx-2">Other</span>
-                {% endif %}
-            </div>
+        </div>
+        <div class="align-self-center flex-shrink-1 d-flex flex-row">
+            <a href="#">
+                <i class="fab fa-facebook-square link-logo"></i>
+            </a>
+            <a href="#">
+                <i class="fab fa-twitter-square link-logo ms-2"></i>
+            </a>
+            <a href="#">
+                <i class="fab fa-github-square link-logo ms-2"></i>
+            </a>
+            <a href="#">
+                <i class="fab fa-linkedin link-logo ms-2"></i>
+            </a>
+            <a href="#">
+                <i class="fas fa-globe-asia link-logo ms-2"></i>
+            </a>
         </div>
     </div>
     <div class="row mt-4">
