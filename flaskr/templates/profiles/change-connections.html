@@ -7,6 +7,35 @@
 <div class="card card-body shadow-card p-4">
     <form method="POST">
         {{ form.hidden_tag() }}
+        <div class="input-group flex-nowrap mt-2">
+            <span class="input-group-text" id="addon-wrapping"><i class="fab fa-facebook"
+                    style="color: #0778E9;"></i></i></span>
+            <input type="text" class="form-control input-box" placeholder="Facebook profile link" aria-label="facebook"
+                aria-describedby="addon-wrapping">
+        </div>
+        <div class="input-group flex-nowrap mt-2">
+            <span class="input-group-text" id="addon-wrapping"><i class="fab fa-twitter"
+                    style="color: #1D9BF0;"></i></i></span>
+            <input type="text" class="form-control input-box" placeholder="Twitter profile link" aria-label="twitter"
+                aria-describedby="addon-wrapping">
+        </div>
+        <div class="input-group flex-nowrap mt-2">
+            <span class="input-group-text" id="addon-wrapping"><i class="fab fa-github"
+                    style="color: #161B22;"></i></i></span>
+            <input type="text" class="form-control input-box" placeholder="Github profile link" aria-label="github"
+                aria-describedby="addon-wrapping">
+        </div>
+        <div class="input-group flex-nowrap mt-2">
+            <span class="input-group-text" id="addon-wrapping"><i class="fab fa-linkedin"
+                    style="color: #0A66C2;"></i></i></span>
+            <input type="text" class="form-control input-box" placeholder="Linkedin profile link" aria-label="linkedin"
+                aria-describedby="addon-wrapping">
+        </div>
+        <div class="input-group flex-nowrap mt-2">
+            <span class="input-group-text" id="addon-wrapping"><i class="fas fa-globe-asia"></i></i></span>
+            <input type="text" class="form-control input-box" placeholder="Website link" aria-label="website"
+                aria-describedby="addon-wrapping">
+        </div>
         <div class="mt-2">
             {{form.save(class="btn btn-dark btn-update")}}
         </div>
