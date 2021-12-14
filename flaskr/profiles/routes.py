@@ -119,3 +119,10 @@ def remove_profile_photo():
     else:
         flash("Cannot remove default profile photo.", "danger")
     return redirect(url_for("profiles.change_photos"))
+
+
+@profiles.route("/profiles/settings/connections", methods=["GET", "POST"])
+@login_required
+def change_connections():
+    form = ChangeConnections()
+    return render_template("profiles/change-connections.html", active="change-connections", form=form)

@@ -19,6 +19,10 @@
                             class="list-group-item btn btn-settings my-1 {{ 'btn-settings-active' if active == 'edit-profile-info' }}">
                             Edit Profile Info
                         </a>
+                        <a href="{{ url_for('profiles.change_connections') }}"
+                            class="list-group-item btn btn-settings my-1 {{ 'btn-settings-active' if active == 'change-connections' }}">
+                            Connections
+                        </a>
                         <a href="{{ url_for('profiles.change_photos') }}"
                             class="list-group-item btn btn-settings my-1 {{ 'btn-settings-active' if active == 'change-photos' }}">
                             Change Photos

@@ -52,4 +52,8 @@ p.heading {
 
 .btn-update {
     width: 125px;
+    background-color: #0A2B49;
+}
+.btn-update:hover {
+    background-color: #072036;
 }

@@ -27,7 +27,7 @@
         <small class="text-muted">Token was sent via email to your email address. Please add that token and verify.</small>
         <div class="mt-2">
             {% if current_user.is_verified %}
-            <button disabled class="btn btn-dark">Save</button>
+            <button disabled class="btn btn-dark btn-update">Save</button>
             {% else %}
             {{form.save(class="btn btn-dark btn-update")}}
             {% endif %}

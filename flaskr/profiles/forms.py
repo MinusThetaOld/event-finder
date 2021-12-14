@@ -44,7 +44,7 @@ class ChangePasswordForm(FlaskForm):
             "new_password", "Confirm password did not matched")
     ], render_kw={"placeholder": "Retype the password"})
 
-    submit = SubmitField("Update")
+    save = SubmitField("Update")
 
     def validate_old_password(self, old_password):
         user = User.query.get(current_user.id)
@@ -53,6 +53,12 @@ class ChangePasswordForm(FlaskForm):
 
 
 class ChangePhoto(FlaskForm):
-    cover_photo = FileField("Cover Photo", validators=[ FileAllowed(["jpg", "jpeg", "png"]) ])
-    profile_photo = FileField("Profile Photo", validators=[ FileAllowed(["jpg", "jpeg", "png"]) ])
-    submit = SubmitField("Update")
+    cover_photo = FileField("Cover Photo", validators=[
+                            FileAllowed(["jpg", "jpeg", "png"])])
+    profile_photo = FileField("Profile Photo", validators=[
+                              FileAllowed(["jpg", "jpeg", "png"])])
+    save = SubmitField("Update")
+
+
+class ChangeConnections(FlaskForm):
+    save = SubmitField("Update")
