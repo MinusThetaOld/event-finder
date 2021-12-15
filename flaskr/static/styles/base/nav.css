@@ -66,6 +66,14 @@
     display: block;
 }
 
+.navbar-toggler {
+    background-color: transparent !important;
+}
+
+.nav-menu-three-bar {
+    color: #e7eef1;
+}
+
 @media only screen and (min-width: 451px) {
     .xsm-screen {
         display: none !important;
