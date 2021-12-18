@@ -1,7 +1,4 @@
-from os import error
-
-from flask import Blueprint, redirect, render_template, request, url_for
-from flask.helpers import flash
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from flaskr import bcrypt, db
 from flaskr.models import User

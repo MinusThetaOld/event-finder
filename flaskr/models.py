@@ -109,6 +109,7 @@ class Profile(db.Model):
     logs = db.relationship("Log", backref="profile")
     profile_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
     event_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
+    social_links = db.relationship("SocialConnection", backref="profile")
 
     def __init__(self, first_name: str, last_name: str, date_of_birth: date, gender: str, user_id: int) -> None:
         self.first_name = first_name
@@ -119,6 +120,26 @@ class Profile(db.Model):
 
     def get_fullname(self):
         return f"{self.first_name} {self.last_name}"
+
+
+class SocialConnection(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    facebook = db.Column(db.String)
+    twitter = db.Column(db.String)
+    github = db.Column(db.String)
+    linkedin = db.Column(db.String)
+    website = db.Column(db.String)
+    profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __init__(self, facebook: str, twitter: str, github: str, linkedin: str, website: str, profile_id: int) -> None:
+        self.facebook = facebook
+        self.twitter = twitter
+        self.github = github
+        self.linkedin = linkedin
+        self.website = website
+        self.profile_id = profile_id
 
 
 class Event(db.Model):

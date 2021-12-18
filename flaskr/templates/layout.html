@@ -64,7 +64,7 @@
                                     <i class="fas fa-plus"></i>
                                 </a>
                                 {% elif current_user.role and current_user.role.value == "admin" %}
-                                <a href="#" type="button" class="btn btn-infos position-relative"
+                                <a href="{{ url_for('admins.dashboard') }}" type="button" class="btn btn-infos position-relative"
                                     title="Admin dashboard">
                                     <i class="fas fa-user-shield"></i>
                                 </a>
@@ -166,7 +166,7 @@
                                 <span class="ms-1">Create Event</span>
                             </a>
                             {% elif current_user.role and current_user.role.value == "admin" %}
-                            <a href="#" type="button" class="btn mt-1 btn-infos">
+                            <a href="{{ url_for('admins.dashboard') }}" type="button" class="btn mt-1 btn-infos">
                                 <i class="fas fa-user-shield"></i>
                                 <span class="ms-1">Admin Dashboard</span>
                             </a>
