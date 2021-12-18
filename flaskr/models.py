@@ -92,7 +92,7 @@ class Profile(db.Model):
         db.String, default="/images/default/CoverPhotos/default.png")
     rating = db.Column(db.Float, default=0.0)
     bio = db.Column(db.String(500))
-    nid = db.Column(db.Integer)
+    nid_number = db.Column(db.String(11))
     banned = db.relationship("AccountRestriction",
                              backref="profile", uselist=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
