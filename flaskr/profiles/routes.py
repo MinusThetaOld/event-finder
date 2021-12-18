@@ -22,18 +22,24 @@ def view_profile(id: int):
 def change_profile_info():
     form = ProfileInfoForm()
     if form.validate_on_submit():
-        current_user.profile.bio = form.bio.data
-        current_user.profile.first_name = form.first_name.data
-        current_user.profile.last_name = form.last_name.data
-        current_user.profile.date_of_birth = form.dob.data
-        db.session.commit()
-        flash("Profile information updated successfully.", "success")
-        return redirect(url_for("profiles.change_profile_info"))
+        try:
+            current_user.profile.bio = form.bio.data
+            current_user.profile.first_name = form.first_name.data
+            current_user.profile.last_name = form.last_name.data
+            current_user.profile.date_of_birth = form.dob.data
+            current_user.profile.nid = int(form.nid.data) if form.nid.data else None
+            db.session.commit()
+            flash("Profile information updated successfully.", "success")
+        except ValueError:
+            flash("National Identity Number must be an integer..", "danger")
+        finally:
+            return redirect(url_for("profiles.change_profile_info"))
     elif request.method == "GET":
         form.bio.data = current_user.profile.bio
         form.first_name.data = current_user.profile.first_name
         form.last_name.data = current_user.profile.last_name
         form.dob.data = current_user.profile.date_of_birth
+        form.nid.data = current_user.profile.nid
     return render_template("profiles/edit-profile-info.html", active="edit-profile-info", form=form)
 
 

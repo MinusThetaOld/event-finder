@@ -50,6 +50,19 @@
         </div>
         <div class="row g-2 mt-1">
             <div class="col-6">
+                {{ form.nid.label(class="form-label mb-0") }}
+                {% if form.nid.errors %}
+                {{ form.nid(class="form-control input-box is-invalid", id="nid")}}
+                <div class="invalid-feedback">
+                    {% for error in form.nid.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.nid(class="form-control input-box", id="nid") }}
+                {% endif %}
+            </div>
+            <div class="col-6">
                 {{ form.dob.label(class="form-label mb-0") }}
                 {% if form.dob.errors %}
                 {{ form.dob(class="form-control input-box is-invalid", id="dob")}}

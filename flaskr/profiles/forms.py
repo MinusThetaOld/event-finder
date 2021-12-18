@@ -20,6 +20,9 @@ class ProfileInfoForm(FlaskForm):
     dob = DateField("Date of Birth", validators=[
         DataRequired()
     ])
+    nid = StringField("National Identity Card", validators=[
+        Length(max=11)
+    ], render_kw={"placeholder": "ex. 1234567890"})
     save = SubmitField("Update")
 
 

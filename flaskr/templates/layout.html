@@ -58,6 +58,24 @@
                     <ul class="navbar-nav ms-auto mb-lg-0 big-screen">
                         <div class="d-flex {{'d-none' if not current_user.is_authenticated}}">
                             <li class="nav-item me-1">
+                                {% if current_user.role and current_user.role.value == "host" %}
+                                <a href="#" type="button" class="btn btn-infos position-relative"
+                                    title="Create a event">
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                                {% elif current_user.role and current_user.role.value == "admin" %}
+                                <a href="#" type="button" class="btn btn-infos position-relative"
+                                    title="Admin dashboard">
+                                    <i class="fas fa-user-shield"></i>
+                                </a>
+                                {% else %}
+                                <a href="#" type="button" class="btn btn-infos position-relative"
+                                    title="Apply for host">
+                                    <i class="fas fa-user-tie"></i>
+                                </a>
+                                {% endif %}
+                            </li>
+                            <li class="nav-item me-1">
                                 <a href="#" type="button" class="btn btn-infos position-relative">
                                     <i class="bi bi-bell-fill"></i>
                                     <span
@@ -114,12 +132,6 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="bi bi-pc-display"></i>
-                                            <span class="ms-1">Admin Dashboard</span>
-                                        </a>
-                                    </li>
-                                    <li>
                                         <hr class="dropdown-divider">
                                     </li>
                                     <li>
@@ -148,6 +160,22 @@
                             </button>
                         </form>
                         <div class="d-flex flex-column sm-screen {{'d-none' if not current_user.is_authenticated}}">
+                            {% if current_user.role and current_user.role.value == "host" %}
+                            <a href="#" type="button" class="btn mt-1 btn-infos">
+                                <i class="fas fa-plus"></i>
+                                <span class="ms-1">Create Event</span>
+                            </a>
+                            {% elif current_user.role and current_user.role.value == "admin" %}
+                            <a href="#" type="button" class="btn mt-1 btn-infos">
+                                <i class="fas fa-user-shield"></i>
+                                <span class="ms-1">Admin Dashboard</span>
+                            </a>
+                            {% else %}
+                            <a href="#" type="button" class="btn mt-1 btn-infos">
+                                <i class="fas fa-user-tie"></i>
+                                <span class="ms-1">Apply for Host</span>
+                            </a>
+                            {% endif %}
                             <a href="#" class="btn mt-1 btn-infos">
                                 <i class="bi bi-bell-fill"></i>
                                 <span class="ms-1">View Notifications</span>
