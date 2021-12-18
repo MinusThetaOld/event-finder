@@ -109,7 +109,7 @@ class Profile(db.Model):
     logs = db.relationship("Log", backref="profile")
     profile_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
     event_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
-    social_links = db.relationship("SocialConnection", backref="profile")
+    social_links = db.relationship("SocialConnection", backref="profile", uselist=False)
 
     def __init__(self, first_name: str, last_name: str, date_of_birth: date, gender: str, user_id: int) -> None:
         self.first_name = first_name
