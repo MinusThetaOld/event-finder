@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from flaskr import bcrypt, db
-from flaskr.models import User
+from flaskr.models import User, SocialConnection
 from flaskr.profiles.forms import *
 from flaskr.profiles.utils import remove_photo, save_photos
 
@@ -126,4 +126,23 @@ def remove_profile_photo():
 @login_required
 def change_connections():
     form = ChangeConnections()
+    if form.validate_on_submit():
+        if current_user.profile.social_links == None:
+            social = SocialConnection(form.facebook.data, form.twitter.data, form.github.data, form.linkedin.data, form.website.data, current_user.profile.id)
+            db.session.add(social)
+        else:
+            current_user.profile.social_links.facebook = form.facebook.data
+            current_user.profile.social_links.twitter = form.twitter.data
+            current_user.profile.social_links.github = form.github.data
+            current_user.profile.social_links.linkedin = form.linkedin.data
+            current_user.profile.social_links.website = form.website.data
+        db.session.commit()
+        flash("Connection information updated successfully.", "success")
+        return redirect(url_for("profiles.change_connections"))
+    elif request.method == "GET":
+        form.facebook.data = current_user.profile.social_links.facebook if current_user.profile.social_links else None
+        form.twitter.data = current_user.profile.social_links.twitter if current_user.profile.social_links else None
+        form.github.data = current_user.profile.social_links.github if current_user.profile.social_links else None
+        form.linkedin.data = current_user.profile.social_links.linkedin if current_user.profile.social_links else None
+        form.website.data = current_user.profile.social_links.website if current_user.profile.social_links else None
     return render_template("profiles/change-connections.html", active="change-connections", form=form)

@@ -64,4 +64,9 @@ class ChangePhoto(FlaskForm):
 
 
 class ChangeConnections(FlaskForm):
+    facebook = StringField("Facebook", render_kw={"placeholder": "Facebook profile link"})
+    twitter = StringField("Twitter", render_kw={"placeholder": "Twitter profile link"})
+    github = StringField("Github", render_kw={"placeholder": "Github profile link"})
+    linkedin = StringField("Linkedin", render_kw={"placeholder": "Linkedin profile link"})
+    website = StringField("Website", render_kw={"placeholder": "Website link"})
     save = SubmitField("Update")
