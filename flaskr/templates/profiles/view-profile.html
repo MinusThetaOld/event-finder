@@ -36,7 +36,10 @@ endblock %} {% block content %}
                 <h2 class="name">{{user.profile.first_name}} {{user.profile.last_name}}</h2>
                 <p class="info text-capitalize"><i class="bi bi-award-fill"></i> {{user.role.value}}</p>
                 <p class="info"><i class="bi bi-envelope-fill"></i> {{user.email}}</p>
-                <p class="info"><i class="bi bi-star-fill"></i> {{user.profile.rating if user.profile.rating>0.0 else
+                {% if user.profile.nid_number %}
+                <p class="info"><i class="fas fa-address-card"></i> {{user.profile.nid_number}}</p>
+                {% endif %}
+                <p class="info"><i class="bi bi-star-fill"></i> {{user.profile.rating if user.profile.rating else
                     'Unrated'}}
                 </p>
                 <p class="info mt-1">{{user.profile.bio if user.profile.bio}}</p>
