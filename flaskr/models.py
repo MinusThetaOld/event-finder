@@ -95,21 +95,24 @@ class Profile(db.Model):
     nid_number = db.Column(db.String(11))
     banned = db.relationship("AccountRestriction",
                              backref="profile", uselist=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow())
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     hosted_events = db.relationship("Event", backref="host")
     joined_events = db.Column(db.ARRAY(db.Integer), default=[])
     pending_events = db.Column(db.ARRAY(db.Integer), default=[])
     declines = db.relationship("Decline", backref="profile")
     pending_payments = db.relationship("PaymentPending", backref="profile")
+    pending_req = db.relationship(
+        "PromotionPending", backref="profile", uselist=False)
     notifications = db.relationship("Notification", backref="profile")
     message_sent = db.relationship("Message", backref="sender")
     complains = db.relationship("Complain", backref="complained_by")
     logs = db.relationship("Log", backref="profile")
     profile_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
     event_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
-    social_links = db.relationship("SocialConnection", backref="profile", uselist=False)
+    social_links = db.relationship(
+        "SocialConnection", backref="profile", uselist=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
     def __init__(self, first_name: str, last_name: str, date_of_birth: date, gender: str, user_id: int) -> None:
         self.first_name = first_name
@@ -237,8 +240,12 @@ class PromotionPending(db.Model):
         self.profile_id = profile_id
 
     def approved(self):
-        # promote the profile to host
-        pass
+        self.is_approved = True
+        profile = Profile.query.get(self.profile_id)
+        profile.user.role = Role.HOST
+        db.session.delete(self)
+        db.session.commit()
+
 
 
 class Notification(db.Model):
@@ -257,6 +264,7 @@ class Notification(db.Model):
 
     def mark_read(self):
         self.is_readed = True
+        db.session.commit()
 
 
 class Message(db.Model):

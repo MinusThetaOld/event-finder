@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 
 {% block add_styles %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/base/sidebar.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/admins/base.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/admins/dashboard.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/admins/complain-box.css') }}">
@@ -39,7 +38,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8 mt-1">
             {% block settings %} {% endblock %}
         </div>
     </div>

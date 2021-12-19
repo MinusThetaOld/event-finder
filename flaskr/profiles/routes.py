@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from flaskr import bcrypt, db
-from flaskr.models import User, SocialConnection
+from flaskr.models import PromotionPending, SocialConnection, User
 from flaskr.profiles.forms import *
 from flaskr.profiles.utils import remove_photo, save_photos
 
@@ -128,7 +128,8 @@ def change_connections():
     form = ChangeConnections()
     if form.validate_on_submit():
         if current_user.profile.social_links == None:
-            social = SocialConnection(form.facebook.data, form.twitter.data, form.github.data, form.linkedin.data, form.website.data, current_user.profile.id)
+            social = SocialConnection(form.facebook.data, form.twitter.data, form.github.data,
+                                      form.linkedin.data, form.website.data, current_user.profile.id)
             db.session.add(social)
         else:
             current_user.profile.social_links.facebook = form.facebook.data
@@ -146,3 +147,26 @@ def change_connections():
         form.linkedin.data = current_user.profile.social_links.linkedin if current_user.profile.social_links else None
         form.website.data = current_user.profile.social_links.website if current_user.profile.social_links else None
     return render_template("profiles/change-connections.html", active="change-connections", form=form)
+
+
+@profiles.route("/profiles/request_for_host")
+@login_required
+def req_for_host():
+    if current_user.role.value != "general":
+        flash("Only general member can be a host.", "primary")
+        return redirect(url_for("mains.homepage"))
+    if current_user.profile.nid_number == None \
+            or current_user.profile.nid_number == "":
+        flash("Please add NID number in profile.", "danger")
+        return redirect(url_for("mains.homepage"))
+    is_pending = PromotionPending.query.filter_by(
+        profile_id=current_user.profile.id).first()
+    if is_pending:
+        flash("Already requested for being host. Please wait for respose.", "danger")
+        return redirect(url_for("mains.homepage"))
+    # All ok
+    new_pending_req = PromotionPending(current_user.profile.id)
+    db.session.add(new_pending_req)
+    db.session.commit()
+    flash("A request has been sent. Wait for the response from admins.", "success")
+    return redirect(url_for("mains.homepage"))

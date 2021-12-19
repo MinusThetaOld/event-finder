@@ -54,6 +54,7 @@ import flaskr.models
 db.create_all()
 
 from flaskr.admins.routes import admins
+from flaskr.events.routes import events
 from flaskr.mains.routes import mains
 from flaskr.profiles.routes import profiles
 from flaskr.users.routes import users
@@ -63,3 +64,4 @@ app.register_blueprint(users)
 app.register_blueprint(profiles)
 app.register_blueprint(mains)
 app.register_blueprint(admins)
+app.register_blueprint(events)
