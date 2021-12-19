@@ -97,3 +97,13 @@ def banned_users():
         flash("Restricted only for admins", "danger")
         return redirect(url_for("mains.homepage"))
     return render_template("admins/banned-users.html", active="banned_users")
+
+
+@admins.route("/admins/get-profiles-by-profile-id", methods=["POST"])
+@login_required
+def get_profile_by_profile_id():
+    if current_user.role.value != "admin":
+        flash("Restricted only for admins", "danger")
+        return redirect(url_for("mains.homepage"))
+    id = request.form.get("get_by_profile_id")
+    return redirect(url_for("profiles.view_profile", id=id))

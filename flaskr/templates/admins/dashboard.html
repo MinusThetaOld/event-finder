@@ -53,8 +53,8 @@
     </div>
 </div>
 <div class="mt-3">
-    <form action="#" class="d-flex" method="POST">
-        <input class="form-control me-2 input-box" type="text" placeholder="Enter the profile ID">
+    <form action="{{ url_for('admins.get_profile_by_profile_id') }}" class="d-flex" method="POST">
+        <input class="form-control me-2 input-box" type="text" placeholder="Enter the profile ID" name="get_by_profile_id">
         <button class="btn btn-dark btn-search" type="submit">Get User by Profile ID</button>
     </form>
     <form action="#" class="d-flex mt-2" method="POST">
@@ -62,11 +62,11 @@
         <button class="btn btn-dark btn-search" type="submit">Get User by User ID</button>
     </form>
     <form action="#" class="d-flex mt-2" method="POST">
-        <input class="form-control me-2 input-box" type="email" placeholder="Enter the User email address">
+        <input class="form-control me-2 input-box" type="email" placeholder="Enter the user email address">
         <button class="btn btn-dark btn-search" type="submit">Get User by Email</button>
     </form>
     <form action="#" class="d-flex mt-2" method="POST">
-        <input class="form-control me-2 input-box" type="text" placeholder="Enter the User NID number">
+        <input class="form-control me-2 input-box" type="text" placeholder="Enter the user NID number">
         <button class="btn btn-dark btn-search" type="submit">Get User by NID</button>
     </form>
 
