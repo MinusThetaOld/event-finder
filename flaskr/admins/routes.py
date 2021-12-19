@@ -4,6 +4,7 @@ from flaskr import bcrypt, db
 from flaskr.admins.forms import *
 from flaskr.models import (Complain, Notification, Profile, PromotionPending,
                            User)
+from flaskr.notifications.utils import NotificationMessage
 from sqlalchemy import desc
 
 admins = Blueprint("admins", __name__)
@@ -45,7 +46,7 @@ def approve_pending_request(id: int):
     req_pending.approved()
     # push notification
     notification = Notification(
-        "Congratulations! You are now a host. You can create events.", url_for("events.create_event"), req_pending.profile.id)
+        NotificationMessage.approvedPromotion(), url_for("events.create_event"), req_pending.profile.id)
     db.session.add(notification)
     db.session.commit()
     flash("Profile approved.", "info")
@@ -65,7 +66,7 @@ def decline_pending_request(id: int):
     db.session.delete(req_pending)
     # push notification
     notification = Notification(
-        "Sorry! Your request for promotion is declined.", "#", req_pending.profile.id)
+        NotificationMessage.declinedPromotion(), "", req_pending.profile.id)
     db.session.add(notification)
     db.session.commit()
     flash("Profile declined.", "info")

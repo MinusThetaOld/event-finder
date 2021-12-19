@@ -6,6 +6,7 @@ from itsdangerous import TimedSerializer
 from itsdangerous.exc import BadTimeSignature, SignatureExpired
 
 from flaskr import app, db, login_manager
+from flaskr.utils import pretty_date
 
 
 @login_manager.user_loader
@@ -247,7 +248,6 @@ class PromotionPending(db.Model):
         db.session.commit()
 
 
-
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.String(250), nullable=False)
@@ -265,6 +265,9 @@ class Notification(db.Model):
     def mark_read(self):
         self.is_readed = True
         db.session.commit()
+
+    def times_ago(self):
+        return pretty_date(self.created_at)
 
 
 class Message(db.Model):

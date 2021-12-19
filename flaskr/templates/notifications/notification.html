@@ -1,18 +1,33 @@
 {% extends "layout.html" %}
 
 {% block add_styles %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/notifications/notification.css') }}">
+<link rel="stylesheet" type="text/css"
+    href="{{ url_for('static', filename='styles/notifications/notifications.css') }}">
 {% endblock %}
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        
+    <div class="col-md-8 offset-md-2 mb-2">
+        <a href="#" class="badge bg-dark px-3 link-light fw-normal text-decoration-none">Mark all as read</a>
     </div>
     <div class="row">
-        <div class="col-md-8 offset-md-2">
-            asdas
+        {% for notification in notifications %}
+        <div class="col-md-8 offset-md-2 mb-2">
+            <div class="card card-body shadow-card {{ 'unreaded' if not notification.is_readed else '' }}">
+                <div class="d-flex flex-row">
+                    <div class="d-flex flex-column flex-grow-1">
+                        <a class="my-0 link-dark fw-normal text-decoration-none" href="{{ notification.link }}">
+                            {{ notification.message }}
+                        </a>
+                        <p class="my-0 text-muted" style="font-size: 0.7rem;">{{ notification.times_ago() }}</p>
+                    </div>
+                    <a href="#"
+                        class="badge badge-pill text-dark text-decoration-none align-self-center {{ 'd-none' if notification.is_readed else '' }}"
+                        style="font-size: 20px;"><i class="fas fa-check-circle"></i></a>
+                </div>
+            </div>
         </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
