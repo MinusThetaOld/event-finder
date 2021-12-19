@@ -56,18 +56,41 @@
     <form action="#" class="d-flex" method="POST">
         <input class="form-control me-2 input-box" type="text" placeholder="Enter the profile ID">
         <button class="btn btn-dark btn-search" type="submit">Get User by Profile ID</button>
-      </form>
-      <form action="#" class="d-flex mt-2" method="POST">
+    </form>
+    <form action="#" class="d-flex mt-2" method="POST">
         <input class="form-control me-2 input-box" type="text" placeholder="Enter the user ID">
         <button class="btn btn-dark btn-search" type="submit">Get User by User ID</button>
-      </form>
-      <form action="#" class="d-flex mt-2" method="POST">
+    </form>
+    <form action="#" class="d-flex mt-2" method="POST">
         <input class="form-control me-2 input-box" type="email" placeholder="Enter the User email address">
         <button class="btn btn-dark btn-search" type="submit">Get User by Email</button>
-      </form>
-      <form action="#" class="d-flex mt-2" method="POST">
+    </form>
+    <form action="#" class="d-flex mt-2" method="POST">
         <input class="form-control me-2 input-box" type="text" placeholder="Enter the User NID number">
         <button class="btn btn-dark btn-search" type="submit">Get User by NID</button>
-      </form>
+    </form>
+
+
+    <div class="d-flex align-items-center mt-4 mb-3">
+        <div class="flex-grow-1">
+            <h1 class="profile-header user-font">New Users</h1>
+        </div>
+        <a href="#" class="btn btn-light">View all</a>
+    </div>
+    <!-- All the reviews there -->
+    {% for user in users%}
+    <div class="card card-body shadow-card mb-2">
+        <div class="d-flex flex-row">
+            <img src="{{ url_for('static', filename=user.profile.profile_photo) }}" alt=""
+                class="card-img align-self-center">
+            <a href="{{ url_for('profiles.view_profile', id=user.profile.id) }}"
+                class="d-flex flex-column align-self-center card-link-custom ms-3">
+                <h2 class="card-title-custom my-0">{{ user.profile.get_fullname() }}</h2>
+                <p class="card-body-custom my-0 text-muted">Joined on {{ user.get_joindate() }}</p>
+                <p class="card-body-custom my-0"><i class="fas fa-external-link-alt"></i></p>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}
