@@ -24,3 +24,7 @@
 .btn-search:hover {
    color: #569cdc
 }
+.user-font {
+    font-weight: bold;
+    font-size: 1.2rem;
+}

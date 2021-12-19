@@ -4,6 +4,7 @@ from flaskr import bcrypt, db
 from flaskr.admins.forms import *
 from flaskr.models import (Complain, Notification, Profile, PromotionPending,
                            User)
+from sqlalchemy import desc
 
 admins = Blueprint("admins", __name__)
 
@@ -15,7 +16,8 @@ def dashboard():
     if current_user.role.value != "admin":
         flash("Restricted only for admins", "danger")
         return redirect(url_for("mains.homepage"))
-    return render_template("admins/dashboard.html", active="dashboard")
+    users = User.query.order_by(desc(User.created_at))[:2]
+    return render_template("admins/dashboard.html", active="dashboard", users=users)
 
 
 @admins.route("/admins/pending-request")
