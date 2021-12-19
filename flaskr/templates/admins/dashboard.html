@@ -57,16 +57,16 @@
         <input class="form-control me-2 input-box" type="text" placeholder="Enter the profile ID" name="get_by_profile_id">
         <button class="btn btn-dark btn-search" type="submit">Get User by Profile ID</button>
     </form>
-    <form action="#" class="d-flex mt-2" method="POST">
-        <input class="form-control me-2 input-box" type="text" placeholder="Enter the user ID">
+    <form action="{{ url_for('admins.get_profile_by_user_id') }}" class="d-flex mt-2" method="POST">
+        <input class="form-control me-2 input-box" type="text" placeholder="Enter the user ID" name="get_by_user_id">
         <button class="btn btn-dark btn-search" type="submit">Get User by User ID</button>
     </form>
-    <form action="#" class="d-flex mt-2" method="POST">
-        <input class="form-control me-2 input-box" type="email" placeholder="Enter the user email address">
+    <form action="{{ url_for('admins.get_profile_by_email_id') }}" class="d-flex mt-2" method="POST">
+        <input class="form-control me-2 input-box" type="email" placeholder="Enter the user email address" name="get_by_email_id">
         <button class="btn btn-dark btn-search" type="submit">Get User by Email</button>
     </form>
-    <form action="#" class="d-flex mt-2" method="POST">
-        <input class="form-control me-2 input-box" type="text" placeholder="Enter the user NID number">
+    <form action="{{ url_for('admins.get_profile_by_nid_id') }}" class="d-flex mt-2" method="POST">
+        <input class="form-control me-2 input-box" type="text" placeholder="Enter the user NID number" name="get_by_nid_id">
         <button class="btn btn-dark btn-search" type="submit">Get User by NID</button>
     </form>
 

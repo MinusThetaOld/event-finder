@@ -106,5 +106,41 @@ def get_profile_by_profile_id():
     if current_user.role.value != "admin":
         flash("Restricted only for admins", "danger")
         return redirect(url_for("mains.homepage"))
-    id = request.form.get("get_by_profile_id")
-    return redirect(url_for("profiles.view_profile", id=id))
+    pid = request.form.get("get_by_profile_id")
+    return redirect(url_for("profiles.view_profile", id=pid))
+
+@admins.route("/admins/get-profiles-by-user-id", methods=["POST"])
+@login_required
+def get_profile_by_user_id():
+    if current_user.role.value != "admin":
+        flash("Restricted only for admins", "danger")
+        return redirect(url_for("mains.homepage"))
+    uid = request.form.get("get_by_user_id")
+    user = User.query.get(uid)
+    if not user:
+        return render_template("mains/errors.html", status=404, message="Profile not found!!")
+    return redirect(url_for("profiles.view_profile", id=user.profile.id))
+
+@admins.route("/admins/get-profiles-by-email-id", methods=["POST"])
+@login_required
+def get_profile_by_email_id():
+    if current_user.role.value != "admin":
+        flash("Restricted only for admins", "danger")
+        return redirect(url_for("mains.homepage"))
+    email = request.form.get("get_by_email_id")
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return render_template("mains/errors.html", status=404, message="Profile not found!!")
+    return redirect(url_for("profiles.view_profile", id=user.profile.id))
+
+@admins.route("/admins/get-profiles-by-nid-id", methods=["POST"])
+@login_required
+def get_profile_by_nid_id():
+    if current_user.role.value != "admin":
+        flash("Restricted only for admins", "danger")
+        return redirect(url_for("mains.homepage"))
+    nid = request.form.get("get_by_nid_id")
+    profile = Profile.query.filter_by(nid_number=nid).first()
+    if not profile:
+        return render_template("mains/errors.html", status=404, message="Profile not found!!")
+    return redirect(url_for("profiles.view_profile", id=profile.id))
