@@ -82,7 +82,7 @@
                                 {% endif %}
                             </li>
                             <li class="nav-item me-1">
-                                <a href="#" type="button" class="btn btn-infos position-relative">
+                                <a href="{{ url_for('notifications.get_notifications') }}" type="button" class="btn btn-infos position-relative">
                                     <i class="bi bi-bell-fill"></i>
                                     <span
                                         class="position-absolute top-0 start-100 translate-middle p-1 bg-danger rounded-circle badge">
@@ -186,7 +186,7 @@
                                 <span class="ms-1">Apply for Host</span>
                             </a>
                             {% endif %}
-                            <a href="#" class="btn mt-1 btn-infos">
+                            <a href="{{ url_for('notifications.get_notifications') }}" class="btn mt-1 btn-infos">
                                 <i class="bi bi-bell-fill"></i>
                                 <span class="ms-1">View Notifications</span>
                             </a>
