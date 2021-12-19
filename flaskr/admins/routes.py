@@ -37,6 +37,9 @@ def approve_pending_request(id: int):
         flash("Restricted only for admins", "danger")
         return redirect(url_for("mains.homepage"))
     req_pending = PromotionPending.query.get(id)
+    if not req_pending:
+        flash("Promotion object not found!", "danger")
+        return redirect(url_for("admins.pending_request"))
     req_pending.approved()
     # push notification
     notification = Notification(
@@ -54,6 +57,9 @@ def decline_pending_request(id: int):
         flash("Restricted only for admins", "danger")
         return redirect(url_for("mains.homepage"))
     req_pending = PromotionPending.query.get(id)
+    if not req_pending:
+        flash("Promotion object not found!", "danger")
+        return redirect(url_for("admins.pending_request"))
     db.session.delete(req_pending)
     # push notification
     notification = Notification(
