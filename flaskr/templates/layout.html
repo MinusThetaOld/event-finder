@@ -82,7 +82,8 @@
                                 {% endif %}
                             </li>
                             <li class="nav-item me-1">
-                                <a href="{{ url_for('notifications.get_notifications') }}" type="button" class="btn btn-infos position-relative">
+                                <a href="{{ url_for('notifications.get_notifications') }}" type="button"
+                                    class="btn btn-infos position-relative">
                                     <i class="bi bi-bell-fill"></i>
                                     <span
                                         class="position-absolute top-0 start-100 translate-middle p-1 bg-danger rounded-circle badge">
@@ -234,7 +235,30 @@
             </div>
     </nav>
     <!-- End Navigation -->
-
+    <!-- Validation Message -->
+    {% if eligable %}
+    {% if eligable.get("is_banned") %}
+    <div class="container mt-1">
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger">Your account is banned. Come back after {{ current_user.profile.banned.days_left() }}</div>
+            </div>
+        </div>
+    </div>
+    {% elif not eligable.get("is_valid") %}
+    <div class="container mt-1">
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-warning d-flex">
+                    <p class="my-0 align-self-center flex-grow-1">Your account is not validated. Please verify the account by entering the code which was sent to your email address while creating the account.</p>
+                    <a href="{{ url_for('profiles.verify_email') }}" class="btn btn-sm btn-warning align-self-center ms-1" style="width: 100px;">Verify</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+    <!-- End Validation Message -->
     <!-- Content -->
     <section id="content">
         <div class="col-xl-6 offset-xl-3 col-md-8 offset-md-2">
@@ -254,7 +278,6 @@
         {% block content %} {% endblock %}
     </section>
     <!-- End Content -->
-
     <!-- Footer -->
     <!-- <footer class="page-footer">
         <div class="container">
@@ -277,7 +300,6 @@
         </div>
     </footer> -->
     <!-- End Footer -->
-
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"

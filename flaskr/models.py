@@ -312,3 +312,7 @@ class AccountRestriction(db.Model):
         self.expire_date = expire_date
         self.reason = reason
         self.profile_id = profile_id
+
+    def days_left(self):
+        return self.expire_date.strftime("%d %B, %Y")
+    

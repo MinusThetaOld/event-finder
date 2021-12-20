@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from flask_login import current_user
+
 
 def pretty_date(time=False):
     ## https://stackoverflow.com/questions/1551382/user-friendly-time-format-in-python
@@ -47,12 +49,20 @@ def pretty_date(time=False):
 
 
 def is_eligable(user):
+    if current_user.is_anonymous:
+        return None
     if user.profile.banned:
         if user.profile.banned.expire_date > datetime.utcnow():
-            return "Account is banned."
+            return {
+                "is_banned": True,
+                "message": "Account is banned."
+            }
         else:
             # unban the user
             return None
     if not user.is_verified:
-        return "Account is not verified."
+        return {
+                "is_valid": False,
+                "message": "Account is not verified."
+            }
     return None

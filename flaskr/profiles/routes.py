@@ -22,6 +22,10 @@ def view_profile(id: int):
 @profiles.route("/profiles/settings/change-info", methods=["GET", "POST"])
 @login_required
 def change_profile_info():
+    eligable = is_eligable(current_user)
+    if eligable and eligable.get("is_banned"):
+        flash("Your account is banned.", "danger")
+        return redirect(url_for("mains.homepage"))
     form = ProfileInfoForm()
     if form.validate_on_submit():
         current_user.profile.bio = form.bio.data
@@ -44,6 +48,10 @@ def change_profile_info():
 @profiles.route("/profiles/settings/change-photos", methods=["GET", "POST"])
 @login_required
 def change_photos():
+    eligable = is_eligable(current_user)
+    if eligable and eligable.get("is_banned"):
+        flash("Your account is banned.", "danger")
+        return redirect(url_for("mains.homepage"))
     form = ChangePhoto()
     if form.validate_on_submit():
         if form.profile_photo.data:
@@ -72,6 +80,10 @@ def change_photos():
 @profiles.route("/profiles/settings/verify-email", methods=["GET", "POST"])
 @login_required
 def verify_email():
+    eligable = is_eligable(current_user)
+    if eligable and eligable.get("is_banned"):
+        flash("Your account is banned.", "danger")
+        return redirect(url_for("mains.homepage"))
     form = VerifyEmailForm()
     if form.validate_on_submit():
         if not bcrypt.check_password_hash(current_user.verified_code, form.token.data):
@@ -80,7 +92,7 @@ def verify_email():
             current_user.verified_code = None
             current_user.is_verified = True
             db.session.commit()
-            flash("Email verified successfully!=.", "success")
+            flash("Email verified successfully.", "success")
         return redirect(url_for("profiles.verify_email"))
     return render_template("profiles/verify-email.html", active="verify-email", form=form)
 
@@ -88,6 +100,10 @@ def verify_email():
 @profiles.route("/profiles/settings/change-password", methods=["GET", "POST"])
 @login_required
 def change_password():
+    eligable = is_eligable(current_user)
+    if eligable and eligable.get("is_banned"):
+        flash("Your account is banned.", "danger")
+        return redirect(url_for("mains.homepage"))
     form = ChangePasswordForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(
@@ -128,6 +144,10 @@ def remove_profile_photo():
 @profiles.route("/profiles/settings/connections", methods=["GET", "POST"])
 @login_required
 def change_connections():
+    eligable = is_eligable(current_user)
+    if eligable and eligable.get("is_banned"):
+        flash("Your account is banned.", "danger")
+        return redirect(url_for("mains.homepage"))
     form = ChangeConnections()
     if form.validate_on_submit():
         if current_user.profile.social_links == None:
@@ -156,8 +176,12 @@ def change_connections():
 @login_required
 def req_for_host():
     eligable = is_eligable(current_user)
+    if eligable and eligable.get("is_banned"):
+        flash("Your account is banned.", "danger")
+        return redirect(url_for("mains.homepage"))
+    eligable = is_eligable(current_user)
     if eligable != None:
-        flash(eligable, "danger")
+        flash(eligable.get("message"), "danger")
     if current_user.role.value != "general":
         flash("Only general member can be a host.", "primary")
         return redirect(url_for("mains.homepage"))
