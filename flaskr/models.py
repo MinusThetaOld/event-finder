@@ -125,6 +125,14 @@ class Profile(db.Model):
     def get_fullname(self):
         return f"{self.first_name} {self.last_name}"
 
+    def unban(self):
+        db.session.delete(self.banned)
+        db.session.commit()
+        
+    def is_banned(self):
+        if not self.banned:
+            return False
+        return True         
 
 class SocialConnection(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -315,4 +323,3 @@ class AccountRestriction(db.Model):
 
     def days_left(self):
         return self.expire_date.strftime("%d %B, %Y")
-    

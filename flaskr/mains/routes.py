@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, render_template
 from flask_login import current_user
 from flaskr.utils import is_eligable
 
