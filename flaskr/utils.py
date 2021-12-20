@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 def pretty_date(time=False):
     ## https://stackoverflow.com/questions/1551382/user-friendly-time-format-in-python
     """
@@ -41,3 +44,15 @@ def pretty_date(time=False):
     if day_diff < 365:
         return str(int(day_diff / 30)) + " months ago"
     return str(int(day_diff / 365)) + " years ago"
+
+
+def is_eligable(user):
+    if user.profile.banned:
+        if user.profile.banned.expire_date > datetime.utcnow():
+            return "Account is banned."
+        else:
+            # unban the user
+            return None
+    if not user.is_verified:
+        return "Account is not verified."
+    return None

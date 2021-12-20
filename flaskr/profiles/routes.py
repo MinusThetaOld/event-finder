@@ -1,19 +1,22 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from flaskr import bcrypt, db
+from flaskr.admins.forms import BanUserForm
 from flaskr.models import PromotionPending, SocialConnection, User
 from flaskr.profiles.forms import *
 from flaskr.profiles.utils import remove_photo, save_photos
+from flaskr.utils import is_eligable
 
 profiles = Blueprint("profiles", __name__)
 
 
 @profiles.route("/profiles/<int:id>")
 def view_profile(id: int):
+    ban_user_form = BanUserForm()
     user = User.query.get(id)
     if not user:
         return render_template("mains/errors.html", status=404, message="User not found!")
-    return render_template("profiles/view-profile.html", user=user)
+    return render_template("profiles/view-profile.html", user=user, ban_form=ban_user_form)
 
 
 @profiles.route("/profiles/settings/change-info", methods=["GET", "POST"])
@@ -152,6 +155,9 @@ def change_connections():
 @profiles.route("/profiles/request_for_host")
 @login_required
 def req_for_host():
+    eligable = is_eligable(current_user)
+    if eligable != None:
+        flash(eligable, "danger")
     if current_user.role.value != "general":
         flash("Only general member can be a host.", "primary")
         return redirect(url_for("mains.homepage"))

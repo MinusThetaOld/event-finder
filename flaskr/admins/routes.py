@@ -109,6 +109,7 @@ def get_profile_by_profile_id():
     pid = request.form.get("get_by_profile_id")
     return redirect(url_for("profiles.view_profile", id=pid))
 
+
 @admins.route("/admins/get-profiles-by-user-id", methods=["POST"])
 @login_required
 def get_profile_by_user_id():
@@ -120,6 +121,7 @@ def get_profile_by_user_id():
     if not user:
         return render_template("mains/errors.html", status=404, message="Profile not found!!")
     return redirect(url_for("profiles.view_profile", id=user.profile.id))
+
 
 @admins.route("/admins/get-profiles-by-email-id", methods=["POST"])
 @login_required
@@ -133,6 +135,7 @@ def get_profile_by_email_id():
         return render_template("mains/errors.html", status=404, message="Profile not found!!")
     return redirect(url_for("profiles.view_profile", id=user.profile.id))
 
+
 @admins.route("/admins/get-profiles-by-nid-id", methods=["POST"])
 @login_required
 def get_profile_by_nid_id():
@@ -144,3 +147,15 @@ def get_profile_by_nid_id():
     if not profile:
         return render_template("mains/errors.html", status=404, message="Profile not found!!")
     return redirect(url_for("profiles.view_profile", id=profile.id))
+
+
+@admins.route("/admins/ban/<int:id>", methods=["POST"])
+def ban_user(id: int):
+    # Create a account restriction entity
+    return redirect(url_for("profiles.view_profile", id=id))
+
+
+@admins.route("/admins/unban/<int:id>")
+def unban_user(id: int):
+    # Delete the account restriction entity from database 
+    return redirect(url_for("profiles.view_profile", id=id))
