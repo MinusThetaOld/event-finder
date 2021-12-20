@@ -1,6 +1,7 @@
 import os
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
+import flask
 from flask_login import current_user, login_required
 from flask_login import login_user as login_user_function
 from flask_login import logout_user as logout_user_function
@@ -9,6 +10,7 @@ from flaskr.mails import send_mail
 from flaskr.models import Profile, Role, User
 from flaskr.users.forms import *
 from flaskr.users.utils import generate_token, password_reset_key_mail_body
+from flaskr.utils import is_eligable
 
 users = Blueprint("users", __name__)
 

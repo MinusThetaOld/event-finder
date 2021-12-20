@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
+import flask
 from flask_login import current_user, login_required
 from flaskr import db
 from flaskr.admins.forms import *
@@ -154,12 +155,27 @@ def get_profile_by_nid_id():
 @admins.route("/admins/ban/<int:id>", methods=["POST"])
 def ban_user(id: int):
     days = request.form.get("days")
-    expire_date = datetime.utcnow() + timedelta(days=days)
-    # Create account restriction
+    reason = request.form.get("reason")
+    try:
+        expire_date = datetime.utcnow() + timedelta(days=int(days))
+    except ValueError:
+        flash("Enter the duration of the banned.", "danger")
+        return redirect(url_for("profiles.view_profile", id=id))
+    acc_restriction = AccountRestriction(expire_date, reason, id)
+    db.session.add(acc_restriction)
+    db.session.commit()
+    flash(f"Account has been banned for {days} days.", "success")
     return redirect(url_for("profiles.view_profile", id=id))
 
 
 @admins.route("/admins/unban/<int:id>")
 def unban_user(id: int):
-    # Delete the account restriction entity from database 
+    user = User.query.get(id)
+    acc_restriction = user.profile.banned
+    if not acc_restriction:
+        flash("User is not banned", "danger")
+    else:
+        db.session.delete(acc_restriction)
+        db.session.commit()
+        flash(f"The user is unbanned", "success")
     return redirect(url_for("profiles.view_profile", id=id))

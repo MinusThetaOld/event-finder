@@ -58,7 +58,7 @@ def is_eligable(user):
                 "message": "Account is banned."
             }
         else:
-            # unban the user
+            user.profile.unban()
             return None
     if not user.is_verified:
         return {
