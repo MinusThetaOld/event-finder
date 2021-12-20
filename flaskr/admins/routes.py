@@ -1,9 +1,11 @@
+from datetime import datetime, timedelta
+
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
-from flaskr import bcrypt, db
+from flaskr import db
 from flaskr.admins.forms import *
-from flaskr.models import (Complain, Notification, Profile, PromotionPending,
-                           User)
+from flaskr.models import (AccountRestriction, Notification, Profile,
+                           PromotionPending, User)
 from flaskr.notifications.utils import NotificationMessage
 from sqlalchemy import desc
 
@@ -151,7 +153,9 @@ def get_profile_by_nid_id():
 
 @admins.route("/admins/ban/<int:id>", methods=["POST"])
 def ban_user(id: int):
-    # Create a account restriction entity
+    days = request.form.get("days")
+    expire_date = datetime.utcnow() + timedelta(days=days)
+    # Create account restriction
     return redirect(url_for("profiles.view_profile", id=id))
 
 

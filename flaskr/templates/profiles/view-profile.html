@@ -208,7 +208,7 @@ endblock %} {% block content %}
                     <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close"><i
                             class="bi bi-x-lg"></i></button>
                 </div>
-                <form action="{{ url_for('admins.ban_user', id=user.id) }}" method="POST" class="mt-2">
+                <form action="{{ url_for('admins.ban_user', id=user.id) }}" method="POST">
                     {{ ban_form.hidden_tag() }}
                     <div class="modal-body">
                         Are you sure? You want to ban this user?
