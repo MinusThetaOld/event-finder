@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 from flaskr import db
 from flaskr.admins.forms import *
 from flaskr.models import (AccountRestriction, Notification, Profile,
-                           PromotionPending, User)
+                           PromotionPending, Role, User)
 from flaskr.notifications.utils import NotificationMessage
 from sqlalchemy import desc
 
@@ -20,7 +20,28 @@ def dashboard():
         flash("Restricted only for admins", "danger")
         return redirect(url_for("mains.homepage"))
     users = User.query.order_by(desc(User.created_at))[:4]
-    return render_template("admins/dashboard.html", active="dashboard", users=users)
+    profiles = Profile.query.all()
+    reqs = PromotionPending.query.all()
+    data = {
+        "Banned Users": 0,
+        "Unverified Users": 0,
+        "Host Users": 0,
+        "General Users": 0,
+        "Admins": 0,
+    }
+    for i in range(len(profiles)):
+        if profiles[i].banned != None:
+            data["Banned Users"] = data.get("Banned Users")+1
+        if not profiles[i].user.is_verified:
+            data["Unverified Users"] = data.get("Unverified Users")+1
+        if profiles[i].user.role == Role.ADMIN:
+            data["Host Users"] = data.get("Host Users")+1
+        if profiles[i].user.role == Role.HOST:
+            data["Admins"] = data.get("Admins")+1
+        if profiles[i].user.role == Role.GENERAL:
+            data["General Users"] = data.get("General Users")+1
+        
+    return render_template("admins/dashboard.html", active="dashboard", users=users, data=data)
 
 
 @admins.route("/admins/pending-request")

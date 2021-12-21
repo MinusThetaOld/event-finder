@@ -191,7 +191,8 @@
                             <a href="{{ url_for('notifications.get_notifications') }}" class="btn mt-1 btn-infos">
                                 <i class="bi bi-bell-fill"></i>
                                 {% if current_user.profile.total_unreaded_notifications() != 0 %}
-                                <span class="ms-1">View Notifications <span class="text-danger">({{ current_user.profile.total_unreaded_notifications() }})</span></span>
+                                <span class="ms-1">View Notifications <span class="text-danger">({{
+                                        current_user.profile.total_unreaded_notifications() }})</span></span>
                                 {% else %}
                                 <span class="ms-1">View Notifications</span>
                                 {% endif %}

@@ -6,30 +6,14 @@
 <div class="card card-body shadow-card system-status">
     System Status
 </div>
-<div class="row">
-    <div class="col-md-6 mt-3">
-        <a href="#" class="card-link-a">
-            <div class="card card-body card-link">
-                <div class="d-flex flex-column">
-                    <div class="ms-auto"><i class="fas fa-external-link-alt"></i></div>
-                    <div class="text-center card-details">56</div>
-                    <div class="text-center">Total Registered User</div>
-                </div>
-            </div>
-        </a>
+<div class="row mt-3">
+    <div class="text-center">
+        <div id="piechart"></div>
     </div>
-    <div class="col-md-6 mt-3">
-        <a href="#" class="card-link-a">
-            <div class="card card-body card-link">
-                <div class="d-flex flex-column">
-                    <div class="ms-auto"><i class="fas fa-external-link-alt"></i></div>
-                    <div class="text-center card-details">07</div>
-                    <div class="text-center">Total Unverified Users</div>
-                </div>
-            </div>
-        </a>
-    </div>
-    <div class="col-md-6 mt-3">
+
+</div>
+<div class="row mt-3">
+    <div class="col-md-6">
         <a href="{{ url_for('admins.pending_request') }}" class="card-link-a">
             <div class="card card-body card-link">
                 <div class="d-flex flex-column">
@@ -40,7 +24,7 @@
             </div>
         </a>
     </div>
-    <div class="col-md-6 mt-3">
+    <div class="col-md-6">
         <a href="#" class="card-link-a">
             <div class="card card-body card-link">
                 <div class="d-flex flex-column">
@@ -98,8 +82,32 @@
                 </div>
             </div>
         </div>
-        
+
         {% endfor %}
     </div>
 </div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+            ['Category', 'Number of users'],
+            {% for key, value in data.items() %}
+            ["{{key}}", {{ value }}],
+            {% endfor %}
+        ]);
+
+        var options = {
+            title: 'Server User Details'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+    }
+</script>
 {% endblock %}
