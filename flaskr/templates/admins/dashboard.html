@@ -54,7 +54,8 @@
 </div>
 <div class="mt-3">
     <form action="{{ url_for('admins.get_profile_by_profile_id') }}" class="d-flex" method="POST">
-        <input class="form-control me-2 input-box" type="text" placeholder="Enter the profile ID" name="get_by_profile_id">
+        <input class="form-control me-2 input-box" type="text" placeholder="Enter the profile ID"
+            name="get_by_profile_id">
         <button class="btn btn-dark btn-search" type="submit">Get User by Profile ID</button>
     </form>
     <form action="{{ url_for('admins.get_profile_by_user_id') }}" class="d-flex mt-2" method="POST">
@@ -62,11 +63,13 @@
         <button class="btn btn-dark btn-search" type="submit">Get User by User ID</button>
     </form>
     <form action="{{ url_for('admins.get_profile_by_email_id') }}" class="d-flex mt-2" method="POST">
-        <input class="form-control me-2 input-box" type="email" placeholder="Enter the user email address" name="get_by_email_id">
+        <input class="form-control me-2 input-box" type="email" placeholder="Enter the user email address"
+            name="get_by_email_id">
         <button class="btn btn-dark btn-search" type="submit">Get User by Email</button>
     </form>
     <form action="{{ url_for('admins.get_profile_by_nid_id') }}" class="d-flex mt-2" method="POST">
-        <input class="form-control me-2 input-box" type="text" placeholder="Enter the user NID number" name="get_by_nid_id">
+        <input class="form-control me-2 input-box" type="text" placeholder="Enter the user NID number"
+            name="get_by_nid_id">
         <button class="btn btn-dark btn-search" type="submit">Get User by NID</button>
     </form>
 
@@ -77,20 +80,26 @@
         </div>
         <a href="#" class="btn btn-light">View all</a>
     </div>
-    <!-- All the reviews there -->
-    {% for user in users%}
-    <div class="card card-body shadow-card mb-2">
-        <div class="d-flex flex-row">
-            <img src="{{ url_for('static', filename=user.profile.profile_photo) }}" alt=""
-                class="card-img align-self-center">
-            <a href="{{ url_for('profiles.view_profile', id=user.profile.id) }}"
-                class="d-flex flex-column align-self-center card-link-custom ms-3">
-                <h2 class="card-title-custom my-0">{{ user.profile.get_fullname() }}</h2>
-                <p class="card-body-custom my-0 text-muted">Joined on {{ user.get_joindate() }}</p>
-                <p class="card-body-custom my-0"><i class="fas fa-external-link-alt"></i></p>
-            </a>
+    <div class="row">
+        {% for user in users%}
+        <div class="mb-2 col-md-12 col-lg-6">
+            <div class="px-2">
+                <div class="card card-body shadow-card">
+                    <div class="d-flex flex-row">
+                        <img src="{{ url_for('static', filename=user.profile.profile_photo) }}" alt=""
+                            class="card-img align-self-center">
+                        <a href="{{ url_for('profiles.view_profile', id=user.profile.id) }}"
+                            class="d-flex flex-column align-self-center card-link-custom ms-3">
+                            <h2 class="card-title-custom my-0">{{ user.profile.get_fullname() }}</h2>
+                            <p class="card-body-custom my-0 text-muted">Joined on {{ user.get_joindate() }}</p>
+                            <p class="card-body-custom my-0"><i class="fas fa-external-link-alt"></i></p>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
+        
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %}

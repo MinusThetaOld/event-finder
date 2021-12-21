@@ -19,7 +19,7 @@ def dashboard():
     if current_user.role.value != "admin":
         flash("Restricted only for admins", "danger")
         return redirect(url_for("mains.homepage"))
-    users = User.query.order_by(desc(User.created_at))[:2]
+    users = User.query.order_by(desc(User.created_at))[:4]
     return render_template("admins/dashboard.html", active="dashboard", users=users)
 
 

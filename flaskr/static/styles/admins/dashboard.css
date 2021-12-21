@@ -19,7 +19,7 @@
     text-decoration: none;
 }
 .btn-search {
-    width: 220px;
+    min-width: 200px;
 }
 .btn-search:hover {
    color: #569cdc
