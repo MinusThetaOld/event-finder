@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-import flask
 from flask_login import current_user, login_required
 from flaskr import db
 from flaskr.admins.forms import *

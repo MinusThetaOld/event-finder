@@ -86,12 +86,13 @@
                                     class="btn btn-infos position-relative">
                                     <i class="bi bi-bell-fill"></i>
                                     <span
-                                        class="position-absolute top-0 start-100 translate-middle p-1 bg-danger rounded-circle badge">
-                                        <span class="visually-hidden">New Notifications</span>
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ current_user.profile.total_unreaded_notifications() }}
+                                        <span class="visually-hidden">unread notifications</span>
                                     </span>
                                 </a>
                             </li>
-                            <div class="btn-group">
+                            <div class="btn-group ms-2">
                                 <a href="#" class="btn btn-infos dropdown-toggle" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                     <i class="bi bi-person-bounding-box"></i>
@@ -189,7 +190,11 @@
                             {% endif %}
                             <a href="{{ url_for('notifications.get_notifications') }}" class="btn mt-1 btn-infos">
                                 <i class="bi bi-bell-fill"></i>
+                                {% if current_user.profile.total_unreaded_notifications() != 0 %}
+                                <span class="ms-1">View Notifications <span class="text-danger">({{ current_user.profile.total_unreaded_notifications() }})</span></span>
+                                {% else %}
                                 <span class="ms-1">View Notifications</span>
+                                {% endif %}
                             </a>
                             <a href="{{ url_for('users.view_user_profile') }}" class="btn mt-1 btn-infos">
                                 <i class="bi bi-binoculars-fill"></i>
@@ -241,7 +246,8 @@
     <div class="container mt-1">
         <div class="row">
             <div class="col-12">
-                <div class="alert alert-danger mb-0">Your account has been banned. Come back after {{ current_user.profile.banned.days_left() }}</div>
+                <div class="alert alert-danger mb-0">Your account has been banned. Come back after {{
+                    current_user.profile.banned.days_left() }}</div>
             </div>
         </div>
     </div>
@@ -250,8 +256,11 @@
         <div class="row">
             <div class="col-12">
                 <div class="alert alert-warning d-flex mb-0">
-                    <p class="my-0 align-self-center flex-grow-1">Your account is not validated. Please verify the account by entering the code which was sent to your email address while creating the account.</p>
-                    <a href="{{ url_for('profiles.verify_email') }}" class="btn btn-sm btn-warning align-self-center ms-1" style="width: 100px;">Verify</a>
+                    <p class="my-0 align-self-center flex-grow-1">Your account is not validated. Please verify the
+                        account by entering the code which was sent to your email address while creating the account.
+                    </p>
+                    <a href="{{ url_for('profiles.verify_email') }}"
+                        class="btn btn-sm btn-warning align-self-center ms-1" style="width: 100px;">Verify</a>
                 </div>
             </div>
         </div>

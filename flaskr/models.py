@@ -1,12 +1,12 @@
 import enum
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 from flask_login import UserMixin
 from itsdangerous import TimedSerializer
 from itsdangerous.exc import BadTimeSignature, SignatureExpired
+from timeago import format
 
 from flaskr import app, db, login_manager
-from flaskr.utils import pretty_date
 
 
 @login_manager.user_loader
@@ -128,11 +128,19 @@ class Profile(db.Model):
     def unban(self):
         db.session.delete(self.banned)
         db.session.commit()
-        
+
     def is_banned(self):
         if not self.banned:
             return False
-        return True         
+        return True
+    
+    def total_unreaded_notifications(self):
+        count = 0
+        for i in range(len(self.notifications)):
+            if not self.notifications[i].is_readed:
+                count = count+1
+        return count
+
 
 class SocialConnection(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -275,7 +283,7 @@ class Notification(db.Model):
         db.session.commit()
 
     def times_ago(self):
-        return pretty_date(self.created_at)
+        return format(self.created_at, datetime.utcnow())
 
 
 class Message(db.Model):
