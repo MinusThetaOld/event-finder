@@ -26,6 +26,19 @@ endblock %} {% block content %}
                         <a href="#" class="btn btn-light btn-sm ms-1">
                             <i class="bi bi-exclamation-triangle-fill mx-1"></i>
                         </a>
+                        {% if current_user.role.value == "admin" %}
+                        {% if user.profile.banned == None %}
+                        <button class="btn btn-sm btn-danger ms-1" data-bs-toggle="modal"
+                            data-bs-target="#banuser-modal">
+                            <i class="fas fa-user-slash"></i>
+                        </button>
+                        {% else %}
+                        <a href="{{ url_for('admins.unban_user', id=user.id) }}"
+                            class="btn btn-sm btn-primary ms-1">
+                            <i class="fas fa-user-slash"></i>
+                        </a>
+                        {% endif %}
+                        {% endif %}
                     </div>
                 </div>
                 {% endif %}
