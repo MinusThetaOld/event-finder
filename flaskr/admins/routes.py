@@ -70,7 +70,7 @@ def decline_pending_request(id: int):
     # push notification
     notification = Notification(
         NotificationMessage.declinedPromotion(), "", req_pending.profile.id)
-    db.session.add(notification)
+    db.session.add(notification)   
     db.session.commit()
     flash("Profile declined.", "info")
     return redirect(url_for("admins.pending_request"))
@@ -100,7 +100,9 @@ def banned_users():
     if current_user.role.value != "admin":
         flash("Restricted only for admins", "danger")
         return redirect(url_for("mains.homepage"))
-    return render_template("admins/banned-users.html", active="banned_users")
+    acc_restrictions = AccountRestriction.query.all()
+    total_acc_restriction = len(acc_restrictions)
+    return render_template("admins/banned-users.html", active="banned_users", acc_restrictions=acc_restrictions, total_acc_restriction=total_acc_restriction)
 
 
 @admins.route("/admins/get-profiles-by-profile-id", methods=["POST"])
@@ -163,6 +165,9 @@ def ban_user(id: int):
         return redirect(url_for("profiles.view_profile", id=id))
     acc_restriction = AccountRestriction(expire_date, reason, id)
     db.session.add(acc_restriction)
+    # push notification
+    notification = Notification(NotificationMessage.ban_user(reason), url_for("mains.homepage"), id)
+    db.session.add(notification)
     db.session.commit()
     flash(f"Account has been banned for {days} days.", "success")
     return redirect(url_for("profiles.view_profile", id=id))
@@ -176,6 +181,9 @@ def unban_user(id: int):
         flash("User is not banned", "danger")
     else:
         db.session.delete(acc_restriction)
+        # push notification
+        notification = Notification(NotificationMessage.unban_user(), url_for("mains.homepage"), id)
+        db.session.add(notification)
         db.session.commit()
         flash(f"The user is unbanned", "success")
     return redirect(url_for("profiles.view_profile", id=id))

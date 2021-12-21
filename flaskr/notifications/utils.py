@@ -6,3 +6,11 @@ class NotificationMessage():
     @staticmethod
     def declinedPromotion():
         return "Sorry! Your request for promotion is declined."
+    
+    @staticmethod
+    def ban_user(reason: str):
+        return f"You are banned. Reason: {reason}"
+
+    @staticmethod
+    def unban_user():
+        return "You are unbanned now."

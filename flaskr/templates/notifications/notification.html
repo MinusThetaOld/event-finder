@@ -13,7 +13,7 @@
     </div>
     {% else %}
     <div class="col-md-8 offset-md-2 mb-2">
-        <a href="#" class="badge bg-dark px-3 link-light fw-normal text-decoration-none">Mark all as read</a>
+        <a href="{{ url_for('notifications.mark_all') }}" class="badge bg-dark px-3 link-light fw-normal text-decoration-none">Mark all as read</a>
     </div>
     <div class="row">
         {% for notification in notifications %}
