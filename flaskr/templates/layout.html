@@ -81,6 +81,7 @@
                                 </a>
                                 {% endif %}
                             </li>
+                            {% if current_user.profile %}
                             <li class="nav-item me-1">
                                 <a href="{{ url_for('notifications.get_notifications') }}" type="button"
                                     class="btn btn-infos position-relative">
@@ -92,6 +93,7 @@
                                     </span>
                                 </a>
                             </li>
+                            {% endif %}
                             <div class="btn-group ms-2">
                                 <a href="#" class="btn btn-infos dropdown-toggle" data-bs-toggle="dropdown"
                                     aria-expanded="false">
@@ -188,6 +190,7 @@
                                 <span class="ms-1">Apply for Host</span>
                             </a>
                             {% endif %}
+                            {% if current_user.profile %}
                             <a href="{{ url_for('notifications.get_notifications') }}" class="btn mt-1 btn-infos">
                                 <i class="bi bi-bell-fill"></i>
                                 {% if current_user.profile.total_unreaded_notifications() != 0 %}
@@ -197,6 +200,7 @@
                                 <span class="ms-1">View Notifications</span>
                                 {% endif %}
                             </a>
+                            {% endif %}
                             <a href="{{ url_for('users.view_user_profile') }}" class="btn mt-1 btn-infos">
                                 <i class="bi bi-binoculars-fill"></i>
                                 <span class="ms-1">View Profile</span>
