@@ -4,7 +4,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from flaskr import db
 from flaskr.admins.forms import *
-from flaskr.models import (AccountRestriction, Notification, Profile,
+from flaskr.models import (AccountRestriction, Complain, Notification, Profile,
                            PromotionPending, Role, User)
 from flaskr.notifications.utils import NotificationMessage
 from sqlalchemy import desc
@@ -102,7 +102,8 @@ def complain_box():
     if current_user.role.value != "admin":
         flash("Restricted only for admins", "danger")
         return redirect(url_for("mains.homepage"))
-    return render_template("admins/complain-box.html", active="complain_box")
+    complains = Complain.query.all()
+    return render_template("admins/complain-box.html", active="complain_box", complains=complains)
 
 
 @admins.route("/admins/log")
