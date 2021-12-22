@@ -62,7 +62,7 @@
         <div class="flex-grow-1">
             <h1 class="profile-header user-font">New Users</h1>
         </div>
-        <a href="#" class="btn btn-light">View all</a>
+        <a href="{{url_for('users.get_users')}}" class="btn btn-light">View all</a>
     </div>
     <div class="row">
         {% for user in users %}

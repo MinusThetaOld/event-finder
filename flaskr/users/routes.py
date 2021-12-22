@@ -121,3 +121,10 @@ def reset_password(id: int, token: str):
 @login_required
 def view_user_profile():
     return redirect(url_for("profiles.view_profile", id=current_user.id))
+
+@users.route("/users")
+@login_required
+def get_users():
+    all_users = User.query.all()
+    return render_template("users/view_all_user.html", users=all_users)
+
