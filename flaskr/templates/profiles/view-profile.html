@@ -20,7 +20,8 @@ endblock %} {% block content %}
                 {% else %}
                 <div class="mt-2">
                     <div class="d-flex">
-                        <a href="#" class="btn btn-light btn-sm ms-auto">
+                        <a href="#" class="btn btn-light btn-sm ms-auto" data-bs-toggle="modal"
+                            data-bs-target="#report-profile-modal">
                             <i class="bi bi-pin-angle-fill mx-1"></i>
                         </a>
                         <a href="#" class="btn btn-light btn-sm ms-1">
@@ -33,8 +34,7 @@ endblock %} {% block content %}
                             <i class="fas fa-user-slash"></i>
                         </button>
                         {% else %}
-                        <a href="{{ url_for('admins.unban_user', id=user.id) }}"
-                            class="btn btn-sm btn-primary ms-1">
+                        <a href="{{ url_for('admins.unban_user', id=user.id) }}" class="btn btn-sm btn-primary ms-1">
                             <i class="fas fa-user-slash"></i>
                         </a>
                         {% endif %}
@@ -67,7 +67,8 @@ endblock %} {% block content %}
                     <a href="#" class="btn btn-light side-btn btn-sm">
                         <i class="bi bi-pin-angle-fill me-1"></i><span>Bookmark</span>
                     </a>
-                    <a href="#" class="btn btn-light side-btn btn-sm mt-1">
+                    <a href="#" class="btn btn-light side-btn btn-sm mt-1" data-bs-toggle="modal"
+                        data-bs-target="#report-profile-modal">
                         <i class="bi bi-exclamation-triangle-fill me-1"></i><span>Report</span>
                     </a>
                     {% if current_user.role.value == "admin" %}
@@ -212,7 +213,7 @@ endblock %} {% block content %}
             </div>
         </div>
     </div>
-    <!-- Ban user modal -->
+    <!-- Ban User Modal -->
     <div class="modal fade" id="banuser-modal" tabindex="-1" aria-labelledby="banuser-modal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -257,6 +258,43 @@ endblock %} {% block content %}
                     <div class="modal-footer modal-footer-custom">
                         <button type="button" class="btn btn-sm btn-dark" data-bs-dismiss="modal">Close</button>
                         {{ ban_form.submit(class="btn btn-sm btn-danger", id="submit-ban") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Complain Modal -->
+    <div class="modal fade" id="report-profile-modal" tabindex="-1" aria-labelledby="report-profile-modal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header modal-header-custom">
+                    <h5 class="modal-title" id="report-profile-modal">Report Against {{ user.profile.get_fullname() }}
+                    </h5>
+                    <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close"><i
+                            class="bi bi-x-lg"></i></button>
+                </div>
+                <form action="{{ url_for('users.report_user', id=user.id) }}" method="POST">
+                    <h6 class="ms-3 text-muted mb-0">Please fill out the form</h6>
+                    <div class="modal-body">
+                        <div class="mb-2">
+                            <label for="report-category">Report Type</label>
+                            <select class="form-select" aria-label="report-category" id="report-category" name="report-category">
+                                <option selected disabled value="">Selete the category</option>
+                                <option value="cheater">Cheater</option>
+                                <option value="scammer">Scammer</option>
+                                <option value="harassment">Harassment</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label for="report-text">Describe the situation</label>
+                            <textarea name="report-text" class="form-control" id="report-text" cols="30" rows="5" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer modal-footer-custom">
+                        <button type="button" class="btn btn-sm btn-dark" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-sm btn-danger">Report</button>
                     </div>
                 </form>
             </div>

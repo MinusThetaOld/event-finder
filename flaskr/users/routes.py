@@ -1,16 +1,15 @@
 import os
 
-from flask import Blueprint, flash, redirect, render_template, request, url_for
 import flask
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from flask_login import login_user as login_user_function
 from flask_login import logout_user as logout_user_function
 from flaskr import bcrypt, db
 from flaskr.mails import send_mail
-from flaskr.models import Profile, Role, User
+from flaskr.models import Complain, ComplainCategory, Profile, Role, User
 from flaskr.users.forms import *
 from flaskr.users.utils import generate_token, password_reset_key_mail_body
-from flaskr.utils import is_eligable
 
 users = Blueprint("users", __name__)
 
@@ -128,3 +127,31 @@ def get_users():
     all_users = User.query.all()
     return render_template("users/view_all_user.html", users=all_users)
 
+
+@users.route("/users/report/<int:id>", methods=["POST"])
+@login_required
+def report_user(id: int):
+    user = User.query.get(id)
+    if not user:
+        flash("User not found.", "danger")
+        return redirect(url_for("profiles.view_profile", id=id))
+    category = request.form.get("report-category")
+    text = request.form.get("report-text")
+    if category == "":
+        flash("Please add a category of your report.", "danger")
+    else:
+        report_category = None
+        if category == ComplainCategory.CHEATER:
+            report_category = ComplainCategory.CHEATER
+        elif category == ComplainCategory.HARASSMENT:
+            report_category = ComplainCategory.HARASSMENT
+        elif category == ComplainCategory.SCAMMER:
+            report_category = ComplainCategory.SCAMMER
+        else:
+            report_category = ComplainCategory.OTHER
+        complain = Complain(text, report_category,
+                            current_user.profile.id, user.profile.id)
+        db.session.add(complain)
+        db.session.commit()
+        flash("Complained filed.", "success")
+    return redirect(url_for("profiles.view_profile", id=id))

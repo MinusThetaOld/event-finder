@@ -5,6 +5,7 @@ from flask_login import UserMixin
 from itsdangerous import TimedSerializer
 from itsdangerous.exc import BadTimeSignature, SignatureExpired
 from timeago import format
+import timeago
 
 from flaskr import app, db, login_manager
 
@@ -23,7 +24,7 @@ class Role(enum.Enum):
 
 class ComplainCategory(enum.Enum):
     CHEATER = "cheater"
-    SCAMER = "scammer"
+    SCAMMER = "scammer"
     HARASSMENT = "harassment"
     OTHER = "other"
 
@@ -212,11 +213,17 @@ class Complain(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self, text: str, complain_category, complained_by: int, complain_for: int) -> None:
+    def __init__(self, text: str, complain_category: ComplainCategory, complained_by: int, complain_for: int) -> None:
         self.text = text
         self.category = complain_category
         self.profile_id = complained_by
         self.complain_for = complain_for
+        
+    def get_complain_for(self):
+        return Profile.query.get(self.complain_for)
+    
+    def get_days_ago(self):
+        return format(self.created_at, datetime.utcnow())
 
 
 class PaymentPending(db.Model):
