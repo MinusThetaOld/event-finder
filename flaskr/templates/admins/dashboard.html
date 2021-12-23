@@ -2,7 +2,7 @@
 
 {% block title %} Admin dashboard {% endblock %}
 
-{% block settings %}
+{% block admin_contents %}
 <div class="card card-body shadow-card system-status">
     System Status
 </div>
@@ -18,7 +18,7 @@
             <div class="card card-body card-link">
                 <div class="d-flex flex-column">
                     <div class="ms-auto"><i class="fas fa-external-link-alt"></i></div>
-                    <div class="text-center card-details">11</div>
+                    <div class="text-center card-details">{{ length_of_req_pending }}</div>
                     <div class="text-center">Total Pending Approvals</div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
             <div class="card card-body card-link">
                 <div class="d-flex flex-column">
                     <div class="ms-auto"><i class="fas fa-external-link-alt"></i></div>
-                    <div class="text-center card-details">13</div>
+                    <div class="text-center card-details">{{ length_of_complains }}</div>
                     <div class="text-center">Total Unsolve Complains</div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
     <div class="row">
         {% for user in users %}
         <div class="mb-2 col-md-12 col-lg-6">
-            <div class="px-2">
+            <div class="px-1">
                 <div class="card card-body shadow-card">
                     <div class="d-flex flex-row">
                         <img src="{{ url_for('static', filename=user.profile.profile_photo) }}" alt=""

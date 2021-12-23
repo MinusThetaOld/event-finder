@@ -22,6 +22,10 @@
                             class="list-group-item btn btn-settings my-1 {{ 'btn-settings-active' if active == 'pending_request' }}">
                             Pending Request
                         </a>
+                        <a href="{{ url_for('admins.view_hosts') }}"
+                            class="list-group-item btn btn-settings my-1 {{ 'btn-settings-active' if active == 'view_hosts' }}">
+                            View Hosts
+                        </a>
                         <a href="{{ url_for('admins.complain_box') }}"
                             class="list-group-item btn btn-settings my-1 {{ 'btn-settings-active' if active == 'complain_box' }}">
                             Complain Box
@@ -39,7 +43,7 @@
             </div>
         </div>
         <div class="col-md-8 mt-1">
-            {% block settings %} {% endblock %}
+            {% block admin_contents %} {% endblock %}
         </div>
     </div>
 </div>

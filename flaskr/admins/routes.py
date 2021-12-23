@@ -22,6 +22,7 @@ def dashboard():
     users = User.query.order_by(desc(User.created_at))[:4]
     profiles = Profile.query.all()
     reqs = PromotionPending.query.all()
+    complains = Complain.query.all()
     data = {
         "Banned Users": 0,
         "Unverified Users": 0,
@@ -40,8 +41,30 @@ def dashboard():
             data["Admins"] = data.get("Admins")+1
         if profiles[i].user.role == Role.GENERAL:
             data["General Users"] = data.get("General Users")+1
-        
-    return render_template("admins/dashboard.html", active="dashboard", users=users, data=data)
+
+    return render_template("admins/dashboard.html",
+                           active="dashboard",
+                           users=users, data=data,
+                           length_of_req_pending=len(reqs),
+                           length_of_complains=len(complains))
+
+
+@admins.route("/admins/hosts")
+@login_required
+def view_hosts():
+    hosts = User.query.filter_by(role=Role.HOST).all()
+    return render_template("admins/view_hosts.html", active="view_hosts",
+                           hosts=hosts, total_hosts=len(hosts))
+
+
+@admins.route("/admins/demote-host/<int:id>")
+@login_required
+def demote_host(id: int):
+    user = User.query.get(id)
+    user.role = Role.GENERAL
+    db.session.commit()
+    flash("The user is demoted to general member", "info")
+    return redirect(url_for("admins.view_hosts"))
 
 
 @admins.route("/admins/pending-request")
@@ -90,7 +113,7 @@ def decline_pending_request(id: int):
     # push notification
     notification = Notification(
         NotificationMessage.declinedPromotion(), "", req_pending.profile.id)
-    db.session.add(notification)   
+    db.session.add(notification)
     db.session.commit()
     flash("Profile declined.", "info")
     return redirect(url_for("admins.pending_request"))
@@ -187,7 +210,8 @@ def ban_user(id: int):
     acc_restriction = AccountRestriction(expire_date, reason, id)
     db.session.add(acc_restriction)
     # push notification
-    notification = Notification(NotificationMessage.ban_user(reason), url_for("mains.homepage"), id)
+    notification = Notification(NotificationMessage.ban_user(
+        reason), url_for("mains.homepage"), id)
     db.session.add(notification)
     db.session.commit()
     flash(f"Account has been banned for {days} days.", "success")
@@ -203,7 +227,8 @@ def unban_user(id: int):
     else:
         db.session.delete(acc_restriction)
         # push notification
-        notification = Notification(NotificationMessage.unban_user(), url_for("mains.homepage"), id)
+        notification = Notification(
+            NotificationMessage.unban_user(), url_for("mains.homepage"), id)
         db.session.add(notification)
         db.session.commit()
         flash(f"The user is unbanned", "success")
