@@ -1,0 +1,35 @@
+.flash-message {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-left: 30px;
+    min-width: 400px;
+}
+
+.shadow-card-success {
+    background-color: #FFFFFF;
+    color: #15D6A1;
+    border-left: 10px solid #15D6A1 !important;
+}
+
+.shadow-card-danger {
+    background-color: #FFFFFF;
+    color: #C83D32;
+    border-left: 10px solid #C83D32 !important;
+}
+
+.shadow-card-info, .shadow-card-message {
+    background-color: #FFFFFF;
+    color: #71BFFF;
+    border-left: 10px solid #71BFFF !important;
+}
+
+.shadow-card-warning {
+    background-color: #FFFFFF;
+    color: #FFC000;
+    border-left: 10px solid #FFC000 !important;
+}
+
+.flash-btn:focus {
+    box-shadow: none;
+}
