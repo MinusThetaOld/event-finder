@@ -12,7 +12,7 @@
 .search-btn {
     background-color: #ebebeb;
     border-radius: 0px;
-    font-weight: 400;
+    font-weight: 600;
 }
 
 .search-bar-sm,
@@ -27,6 +27,7 @@
 .search-bar-sm:focus {
     background-color: rgba(49, 49, 49, 40) !important;
     color: #e7eef1;
+    box-shadow: none;
 }
 
 .btn-infos,
@@ -66,6 +67,10 @@
     display: block;
 }
 
+.search-btn-sm:hover {
+    background-color: #b8b8b8;
+}
+
 .navbar-toggler {
     background-color: transparent !important;
 }
@@ -83,7 +88,7 @@
         display: block;
     }
     .search-btn:hover {
-        font-weight: 600;
+        background-color: #b8b8b8;
     }
     .search-bar {
         min-width: 250px;
