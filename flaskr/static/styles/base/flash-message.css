@@ -20,8 +20,14 @@
 
 .shadow-card-info, .shadow-card-message {
     background-color: #FFFFFF;
-    color: #3f9ae4;
-    border-left: 10px solid #3f9ae4 !important;
+    color: #4da4eb;
+    border-left: 10px solid #4da4eb !important;
+}
+
+.shadow-card-primary {
+    background-color: #FFFFFF;
+    color: #007BFF;
+    border-left: 10px solid #007BFF !important;
 }
 
 .shadow-card-warning {

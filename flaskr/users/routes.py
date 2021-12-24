@@ -7,7 +7,9 @@ from flask_login import login_user as login_user_function
 from flask_login import logout_user as logout_user_function
 from flaskr import bcrypt, db
 from flaskr.mails import send_mail
-from flaskr.models import Complain, ComplainCategory, Profile, Role, User
+from flaskr.models import (Complain, ComplainCategory, Notification, Profile,
+                           Role, User)
+from flaskr.notifications.utils import NotificationMessage
 from flaskr.users.forms import *
 from flaskr.users.utils import generate_token, password_reset_key_mail_body
 
@@ -121,6 +123,7 @@ def reset_password(id: int, token: str):
 def view_user_profile():
     return redirect(url_for("profiles.view_profile", id=current_user.id))
 
+
 @users.route("/users")
 @login_required
 def get_users():
@@ -152,6 +155,17 @@ def report_user(id: int):
         complain = Complain(text, report_category,
                             current_user.profile.id, user.profile.id)
         db.session.add(complain)
+        # push notification
+        users = User.query.filter_by(role=Role.ADMIN).all()
+        for u in users:
+            notification = Notification(
+                NotificationMessage.report_user(
+                    current_user.profile.get_fullname(), user.profile.get_fullname()
+                ),
+                url_for("admins.complain_box"),
+                u.profile.id
+            )
+            db.session.add(notification)
         db.session.commit()
-        flash("Complained filed.", "success")
+        flash("Successfully reported the profile.", "success")
     return redirect(url_for("profiles.view_profile", id=id))

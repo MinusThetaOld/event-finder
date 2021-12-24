@@ -16,8 +16,8 @@ admins = Blueprint("admins", __name__)
 @admins.route("/admins/dashboard")
 @login_required
 def dashboard():
-    if current_user.role.value != "admin":
-        flash("Restricted only for admins", "danger")
+    if current_user.role.value != Role.ADMIN.value:
+        flash("Restricted only for admins.", "danger")
         return redirect(url_for("mains.homepage"))
     users = User.query.order_by(desc(User.created_at))[:4]
     profiles = Profile.query.all()
@@ -53,8 +53,10 @@ def dashboard():
 @login_required
 def view_hosts():
     hosts = User.query.filter_by(role=Role.HOST).all()
-    return render_template("admins/view_hosts.html", active="view_hosts",
-                           hosts=hosts, total_hosts=len(hosts))
+    return render_template("admins/view_hosts.html",
+                           active="view_hosts",
+                           hosts=hosts,
+                           total_hosts=len(hosts))
 
 
 @admins.route("/admins/demote-host/<int:id>")
@@ -63,27 +65,38 @@ def demote_host(id: int):
     user = User.query.get(id)
     user.role = Role.GENERAL
     db.session.commit()
-    flash("The user is demoted to general member", "info")
-    return redirect(url_for("admins.view_hosts"))
+    flash("The user is demoted to general member.", "info")
+    return redirect(url_for("profiles.view_profile", id=id))
+
+
+@admins.route("/admins/promote-host/<int:id>")
+@login_required
+def promote_host(id: int):
+    user = User.query.get(id)
+    user.role = Role.HOST
+    db.session.commit()
+    flash("The user is promoted to host member.", "info")
+    return redirect(url_for("profiles.view_profile", id=id))
 
 
 @admins.route("/admins/pending-request")
 @login_required
 def pending_request():
-    if current_user.role.value != "admin":
-        flash("Restricted only for admins", "danger")
+    if current_user.role.value != Role.ADMIN.value:
+        flash("Restricted only for admins.", "danger")
         return redirect(url_for("mains.homepage"))
     all_requests = PromotionPending.query.all()
     return render_template("admins/pending-request.html",
-                           active="pending_request", requests=all_requests,
+                           active="pending_request",
+                           requests=all_requests,
                            total_requests=len(all_requests))
 
 
 @admins.route("/admins/pending-request/approve/<int:id>")
 @login_required
 def approve_pending_request(id: int):
-    if current_user.role.value != "admin":
-        flash("Restricted only for admins", "danger")
+    if current_user.role.value != Role.ADMIN.value:
+        flash("Restricted only for admins.", "danger")
         return redirect(url_for("mains.homepage"))
     req_pending = PromotionPending.query.get(id)
     if not req_pending:
@@ -102,8 +115,8 @@ def approve_pending_request(id: int):
 @admins.route("/admins/pending-request/decline/<int:id>")
 @login_required
 def decline_pending_request(id: int):
-    if current_user.role.value != "admin":
-        flash("Restricted only for admins", "danger")
+    if current_user.role.value != Role.ADMIN.value:
+        flash("Restricted only for admins.", "danger")
         return redirect(url_for("mains.homepage"))
     req_pending = PromotionPending.query.get(id)
     if not req_pending:
@@ -122,48 +135,53 @@ def decline_pending_request(id: int):
 @admins.route("/admins/complain-box")
 @login_required
 def complain_box():
-    if current_user.role.value != "admin":
-        flash("Restricted only for admins", "danger")
+    if current_user.role.value != Role.ADMIN.value:
+        flash("Restricted only for admins.", "danger")
         return redirect(url_for("mains.homepage"))
-    complains = Complain.query.all()
-    return render_template("admins/complain-box.html", active="complain_box", complains=complains)
+    complains = Complain.query.order_by(desc(Complain.created_at)).all()
+    return render_template("admins/complain-box.html",
+                           active="complain_box",
+                           complains=complains)
 
 
-@admins.route("/admins/log")
-@login_required
+@ admins.route("/admins/log")
+@ login_required
 def log():
-    if current_user.role.value != "admin":
-        flash("Restricted only for admins", "danger")
+    if current_user.role.value != Role.ADMIN.value:
+        flash("Restricted only for admins.", "danger")
         return redirect(url_for("mains.homepage"))
     return render_template("admins/log.html", active="log")
 
 
-@admins.route("/admins/banned-users")
-@login_required
+@ admins.route("/admins/banned-users")
+@ login_required
 def banned_users():
-    if current_user.role.value != "admin":
-        flash("Restricted only for admins", "danger")
+    if current_user.role.value != Role.ADMIN.value:
+        flash("Restricted only for admins.", "danger")
         return redirect(url_for("mains.homepage"))
     acc_restrictions = AccountRestriction.query.all()
     total_acc_restriction = len(acc_restrictions)
-    return render_template("admins/banned-users.html", active="banned_users", acc_restrictions=acc_restrictions, total_acc_restriction=total_acc_restriction)
+    return render_template("admins/banned-users.html",
+                           active="banned_users",
+                           acc_restrictions=acc_restrictions,
+                           total_acc_restriction=total_acc_restriction)
 
 
-@admins.route("/admins/get-profiles-by-profile-id", methods=["POST"])
-@login_required
+@ admins.route("/admins/get-profiles-by-profile-id", methods=["POST"])
+@ login_required
 def get_profile_by_profile_id():
-    if current_user.role.value != "admin":
-        flash("Restricted only for admins", "danger")
+    if current_user.role.value != Role.ADMIN.value:
+        flash("Restricted only for admins.", "danger")
         return redirect(url_for("mains.homepage"))
     pid = request.form.get("get_by_profile_id")
     return redirect(url_for("profiles.view_profile", id=pid))
 
 
-@admins.route("/admins/get-profiles-by-user-id", methods=["POST"])
-@login_required
+@ admins.route("/admins/get-profiles-by-user-id", methods=["POST"])
+@ login_required
 def get_profile_by_user_id():
-    if current_user.role.value != "admin":
-        flash("Restricted only for admins", "danger")
+    if current_user.role.value != Role.ADMIN.value:
+        flash("Restricted only for admins.", "danger")
         return redirect(url_for("mains.homepage"))
     uid = request.form.get("get_by_user_id")
     user = User.query.get(uid)
@@ -172,11 +190,11 @@ def get_profile_by_user_id():
     return redirect(url_for("profiles.view_profile", id=user.profile.id))
 
 
-@admins.route("/admins/get-profiles-by-email-id", methods=["POST"])
-@login_required
+@ admins.route("/admins/get-profiles-by-email-id", methods=["POST"])
+@ login_required
 def get_profile_by_email_id():
-    if current_user.role.value != "admin":
-        flash("Restricted only for admins", "danger")
+    if current_user.role.value != Role.ADMIN.value:
+        flash("Restricted only for admins.", "danger")
         return redirect(url_for("mains.homepage"))
     email = request.form.get("get_by_email_id")
     user = User.query.filter_by(email=email).first()
@@ -185,11 +203,11 @@ def get_profile_by_email_id():
     return redirect(url_for("profiles.view_profile", id=user.profile.id))
 
 
-@admins.route("/admins/get-profiles-by-nid-id", methods=["POST"])
-@login_required
+@ admins.route("/admins/get-profiles-by-nid-id", methods=["POST"])
+@ login_required
 def get_profile_by_nid_id():
-    if current_user.role.value != "admin":
-        flash("Restricted only for admins", "danger")
+    if current_user.role.value != Role.ADMIN.value:
+        flash("Restricted only for admins.", "danger")
         return redirect(url_for("mains.homepage"))
     nid = request.form.get("get_by_nid_id")
     profile = Profile.query.filter_by(nid_number=nid).first()
@@ -198,7 +216,7 @@ def get_profile_by_nid_id():
     return redirect(url_for("profiles.view_profile", id=profile.id))
 
 
-@admins.route("/admins/ban/<int:id>", methods=["POST"])
+@ admins.route("/admins/ban/<int:id>", methods=["POST"])
 def ban_user(id: int):
     days = request.form.get("days")
     reason = request.form.get("reason")
@@ -218,12 +236,12 @@ def ban_user(id: int):
     return redirect(url_for("profiles.view_profile", id=id))
 
 
-@admins.route("/admins/unban/<int:id>")
+@ admins.route("/admins/unban/<int:id>")
 def unban_user(id: int):
     user = User.query.get(id)
     acc_restriction = user.profile.banned
     if not acc_restriction:
-        flash("User is not banned", "danger")
+        flash("User is not banned.", "danger")
     else:
         db.session.delete(acc_restriction)
         # push notification

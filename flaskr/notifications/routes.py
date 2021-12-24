@@ -36,6 +36,8 @@ def mark_read_and_go(id: int):
         flash("Not authorized for this action.", "danger")
     elif not notification.is_readed:
         notification.mark_read()
+    if notification.link == "":
+        return redirect(url_for("notifications.get_notifications"))
     return redirect(notification.link)
 
 

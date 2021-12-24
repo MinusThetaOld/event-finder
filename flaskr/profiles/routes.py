@@ -2,7 +2,9 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from flaskr import bcrypt, db
 from flaskr.admins.forms import BanUserForm
-from flaskr.models import PromotionPending, SocialConnection, User
+from flaskr.models import (Notification, PromotionPending, Role,
+                           SocialConnection, User)
+from flaskr.notifications.utils import NotificationMessage
 from flaskr.profiles.forms import *
 from flaskr.profiles.utils import remove_photo, save_photos
 from flaskr.utils import is_eligable
@@ -197,6 +199,16 @@ def req_for_host():
     # All ok
     new_pending_req = PromotionPending(current_user.profile.id)
     db.session.add(new_pending_req)
+    # push notification
+    users = User.query.filter_by(role=Role.ADMIN).all()
+    for u in users:
+        notification = Notification(
+            NotificationMessage.want_promotion(
+                current_user.profile.get_fullname()),
+            url_for("admins.pending_request"),
+            u.profile.id
+        )
+        db.session.add(notification)
     db.session.commit()
     flash("A request has been sent. Wait for the response from admins.", "success")
     return redirect(url_for("mains.homepage"))

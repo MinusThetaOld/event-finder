@@ -38,6 +38,17 @@ endblock %} {% block content %}
                             <i class="fas fa-user-slash"></i>
                         </a>
                         {% endif %}
+                        {% if user.role.value == "general" %}
+                        <a class="btn btn-sm btn-primary ms-1"
+                            href="{{ url_for('admins.promote_host', id=user.id) }}">
+                            <i class="fas fa-angle-double-up me-1"></i></i>
+                        </a>
+                        {% elif user.role.value == "host" %}
+                        <a href="{{ url_for('admins.demote_host', id=user.id) }}"
+                            class="btn btn-sm btn-danger ms-1">
+                            <i class="fas fa-angle-double-down me-1"></i>
+                        </a>
+                        {% endif %}
                         {% endif %}
                     </div>
                 </div>
@@ -81,6 +92,17 @@ endblock %} {% block content %}
                     <a href="{{ url_for('admins.unban_user', id=user.id) }}"
                         class="btn side-btn btn-sm btn-primary mt-1">
                         <i class="fas fa-user-slash me-1"></i><span>Unban User</span>
+                    </a>
+                    {% endif %}
+                    {% if user.role.value == "general" %}
+                    <a class="btn side-btn btn-sm btn-primary mt-1"
+                        href="{{ url_for('admins.promote_host', id=user.id) }}">
+                        <i class="fas fa-angle-double-up me-1"></i></i><span>Promote</span>
+                    </a>
+                    {% elif user.role.value == "host" %}
+                    <a href="{{ url_for('admins.demote_host', id=user.id) }}"
+                        class="btn side-btn btn-sm btn-danger mt-1">
+                        <i class="fas fa-angle-double-down me-1"></i><span>Demote</span>
                     </a>
                     {% endif %}
                     {% endif %}
@@ -279,7 +301,8 @@ endblock %} {% block content %}
                     <div class="modal-body">
                         <div class="mb-2">
                             <label for="report-category">Report Type</label>
-                            <select class="form-select" aria-label="report-category" id="report-category" name="report-category">
+                            <select class="form-select" aria-label="report-category" id="report-category"
+                                name="report-category">
                                 <option selected disabled value="">Selete the category</option>
                                 <option value="cheater">Cheater</option>
                                 <option value="scammer">Scammer</option>
@@ -289,7 +312,8 @@ endblock %} {% block content %}
                         </div>
                         <div class="mb-2">
                             <label for="report-text">Describe the situation</label>
-                            <textarea name="report-text" class="form-control" id="report-text" cols="30" rows="5" required></textarea>
+                            <textarea name="report-text" class="form-control" id="report-text" cols="30" rows="5"
+                                required></textarea>
                         </div>
                     </div>
                     <div class="modal-footer modal-footer-custom">
