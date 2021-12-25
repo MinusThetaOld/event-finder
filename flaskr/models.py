@@ -1,11 +1,10 @@
 import enum
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 
 from flask_login import UserMixin
 from itsdangerous import TimedSerializer
 from itsdangerous.exc import BadTimeSignature, SignatureExpired
 from timeago import format
-import timeago
 
 from flaskr import app, db, login_manager
 
@@ -116,7 +115,8 @@ class Profile(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self, first_name: str, last_name: str, date_of_birth: date, gender: str, user_id: int) -> None:
+    def __init__(self, first_name: str, last_name: str,
+                 date_of_birth: date, gender: str, user_id: int) -> None:
         self.first_name = first_name
         self.last_name = last_name
         self.date_of_birth = date_of_birth
@@ -134,7 +134,7 @@ class Profile(db.Model):
         if not self.banned:
             return False
         return True
-    
+
     def total_unreaded_notifications(self):
         count = 0
         for i in range(len(self.notifications)):
@@ -154,7 +154,8 @@ class SocialConnection(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self, facebook: str, twitter: str, github: str, linkedin: str, website: str, profile_id: int) -> None:
+    def __init__(self, facebook: str, twitter: str, github: str,
+                 linkedin: str, website: str, profile_id: int) -> None:
         self.facebook = facebook
         self.twitter = twitter
         self.github = github
@@ -182,14 +183,16 @@ class Event(db.Model):
     pending_members = db.Column(db.ARRAY(db.Integer), default=[])
     pending_payments = db.relationship("PaymentPending", backref="event")
     hotel_name = db.Column(db.String(150))
+    hotel_weblink = db.Column(db.String)
     declines = db.relationship("Decline", backref="event")
     logs = db.relationship("Log", backref="event")
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self, title: str, description: str, place_name: str, event_time: datetime,
-                 day: int, night: int, host_id: int, cover_photo: str,
-                 max_member: int, hotel_name: str, plans=[], photos=[]) -> None:
+    def __init__(self, title: str, description: str, place_name: str,
+                 event_time: datetime, day: int, night: int, host_id: int,
+                 cover_photo: str, max_member: int, hotel_name: str,
+                 hotel_weblink: str, plans=[], photos=[]) -> None:
         self.title = title
         self.description = description
         self.place_name = place_name
@@ -200,6 +203,7 @@ class Event(db.Model):
         self.cover_photo = cover_photo
         self.max_member = max_member
         self.hotel_name = hotel_name
+        self.hotel_weblink = hotel_weblink
         self.plans = plans
         self.photos = photos
 
@@ -213,15 +217,16 @@ class Complain(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self, text: str, complain_category: ComplainCategory, complained_by: int, complain_for: int) -> None:
+    def __init__(self, text: str, complain_category: ComplainCategory,
+                 complained_by: int, complain_for: int) -> None:
         self.text = text
         self.category = complain_category
         self.profile_id = complained_by
         self.complain_for = complain_for
-        
+
     def get_complain_for(self):
         return Profile.query.get(self.complain_for)
-    
+
     def get_days_ago(self):
         return format(self.created_at, datetime.utcnow())
 

@@ -62,13 +62,13 @@
                         <div class="d-flex {{'d-none' if not current_user.is_authenticated}}">
                             <li class="nav-item me-1">
                                 {% if current_user.role and current_user.role.value == "host" %}
-                                <a href="#" type="button" class="btn btn-infos position-relative"
-                                    title="Create a event">
+                                <a href="{{ url_for('events.create_event') }}" type="button"
+                                    class="btn btn-infos position-relative" title="Create a event">
                                     <i class="fas fa-plus"></i>
                                 </a>
                                 {% elif current_user.role and current_user.role.value == "admin" %}
-                                <a href="#" type="button" class="btn btn-infos position-relative"
-                                    title="Create a event">
+                                <a href="{{ url_for('events.create_event') }}" type="button"
+                                    class="btn btn-infos position-relative" title="Create a event">
                                     <i class="fas fa-plus"></i>
                                 </a>
                                 <a href="{{ url_for('admins.dashboard') }}" type="button"
@@ -172,12 +172,12 @@
                         </form>
                         <div class="d-flex flex-column sm-screen {{'d-none' if not current_user.is_authenticated}}">
                             {% if current_user.role and current_user.role.value == "host" %}
-                            <a href="#" type="button" class="btn mt-1 btn-infos">
+                            <a href="{{ url_for('events.create_event') }}" type="button" class="btn mt-1 btn-infos">
                                 <i class="fas fa-plus"></i>
                                 <span class="ms-1">Create Event</span>
                             </a>
                             {% elif current_user.role and current_user.role.value == "admin" %}
-                            <a href="#" type="button" class="btn mt-1 btn-infos">
+                            <a href="{{ url_for('events.create_event') }}" type="button" class="btn mt-1 btn-infos">
                                 <i class="fas fa-plus"></i>
                                 <span class="ms-1">Create Event</span>
                             </a>
@@ -338,5 +338,4 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
 </body>
-
 </html>
