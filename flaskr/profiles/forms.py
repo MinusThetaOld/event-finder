@@ -5,7 +5,8 @@ from flaskr import bcrypt
 from flaskr.models import User
 from wtforms import (DateField, PasswordField, StringField, SubmitField,
                      TextAreaField)
-from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
+from wtforms.validators import (URL, DataRequired, EqualTo, Length, Optional,
+                                ValidationError)
 
 
 class ProfileInfoForm(FlaskForm):
@@ -64,9 +65,14 @@ class ChangePhoto(FlaskForm):
 
 
 class ChangeConnections(FlaskForm):
-    facebook = StringField("Facebook", render_kw={"placeholder": "Facebook profile link"})
-    twitter = StringField("Twitter", render_kw={"placeholder": "Twitter profile link"})
-    github = StringField("Github", render_kw={"placeholder": "Github profile link"})
-    linkedin = StringField("Linkedin", render_kw={"placeholder": "Linkedin profile link"})
-    website = StringField("Website", render_kw={"placeholder": "Website link"})
+    facebook = StringField("Facebook", validators=[Optional(), URL()], render_kw={
+                           "placeholder": "Facebook profile link"})
+    twitter = StringField("Twitter", validators=[Optional(), URL()], render_kw={
+                          "placeholder": "Twitter profile link"})
+    github = StringField("Github", validators=[Optional(), URL()], render_kw={
+                         "placeholder": "Github profile link"})
+    linkedin = StringField("Linkedin", validators=[Optional(), URL()], render_kw={
+                           "placeholder": "Linkedin profile link"})
+    website = StringField("Website", validators=[Optional(), URL()], render_kw={
+                          "placeholder": "Website link"})
     save = SubmitField("Update")
