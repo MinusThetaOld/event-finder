@@ -20,11 +20,12 @@ endblock %} {% block content %}
                 {% else %}
                 <div class="mt-2">
                     <div class="d-flex">
-                        <a href="#" class="btn btn-light btn-sm ms-auto" data-bs-toggle="modal"
-                            data-bs-target="#report-profile-modal">
+                        <a href="{{ url_for('profiles.bookmark_profile', id=user.profile.id) }}"
+                            class="btn btn-light btn-sm ms-auto">
                             <i class="bi bi-pin-angle-fill mx-1"></i>
                         </a>
-                        <a href="#" class="btn btn-light btn-sm ms-1">
+                        <a href="#" class="btn btn-light btn-sm ms-1" data-bs-toggle="modal"
+                            data-bs-target="#report-profile-modal">
                             <i class="bi bi-exclamation-triangle-fill mx-1"></i>
                         </a>
                         {% if current_user.role.value == "admin" %}
@@ -39,13 +40,11 @@ endblock %} {% block content %}
                         </a>
                         {% endif %}
                         {% if user.role.value == "general" %}
-                        <a class="btn btn-sm btn-primary ms-1"
-                            href="{{ url_for('admins.promote_host', id=user.id) }}">
+                        <a class="btn btn-sm btn-primary ms-1" href="{{ url_for('admins.promote_host', id=user.id) }}">
                             <i class="fas fa-angle-double-up me-1"></i></i>
                         </a>
                         {% elif user.role.value == "host" %}
-                        <a href="{{ url_for('admins.demote_host', id=user.id) }}"
-                            class="btn btn-sm btn-danger ms-1">
+                        <a href="{{ url_for('admins.demote_host', id=user.id) }}" class="btn btn-sm btn-danger ms-1">
                             <i class="fas fa-angle-double-down me-1"></i>
                         </a>
                         {% endif %}
@@ -75,7 +74,8 @@ endblock %} {% block content %}
                         <i class="fas fa-cog me-1"></i></i><span>Edit Profile</span>
                     </a>
                     {% else %}
-                    <a href="#" class="btn btn-light side-btn btn-sm">
+                    <a href="{{ url_for('profiles.bookmark_profile', id=user.profile.id) }}"
+                        class="btn btn-light side-btn btn-sm">
                         <i class="bi bi-pin-angle-fill me-1"></i><span>Bookmark</span>
                     </a>
                     <a href="#" class="btn btn-light side-btn btn-sm mt-1" data-bs-toggle="modal"
