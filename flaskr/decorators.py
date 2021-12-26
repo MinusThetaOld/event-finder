@@ -3,7 +3,6 @@ from functools import wraps
 from flask import flash, redirect, url_for
 from flask_login import current_user
 
-from flaskr import db
 from flaskr.models import Role
 
 
@@ -29,4 +28,8 @@ def is_general(func):
 
 
 def is_unbanned(func):
+    pass
+
+
+def is_verified(func):
     pass

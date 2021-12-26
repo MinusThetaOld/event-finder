@@ -2,17 +2,17 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from flaskr import bcrypt, db
 from flaskr.admins.forms import BanUserForm
-from flaskr.models import (Notification, PromotionPending, Role,
-                           SocialConnection, User)
+from flaskr.models import (Complain, Notification, Profile, PromotionPending,
+                           Role, SocialConnection, User)
 from flaskr.notifications.utils import NotificationMessage
 from flaskr.profiles.forms import *
 from flaskr.profiles.utils import remove_photo, save_photos
-from flaskr.utils import is_eligable
+from sqlalchemy import desc
 
-profiles = Blueprint("profiles", __name__)
+profiles = Blueprint("profiles", __name__, url_prefix="/profiles")
 
 
-@profiles.route("/profiles/<int:id>")
+@profiles.route("/<int:id>")
 def view_profile(id: int):
     if current_user.profile.is_banned():
         flash("Profile is banned.", "danger")
@@ -24,7 +24,7 @@ def view_profile(id: int):
     return render_template("profiles/view-profile.html", user=user, ban_form=ban_user_form)
 
 
-@profiles.route("/profiles/settings/change-info", methods=["GET", "POST"])
+@profiles.route("/settings/change-info", methods=["GET", "POST"])
 @login_required
 def change_profile_info():
     if current_user.profile.is_banned():
@@ -49,7 +49,7 @@ def change_profile_info():
     return render_template("profiles/edit-profile-info.html", active="edit-profile-info", form=form)
 
 
-@profiles.route("/profiles/settings/change-photos", methods=["GET", "POST"])
+@profiles.route("/settings/change-photos", methods=["GET", "POST"])
 @login_required
 def change_photos():
     if current_user.profile.is_banned():
@@ -80,7 +80,7 @@ def change_photos():
     return render_template("profiles/change-photos.html", active="change-photos", form=form)
 
 
-@profiles.route("/profiles/settings/verify-email", methods=["GET", "POST"])
+@profiles.route("/settings/verify-email", methods=["GET", "POST"])
 @login_required
 def verify_email():
     if current_user.profile.is_banned():
@@ -99,7 +99,7 @@ def verify_email():
     return render_template("profiles/verify-email.html", active="verify-email", form=form)
 
 
-@profiles.route("/profiles/settings/change-password", methods=["GET", "POST"])
+@profiles.route("/settings/change-password", methods=["GET", "POST"])
 @login_required
 def change_password():
     if current_user.profile.is_banned():
@@ -116,7 +116,7 @@ def change_password():
     return render_template("profiles/change-password.html", active="change-password", form=form)
 
 
-@profiles.route("/profiles/settings/remove-cover-photo")
+@profiles.route("/settings/remove-cover-photo")
 @login_required
 def remove_cover_photo():
     if current_user.profile.is_banned():
@@ -132,7 +132,7 @@ def remove_cover_photo():
     return redirect(url_for("profiles.change_photos"))
 
 
-@profiles.route("/profiles/settings/remove-profile-photo")
+@profiles.route("/settings/remove-profile-photo")
 @login_required
 def remove_profile_photo():
     if current_user.profile.is_banned():
@@ -148,7 +148,7 @@ def remove_profile_photo():
     return redirect(url_for("profiles.change_photos"))
 
 
-@profiles.route("/profiles/settings/connections", methods=["GET", "POST"])
+@profiles.route("/settings/connections", methods=["GET", "POST"])
 @login_required
 def change_connections():
     if current_user.profile.is_banned():
@@ -178,7 +178,7 @@ def change_connections():
     return render_template("profiles/change-connections.html", active="change-connections", form=form)
 
 
-@profiles.route("/profiles/request_for_host")
+@profiles.route("/request_for_host")
 @login_required
 def req_for_host():
     if current_user.profile.is_banned():
@@ -212,3 +212,21 @@ def req_for_host():
     db.session.commit()
     flash("A request has been sent. Wait for the response from admins.", "success")
     return redirect(url_for("mains.homepage"))
+
+
+@profiles.route("/complains")
+@login_required
+def view_complains():
+    # delete this after implemention the decorator for is_unbanned
+    if current_user.profile.is_banned():
+        flash("Profile is banned.", "danger")
+        return redirect(url_for("mains.homepage"))
+    complains = None
+    active = None
+    if request.args.get("complains_by") == "self":
+        complains = Profile.query.get(current_user.profile.id).complains
+        active = "self"
+    else:
+        complains = Complain.query \
+            .filter_by(complain_for=current_user.profile.id).all()
+    return render_template("profiles/complains.html", complains=complains, active=active)
