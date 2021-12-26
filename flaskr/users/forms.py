@@ -16,7 +16,6 @@ class RegisterForm(FlaskForm):
     email = EmailField("Email Address", validators=[
         DataRequired(), Length(min=4, max=150)
     ], render_kw={"placeholder": "ex. alenwalker123@gmail.com"})
-
     dob = DateField("Date of Birth", validators=[
         DataRequired()
     ])
