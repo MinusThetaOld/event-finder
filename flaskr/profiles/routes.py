@@ -209,3 +209,36 @@ def view_complains():
         complains = Complain.query \
             .filter_by(complain_for=current_user.profile.id).all()
     return render_template("profiles/complains.html", complains=complains, active=active)
+
+@profiles.route("/bookmark/<int:id>")
+@login_required
+@is_unbanned
+def bookmark_profile(id: int):
+    list_of_bookmark = []
+    bookmarks = current_user.profile.profile_bookmarks
+    if id in bookmarks:
+        flash("Profile already bookmarked.", "danger")
+    else:
+        for i in range(len(bookmarks)):
+            list_of_bookmark.append(bookmarks[i])
+        list_of_bookmark.append(id)
+        current_user.profile.profile_bookmarks = list_of_bookmark
+        db.session.commit()
+        flash("Added to your profile bookmark", "success")
+    return redirect(url_for("profiles.view_profile", id=id))
+
+@profiles.route("/unbookmark/<int:id>")
+@login_required
+@is_unbanned
+def unbookmark_profile(id: int):
+    list_of_bookmark = []
+    bookmarks = current_user.profile.profile_bookmarks
+    if id not in bookmarks:
+        flash("Not in bookmark list.", "danger")
+    for i in range(len(bookmarks)):
+        if bookmarks[i] != id:
+            list_of_bookmark.append(bookmarks[i])
+    current_user.profile.profile_bookmarks = list_of_bookmark
+    db.session.commit()
+    flash("Remove from your profile bookmark", "success")
+    return redirect(url_for("profiles.view_profile", id=id))
