@@ -12,7 +12,7 @@ from flaskr.models import (Complain, ComplainCategory, Notification, Profile,
 from flaskr.notifications.utils import NotificationMessage
 from flaskr.users.forms import *
 from flaskr.users.utils import generate_token, password_reset_key_mail_body
-
+from flaskr.decorators import is_admin, is_verified
 users = Blueprint("users", __name__)
 
 
@@ -126,6 +126,7 @@ def view_user_profile():
 
 @users.route("/users")
 @login_required
+@is_admin
 def get_users():
     all_users = User.query.all()
     return render_template("users/view_all_user.html", users=all_users)
@@ -133,6 +134,7 @@ def get_users():
 
 @users.route("/users/report/<int:id>", methods=["POST"])
 @login_required
+@is_verified
 def report_user(id: int):
     user = User.query.get(id)
     if not user:

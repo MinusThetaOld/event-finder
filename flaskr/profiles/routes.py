@@ -8,15 +8,14 @@ from flaskr.notifications.utils import NotificationMessage
 from flaskr.profiles.forms import *
 from flaskr.profiles.utils import remove_photo, save_photos
 from sqlalchemy import desc
+from flaskr.decorators import is_general, is_unbanned, is_verified
 
 profiles = Blueprint("profiles", __name__, url_prefix="/profiles")
 
 
 @profiles.route("/<int:id>")
+@is_unbanned
 def view_profile(id: int):
-    if current_user.profile.is_banned():
-        flash("Profile is banned.", "danger")
-        return redirect(url_for("mains.homepage"))
     ban_user_form = BanUserForm()
     user = User.query.get(id)
     if not user:
@@ -26,10 +25,8 @@ def view_profile(id: int):
 
 @profiles.route("/settings/change-info", methods=["GET", "POST"])
 @login_required
+@is_unbanned
 def change_profile_info():
-    if current_user.profile.is_banned():
-        flash("Profile is banned.", "danger")
-        return redirect(url_for("mains.homepage"))
     form = ProfileInfoForm()
     if form.validate_on_submit():
         current_user.profile.bio = form.bio.data
@@ -51,10 +48,8 @@ def change_profile_info():
 
 @profiles.route("/settings/change-photos", methods=["GET", "POST"])
 @login_required
+@is_unbanned
 def change_photos():
-    if current_user.profile.is_banned():
-        flash("Profile is banned.", "danger")
-        return redirect(url_for("mains.homepage"))
     form = ChangePhoto()
     if form.validate_on_submit():
         if form.profile_photo.data:
@@ -82,10 +77,8 @@ def change_photos():
 
 @profiles.route("/settings/verify-email", methods=["GET", "POST"])
 @login_required
+@is_unbanned
 def verify_email():
-    if current_user.profile.is_banned():
-        flash("Profile is banned.", "danger")
-        return redirect(url_for("mains.homepage"))
     form = VerifyEmailForm()
     if form.validate_on_submit():
         if not bcrypt.check_password_hash(current_user.verified_code, form.token.data):
@@ -101,10 +94,8 @@ def verify_email():
 
 @profiles.route("/settings/change-password", methods=["GET", "POST"])
 @login_required
+@is_unbanned
 def change_password():
-    if current_user.profile.is_banned():
-        flash("Profile is banned.", "danger")
-        return redirect(url_for("mains.homepage"))
     form = ChangePasswordForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(
@@ -118,10 +109,8 @@ def change_password():
 
 @profiles.route("/settings/remove-cover-photo")
 @login_required
+@is_unbanned
 def remove_cover_photo():
-    if current_user.profile.is_banned():
-        flash("Profile is banned.", "danger")
-        return redirect(url_for("mains.homepage"))
     if not ("/images/default/CoverPhotos/default.png" in current_user.profile.cover_photo):
         remove_photo(current_user.profile.cover_photo)
         current_user.profile.cover_photo = "/images/default/CoverPhotos/default.png"
@@ -134,10 +123,8 @@ def remove_cover_photo():
 
 @profiles.route("/settings/remove-profile-photo")
 @login_required
+@is_unbanned
 def remove_profile_photo():
-    if current_user.profile.is_banned():
-        flash("Profile is banned.", "danger")
-        return redirect(url_for("mains.homepage"))
     if not ("/images/default/ProfilePhotos/default.png" in current_user.profile.profile_photo):
         remove_photo(current_user.profile.profile_photo)
         current_user.profile.profile_photo = "/images/default/ProfilePhotos/default.png"
@@ -150,10 +137,8 @@ def remove_profile_photo():
 
 @profiles.route("/settings/connections", methods=["GET", "POST"])
 @login_required
+@is_unbanned
 def change_connections():
-    if current_user.profile.is_banned():
-        flash("Profile is banned.", "danger")
-        return redirect(url_for("mains.homepage"))
     form = ChangeConnections()
     if form.validate_on_submit():
         if current_user.profile.social_links == None:
@@ -180,13 +165,9 @@ def change_connections():
 
 @profiles.route("/request_for_host")
 @login_required
+@is_unbanned
+@is_general
 def req_for_host():
-    if current_user.profile.is_banned():
-        flash("Profile is banned.", "danger")
-        return redirect(url_for("mains.homepage"))
-    if current_user.role.value != "general":
-        flash("Only general member can be a host.", "primary")
-        return redirect(url_for("mains.homepage"))
     if current_user.profile.nid_number == None \
             or current_user.profile.nid_number == "":
         flash("Please add NID number in profile.", "danger")
@@ -216,11 +197,9 @@ def req_for_host():
 
 @profiles.route("/complains")
 @login_required
+@is_unbanned
+@is_verified
 def view_complains():
-    # delete this after implemention the decorator for is_unbanned
-    if current_user.profile.is_banned():
-        flash("Profile is banned.", "danger")
-        return redirect(url_for("mains.homepage"))
     complains = None
     active = None
     if request.args.get("complains_by") == "self":

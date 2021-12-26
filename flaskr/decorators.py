@@ -20,16 +20,49 @@ def is_admin(func):
 
 
 def is_host(func):
-    pass
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if not current_user.profile:
+            flash("Login first to access the desire route.", "danger")
+            return redirect(url_for("users.login_user"))
+        if current_user.role.value != Role.ADMIN.value and current_user.role.value != Role.HOST.value:
+            flash("Restricted for only admins and hosts.", "danger")
+            return redirect(url_for("mains.homepage"))
+        return func(*args, **kwargs)
+    return wrapper
 
 
 def is_general(func):
-    pass
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if not current_user.profile:
+            flash("Login first to access the desire route.", "danger")
+            return redirect(url_for("users.login_user"))
+        if current_user.role.value != Role.ADMIN.value and current_user.role.value != Role.GENERAL.value:
+            flash("Restricted for only general members.", "danger")
+            return redirect(url_for("mains.homepage"))
+        return func(*args, **kwargs)
+    return wrapper
 
 
 def is_unbanned(func):
-    pass
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if current_user.profile.is_banned():
+            flash("A ban profile can't access the route", "danger")
+            return redirect(url_for("mains.homepage"))
+        return func(*args, **kwargs)
+    return wrapper
 
 
 def is_verified(func):
-    pass
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if not current_user.profile:
+            flash("Login first to access the desire route.", "danger")
+            return redirect(url_for("users.login_user"))
+        if not current_user.is_verified:
+            flash("Please verify your account.", "danger")
+            return redirect(url_for("mains.homepage"))
+        return func(*args, **kwargs)
+    return wrapper
