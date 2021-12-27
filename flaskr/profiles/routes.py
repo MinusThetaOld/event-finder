@@ -3,8 +3,8 @@ from flask_login import current_user, login_required
 from flaskr import bcrypt, db
 from flaskr.admins.forms import BanUserForm
 from flaskr.decorators import is_general, is_unbanned, is_verified
-from flaskr.models import (Complain, Notification, Profile, PromotionPending,
-                           Role, SocialConnection, User)
+from flaskr.models import (Complain, Event, Notification, Profile,
+                           PromotionPending, Role, SocialConnection, User)
 from flaskr.notifications.utils import NotificationMessage
 from flaskr.profiles.forms import *
 from flaskr.profiles.utils import remove_photo, save_photos
@@ -211,6 +211,7 @@ def view_complains():
             .filter_by(complain_for=current_user.profile.id).all()
     return render_template("profiles/complains.html", complains=complains, active=active)
 
+
 @profiles.route("/bookmark/<int:id>")
 @login_required
 @is_unbanned
@@ -231,6 +232,7 @@ def bookmark_profile(id: int):
         flash("Added to your profile bookmark", "success")
     return redirect(url_for("profiles.view_profile", id=id))
 
+
 @profiles.route("/unbookmark/<int:id>")
 @login_required
 @is_unbanned
@@ -247,3 +249,29 @@ def unbookmark_profile(id: int):
         db.session.commit()
         flash("Remove from your profile bookmark", "success")
     return redirect(url_for("profiles.view_profile", id=id))
+
+
+@profiles.route("/bookmarks")
+@login_required
+@is_unbanned
+def bookmarks():
+    # fetch query strings
+    filtered_bookmark_str = request.args.get("filter")
+    bookmarks = []
+    active = "profile"
+    if filtered_bookmark_str == "event":
+        # fetch event bookmarks
+        event_bookmark_ids = Profile.query.get(
+            current_user.profile.id).event_bookmarks
+        if event_bookmark_ids:
+            for id in event_bookmark_ids:
+                bookmarks.append(Event.query.get(id))
+        active = "event"
+    else:
+        # fetch profile bookmarks
+        profile_bookmark_ids = Profile.query.get(
+            current_user.profile.id).profile_bookmarks
+        if profile_bookmark_ids:
+            for id in profile_bookmark_ids:
+                bookmarks.append(Profile.query.get(id))
+    return render_template("profiles/bookmarks.html", active=active, bookmarks=bookmarks)
