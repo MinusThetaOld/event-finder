@@ -2,9 +2,9 @@ from datetime import datetime
 
 from flask_login import current_user
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileAllowed, FileField
+from flask_wtf.file import FileAllowed
 from wtforms import (DateTimeLocalField, IntegerField, StringField,
-                     SubmitField, TextAreaField)
+                     SubmitField, TextAreaField, FileField)
 from wtforms.validators import (URL, DataRequired, Length, Optional,
                                 ValidationError)
 
@@ -22,8 +22,10 @@ class CreateEventForm(FlaskForm):
                                      render_kw={"placeholder": "Enter the maximum number."})
     event_description = TextAreaField("Description*", validators=[DataRequired()],
                                       render_kw={"placeholder": "Tell about the event."})
-    event_days_count = IntegerField("Number of days*", render_kw={"placeholder": "Event days"})
-    event_nights_count = IntegerField("Number of nights*", render_kw={"placeholder": "Event nights"})
+    event_days_count = IntegerField(
+        "Number of days*", render_kw={"placeholder": "Event days"})
+    event_nights_count = IntegerField(
+        "Number of nights*", render_kw={"placeholder": "Event nights"})
     hotel_name = StringField("Hotel Name",
                              render_kw={
                                  "placeholder": "Enter the name of hotel if the \event includes it."
@@ -33,8 +35,7 @@ class CreateEventForm(FlaskForm):
         "placeholder": "Enter the link of hotel. Such as facebook page link, booking.com link etc."
     })
     event_cover_photo = FileField("Event Cover Photo", validators=[
-        FileAllowed(["jpg", "jpeg", "png"])
-    ])
+                                  FileAllowed(["jpg", "jpeg", "png"])])
     submit = SubmitField("Create the event")
 
     def validate_hotel_web_link(self, hotel_web_link):

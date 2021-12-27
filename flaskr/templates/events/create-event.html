@@ -7,7 +7,7 @@
 {% block content %}
 <div class="container">
     <div class="card card-body shadow-card px-5 pt-4 pb-5">
-        <form method="POST" novalidate>
+        <form method="POST" novalidate enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <h2 class="create-event-title">Create an event</h2>
             <div class="mt-2">
@@ -67,7 +67,8 @@
             <div class="mt-2">
                 {{ form.event_description.label(class="form-label mb-0") }}
                 {% if form.event_description.errors %}
-                {{ form.event_description(class="form-control input-box event-desc-edit is-invalid", id="event_description")}}
+                {{ form.event_description(class="form-control input-box event-desc-edit is-invalid",
+                id="event_description")}}
                 <div class="invalid-feedback">
                     {% for error in form.event_description.errors %}
                     <span>{{ error }}</span>

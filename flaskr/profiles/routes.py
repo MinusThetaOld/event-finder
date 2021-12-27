@@ -8,7 +8,6 @@ from flaskr.models import (Complain, Event, Notification, Profile,
 from flaskr.notifications.utils import NotificationMessage
 from flaskr.profiles.forms import *
 from flaskr.profiles.utils import remove_photo, save_photos
-from sqlalchemy import desc
 
 profiles = Blueprint("profiles", __name__, url_prefix="/profiles")
 
