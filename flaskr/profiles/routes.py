@@ -2,18 +2,19 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from flaskr import bcrypt, db
 from flaskr.admins.forms import BanUserForm
+from flaskr.decorators import is_general, is_unbanned, is_verified
 from flaskr.models import (Complain, Notification, Profile, PromotionPending,
                            Role, SocialConnection, User)
 from flaskr.notifications.utils import NotificationMessage
 from flaskr.profiles.forms import *
 from flaskr.profiles.utils import remove_photo, save_photos
 from sqlalchemy import desc
-from flaskr.decorators import is_general, is_unbanned, is_verified
 
 profiles = Blueprint("profiles", __name__, url_prefix="/profiles")
 
 
 @profiles.route("/<int:id>")
+@login_required
 @is_unbanned
 def view_profile(id: int):
     ban_user_form = BanUserForm()
@@ -216,12 +217,15 @@ def view_complains():
 def bookmark_profile(id: int):
     list_of_bookmark = []
     bookmarks = current_user.profile.profile_bookmarks
-    if id in bookmarks:
+    if bookmarks and id in bookmarks:
         flash("Profile already bookmarked.", "danger")
     else:
-        for i in range(len(bookmarks)):
-            list_of_bookmark.append(bookmarks[i])
-        list_of_bookmark.append(id)
+        if not bookmarks:
+            list_of_bookmark.append(id)
+        else:
+            for i in range(len(bookmarks)):
+                list_of_bookmark.append(bookmarks[i])
+            list_of_bookmark.append(id)
         current_user.profile.profile_bookmarks = list_of_bookmark
         db.session.commit()
         flash("Added to your profile bookmark", "success")
@@ -233,12 +237,13 @@ def bookmark_profile(id: int):
 def unbookmark_profile(id: int):
     list_of_bookmark = []
     bookmarks = current_user.profile.profile_bookmarks
-    if id not in bookmarks:
+    if bookmarks and id not in bookmarks:
         flash("Not in bookmark list.", "danger")
-    for i in range(len(bookmarks)):
-        if bookmarks[i] != id:
-            list_of_bookmark.append(bookmarks[i])
-    current_user.profile.profile_bookmarks = list_of_bookmark
-    db.session.commit()
-    flash("Remove from your profile bookmark", "success")
+    else:
+        for i in range(len(bookmarks)):
+            if bookmarks[i] != id:
+                list_of_bookmark.append(bookmarks[i])
+        current_user.profile.profile_bookmarks = list_of_bookmark
+        db.session.commit()
+        flash("Remove from your profile bookmark", "success")
     return redirect(url_for("profiles.view_profile", id=id))
