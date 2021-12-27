@@ -200,10 +200,13 @@ class Event(db.Model):
         self.day = day
         self.night = night
         self.host_id = host_id
-        self.cover_photo = cover_photo
+        if cover_photo:
+            self.cover_photo = cover_photo
         self.max_member = max_member
-        self.hotel_name = hotel_name
-        self.hotel_weblink = hotel_weblink
+        if hotel_name:
+            self.hotel_name = hotel_name
+        if hotel_weblink:
+            self.hotel_weblink = hotel_weblink
         self.plans = plans
         self.photos = photos
 

@@ -8,7 +8,6 @@ from flaskr.models import (Complain, Notification, Profile, PromotionPending,
 from flaskr.notifications.utils import NotificationMessage
 from flaskr.profiles.forms import *
 from flaskr.profiles.utils import remove_photo, save_photos
-from sqlalchemy import desc
 
 profiles = Blueprint("profiles", __name__, url_prefix="/profiles")
 
@@ -211,6 +210,7 @@ def view_complains():
             .filter_by(complain_for=current_user.profile.id).all()
     return render_template("profiles/complains.html", complains=complains, active=active)
 
+
 @profiles.route("/bookmark/<int:id>")
 @login_required
 @is_unbanned
@@ -230,6 +230,7 @@ def bookmark_profile(id: int):
         db.session.commit()
         flash("Added to your profile bookmark", "success")
     return redirect(url_for("profiles.view_profile", id=id))
+
 
 @profiles.route("/unbookmark/<int:id>")
 @login_required
