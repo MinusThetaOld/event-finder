@@ -22,10 +22,8 @@ class CreateEventForm(FlaskForm):
                                      render_kw={"placeholder": "Enter the maximum number."})
     event_description = TextAreaField("Description*", validators=[DataRequired()],
                                       render_kw={"placeholder": "Tell about the event."})
-    event_days_count = IntegerField("Number of days*", validators=[DataRequired()],
-                                    render_kw={"placeholder": "Event days"})
-    event_nights_count = IntegerField("Number of nights*", validators=[DataRequired()],
-                                      render_kw={"placeholder": "Event nights"})
+    event_days_count = IntegerField("Number of days*", render_kw={"placeholder": "Event days"})
+    event_nights_count = IntegerField("Number of nights*", render_kw={"placeholder": "Event nights"})
     hotel_name = StringField("Hotel Name",
                              render_kw={
                                  "placeholder": "Enter the name of hotel if the \event includes it."
@@ -43,16 +41,6 @@ class CreateEventForm(FlaskForm):
         if not self.hotel_name.data and hotel_web_link.data:
             raise ValidationError(
                 "Cannot set the weblink if hotel name field is remains empty.")
-
-    def validate_event_nights_count(self, event_nights_count):
-        if self.event_days_count.data > event_nights_count.data:
-            raise ValidationError("Event nights count cannot be less than "
-                                  + "days count. Please inlcude travelling nights also.")
-
-    def validate_event_days_count(self, event_days_count):
-        if self.event_nights_count.data < event_days_count.data:
-            raise ValidationError(
-                "Event days count cannot be greater than nights count.")
 
     def validate_event_start_time(self, event_start_time):
         current_date = datetime.utcnow()
