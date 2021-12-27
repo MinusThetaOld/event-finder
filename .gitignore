@@ -18,5 +18,8 @@ flaskr/static/images/uploads/cover/*.jpg
 flaskr/static/images/uploads/cover/*.jpeg
 flaskr/static/images/uploads/cover/*.png
 flaskr/static/images/uploads/profile/*.jpg
-flaskr/static/images/uploads/profile/*jpeg
-flaskr/static/images/uploads/profile/*png
+flaskr/static/images/uploads/profile/*.jpeg
+flaskr/static/images/uploads/profile/*.png
+flaskr/static/images/uploads/eventCover/*.jpg
+flaskr/static/images/uploads/eventCover/*.jpeg
+flaskr/static/images/uploads/eventCover/*.png
