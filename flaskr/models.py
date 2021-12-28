@@ -172,6 +172,7 @@ class Event(db.Model):
     event_time = db.Column(db.DateTime, nullable=False)
     day = db.Column(db.Integer, nullable=False)
     night = db.Column(db.Integer, nullable=False)
+    fee = db.Column(db.Integer, nullable=False)
     host_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
     members = db.Column(db.ARRAY(db.Integer), default=[])
     chat_room = db.relationship("Message", backref="event")
@@ -189,16 +190,16 @@ class Event(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self, title: str, description: str, place_name: str,
-                 event_time: datetime, day: int, night: int, host_id: int,
-                 cover_photo: str, max_member: int, hotel_name: str,
-                 hotel_weblink: str, plans=[], photos=[]) -> None:
+    def __init__(self, title: str, description: str, place_name: str,event_time: datetime, 
+                 day: int, night: int, fee: int, host_id: int, cover_photo: str, max_member: int, 
+                 hotel_name: str, hotel_weblink: str, plans=[], photos=[]) -> None:
         self.title = title
         self.description = description
         self.place_name = place_name
         self.event_time = event_time
         self.day = day
         self.night = night
+        self.fee = fee
         self.host_id = host_id
         if cover_photo:
             self.cover_photo = cover_photo

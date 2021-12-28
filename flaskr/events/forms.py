@@ -22,6 +22,8 @@ class CreateEventForm(FlaskForm):
                                      render_kw={"placeholder": "Enter the maximum number."})
     event_description = TextAreaField("Description*", validators=[DataRequired()],
                                       render_kw={"placeholder": "Tell about the event."})
+    event_fee = IntegerField("Event Fee*", validators=[DataRequired()],
+                                     render_kw={"placeholder": "Enter the event fee(In Taka)."})
     event_days_count = IntegerField(
         "Number of days*", render_kw={"placeholder": "Event days"})
     event_nights_count = IntegerField(
@@ -47,3 +49,15 @@ class CreateEventForm(FlaskForm):
         current_date = datetime.utcnow()
         if current_date > event_start_time.data:
             raise ValidationError("Event start date cannot be in past.")
+        
+    def validate_event_fee(self, event_fee):
+        if event_fee.data<0:
+            raise ValidationError("Event fee can not be a negative value.")
+    
+    def validate_event_days_count(self, event_days_count):
+        if event_days_count.data<0:
+            raise ValidationError("Event days count can not be a negative value.")
+        
+    def validate_event_nights_count(self, event_nights_count):
+        if event_nights_count.data<0:
+            raise ValidationError("Event nights count can not be a negative value.")
