@@ -56,8 +56,7 @@
             name="get_by_nid_id">
         <button class="btn btn-dark btn-search" type="submit">Get User by NID</button>
     </form>
-
-
+    <!-- Users -->
     <div class="d-flex align-items-center mt-4 mb-3">
         <div class="flex-grow-1">
             <h1 class="profile-header user-font">New Users</h1>
@@ -82,7 +81,35 @@
                 </div>
             </div>
         </div>
-
+        {% endfor %}
+    </div>
+    <!-- Events -->
+    <div class="d-flex align-items-center mt-4 mb-3">
+        <div class="flex-grow-1">
+            <h1 class="profile-header user-font">Newly created events</h1>
+        </div>
+        <a href="{{url_for('events.get_events')}}" class="btn btn-light">View all</a>
+    </div>
+    <div class="row">
+        {% for event in events %}
+        <div class="mb-2 col-md-4">
+            <div class="px-1">
+                <div class="card shadow-card event-card">
+                    <img src="{{ url_for('static', filename=event.cover_photo) }}" class="card-img-top event-card-img"
+                        alt="Cover photo of the event">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ event.title }}</h5>
+                        {% if len(event.description) > 100 %}
+                        <p class="card-text">{{ event.description[:100] + "..."}}</p>
+                        {% else %}
+                        <p class="card-text">{{ event.description }}</p>
+                        {% endif %}
+                        <a href="{{ url_for('events.view_event', id=event.id) }}"
+                            class="btn btn-dark w-100 btn-sm">Explore the event</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% endfor %}
     </div>
 </div>
@@ -93,22 +120,18 @@
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
-
         var data = google.visualization.arrayToDataTable([
             ['Category', 'Number of users'],
             {% for key, value in data.items() %}
-            ["{{key}}", {{ value }}],
-            {% endfor %}
+    ["{{key}}", {{ value }}],
+        {% endfor %}
         ]);
-
-        var options = {
-            title: 'Server User Details',
-            is3D: true,
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-        chart.draw(data, options);
+    var options = {
+        title: 'Server User Details',
+        is3D: true,
+    };
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    chart.draw(data, options);
     }
 </script>
 {% endblock %}

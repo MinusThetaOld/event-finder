@@ -7,7 +7,7 @@ from flask_login import login_user as login_user_function
 from flask_login import logout_user as logout_user_function
 from flaskr import bcrypt, db
 from flaskr.mails import send_mail
-from flaskr.models import (Complain, ComplainCategory, Notification, Profile,
+from flaskr.models import (Complain, ComplainCategory, Event, Notification, Profile,
                            Role, User)
 from flaskr.notifications.utils import NotificationMessage
 from flaskr.users.forms import *

@@ -211,6 +211,9 @@ class Event(db.Model):
         self.plans = plans
         self.photos = photos
 
+    def get_start_date_time_str(self):
+        return self.event_time.strftime("%b %d, %Y at %H:%M GMT+6")
+    
 
 class Complain(db.Model):
     id = db.Column(db.Integer, primary_key=True)

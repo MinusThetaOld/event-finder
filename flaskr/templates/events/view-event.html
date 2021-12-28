@@ -7,25 +7,26 @@
 
 {% block content %}
 <div class="container-fluid cover-location px-0">
-    <img class="event-image"
-        src="https://images.unsplash.com/photo-1506830392367-16cbcd8b007c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDI2fGJvOGpRS1RhRTBZfHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-        alt="event_image">
+    <img class="event-image" src="{{ url_for('static', filename=event.cover_photo) }}" alt="event_image">
     <div class="card card-body location-name">
-        Jaflong <br>
-        Sylhet, Bangladesh
+        <span>Jaflong</span>
+        <span>Sylhet, Bangladesh</span>
     </div>
 </div>
 <div class="container mt-2">
     <div class="d-flex">
         <div>
-            <div class="event-time">
-                THURSDAY, JANUARY 20, 2022 AT 8 AM UTC+06
+            <div class="event-time text-uppercase">
+                {{ event.get_start_date_time_str() }}
             </div>
             <h1 class="event-name-style">
-                Explore Yellowstone National Park, Sylhet
+                {{ event.title }}
             </h1>
         </div>
         <div class="ms-auto align-self-center">
+            <a href="#" class="btn btn-sm btn-dark">
+                <i class="far fa-bookmark"></i>
+            </a>
             <a href="#" class="btn btn-sm btn-dark">
                 <i class="fas fa-cog"></i>
             </a>
@@ -40,31 +41,45 @@
     <div class="mt-1">
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
             <li class="nav-item me-2" role="presentation">
-                <button class="nav-link active btn-nav btn-sm text-dark fw-bold" data-nav-btn="Details button" id="pills-details-tab" data-bs-toggle="pill" data-bs-target="#pills-details"
-                    type="button" role="tab" aria-controls="pills-details" aria-selected="true">Details</button>
+                <button class="nav-link active btn-nav btn-sm text-dark fw-bold" data-nav-btn="Details button"
+                    id="pills-details-tab" data-bs-toggle="pill" data-bs-target="#pills-details" type="button"
+                    role="tab" aria-controls="pills-details" aria-selected="true">Details</button>
             </li>
             <li class="nav-item me-2" role="presentation">
-                <button class="nav-link btn-nav btn-sm text-dark fw-bold" data-nav-btn="Event posts button" id="pills-event-posts-tab" data-bs-toggle="pill" data-bs-target="#pills-event-posts"
-                    type="button" role="tab" aria-controls="pills-event-posts" aria-selected="false">Event Posts</button>
+                <button class="nav-link btn-nav btn-sm text-dark fw-bold" data-nav-btn="Event posts button"
+                    id="pills-event-posts-tab" data-bs-toggle="pill" data-bs-target="#pills-event-posts" type="button"
+                    role="tab" aria-controls="pills-event-posts" aria-selected="false">Event Posts</button>
             </li>
             <li class="nav-item me-2" role="presentation">
-                <button class="nav-link btn-nav btn-sm text-dark fw-bold" data-nav-btn="Message box button" id="pills-messagebox-tab" data-bs-toggle="pill" data-bs-target="#pills-messagebox"
-                    type="button" role="tab" aria-controls="pills-messagebox" aria-selected="false">Message Box</button>
+                <button class="nav-link btn-nav btn-sm text-dark fw-bold" data-nav-btn="Message box button"
+                    id="pills-messagebox-tab" data-bs-toggle="pill" data-bs-target="#pills-messagebox" type="button"
+                    role="tab" aria-controls="pills-messagebox" aria-selected="false">Message Box</button>
             </li>
             <li class="nav-item me-2" role="presentation">
-                <button class="nav-link btn-nav btn-sm text-dark fw-bold" data-nav-btn="Members going button" id="pills-members-going-tab" data-bs-toggle="pill" data-bs-target="#pills-members-going"
-                    type="button" role="tab" aria-controls="pills-members-going" aria-selected="false">Members Going</button>
+                <button class="nav-link btn-nav btn-sm text-dark fw-bold" data-nav-btn="Members going button"
+                    id="pills-members-going-tab" data-bs-toggle="pill" data-bs-target="#pills-members-going"
+                    type="button" role="tab" aria-controls="pills-members-going" aria-selected="false">Members
+                    Going</button>
             </li>
         </ul>
         <div class="tab-content" id="pills-tabContent">
             <!-- Event Details -->
-            <div class="tab-pane fade show active" id="pills-details" role="tabpanel" aria-labelledby="pills-details-tab">
+            <div class="tab-pane fade show active" id="pills-details" role="tabpanel"
+                aria-labelledby="pills-details-tab">
                 <div class="row">
                     <div class="col-md-6">
                         <!-- About he event -->
                         <div class="card card-body shadow-card">
-                            <div class="">
-                                
+                            <div class="event-status-top-bar d-flex">
+                                <div class="fw-bold">
+                                    About the event
+                                </div>
+                                <a href="#" class="align-self-center ms-auto icon-dark link-icon-dark">
+                                    <i class="fas fa-cog my-auto" style="font-size: 14px;"></i>
+                                </a>
+                            </div>
+                            <div class="px-1 mt-1">
+sadasd
                             </div>
                         </div>
                     </div>
@@ -78,9 +93,12 @@
 
 
             <!-- Rest -->
-            <div class="tab-pane fade" id="pills-event-posts" role="tabpanel" aria-labelledby="pills-event-posts-tab">samsu</div>
-            <div class="tab-pane fade" id="pills-messagebox" role="tabpanel" aria-labelledby="pills-messagebox-tab">bolod</div>
-            <div class="tab-pane fade" id="pills-members-going" role="tabpanel" aria-labelledby="pills-members-going-tab">dd</div>
+            <div class="tab-pane fade" id="pills-event-posts" role="tabpanel" aria-labelledby="pills-event-posts-tab">
+                samsu</div>
+            <div class="tab-pane fade" id="pills-messagebox" role="tabpanel" aria-labelledby="pills-messagebox-tab">
+                bolod</div>
+            <div class="tab-pane fade" id="pills-members-going" role="tabpanel"
+                aria-labelledby="pills-members-going-tab">dd</div>
         </div>
     </div>
 </div>

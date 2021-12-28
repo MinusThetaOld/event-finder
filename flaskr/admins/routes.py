@@ -5,8 +5,8 @@ from flask_login import current_user, login_required
 from flaskr import db
 from flaskr.admins.forms import *
 from flaskr.decorators import is_admin
-from flaskr.models import (AccountRestriction, Complain, Notification, Profile,
-                           PromotionPending, Role, User)
+from flaskr.models import (AccountRestriction, Complain, Event, Notification,
+                           Profile, PromotionPending, Role, User)
 from flaskr.notifications.utils import NotificationMessage
 from sqlalchemy import desc
 
@@ -18,13 +18,13 @@ admins = Blueprint("admins", __name__)
 @login_required
 @is_admin
 def dashboard():
-    # if current_user.role.value != Role.ADMIN.value:
-    #     flash("Restricted only for admins.", "danger")
-    #     return redirect(url_for("mains.homepage"))
     users = User.query.order_by(desc(User.created_at))[:4]
     profiles = Profile.query.all()
+    events = Event.query.order_by(desc(Event.created_at))[:3]
     reqs = PromotionPending.query.all()
     complains = Complain.query.all()
+
+    # for the pie chart
     data = {
         "Banned Users": 0,
         "Unverified Users": 0,
@@ -45,8 +45,8 @@ def dashboard():
             data["General Users"] = data.get("General Users")+1
 
     return render_template("admins/dashboard.html",
-                           active="dashboard",
-                           users=users, data=data,
+                           active="dashboard", users=users,
+                           events=events, data=data, len=len,
                            length_of_req_pending=len(reqs),
                            length_of_complains=len(complains))
 

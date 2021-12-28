@@ -5,6 +5,7 @@ from flaskr.decorators import is_host
 from flaskr.events.forms import *
 from flaskr.models import Event, Notification, Profile, Role, User
 from flaskr.profiles.utils import save_photos
+from sqlalchemy import desc
 
 events = Blueprint("events", __name__)
 
@@ -15,9 +16,9 @@ events = Blueprint("events", __name__)
 def create_event():
     form = CreateEventForm()
     if form.validate_on_submit():
-        event = Event(form.event_title.data, form.event_description.data, form.event_location.data, 
+        event = Event(form.event_title.data, form.event_description.data, form.event_location.data,
                       form.event_start_time.data, form.event_days_count.data, form.event_nights_count.data,
-                      form.event_fee.data, current_user.profile.id, form.event_cover_photo.data, 
+                      form.event_fee.data, current_user.profile.id, form.event_cover_photo.data,
                       form.event_max_members.data, form.hotel_name.data, form.hotel_web_link.data)
         if form.event_cover_photo.data:
             # saving
@@ -29,6 +30,14 @@ def create_event():
         flash(f"Event information saved", "success")
     return render_template("events/create-event.html", form=form)
 
+
+@events.route("/events")
+def get_events():
+    all_events = Event.query.order_by(desc(Event.created_at)).all()
+    return render_template("events/events.html", events=all_events)
+
+
 @events.route("/events/<int:id>")
 def view_event(id: int):
-    return render_template("events/view-event.html")
+    event = Event.query.get(id)
+    return render_template("events/view-event.html", event=event)

@@ -1,11 +1,13 @@
 .cover-location{
     position: relative;
 }
+
 .event-image{
     margin: 0;
     width: 100%;
     height: 260px;
 }
+
 .location-name{
     padding: 15px 25px;
     background-color: rgba(16, 16, 16, 0.5);
@@ -16,21 +18,45 @@
     left: 30px;
     
 }
+
 .event-time{
     color: #EE3A3A;
     font-size: 0.9rem;
     margin-bottom: 0;
     font-weight: bold;
 }
+
 .event-name-style{
     font-weight: bolder;  
     font-size: 1.5rem;
     margin-top: 0;
 }
+
 .btn-nav{
     min-width: 120px;
 }
+
 .active[data-nav-btn]{
     background-color: #101010 !important;
     color: #f6f6f6 !important;
+}
+
+.event-status-top-bar {
+    background-color: #F1F1F1;
+    border-radius: 10px;
+    padding: 10px 15px;
+}
+
+.link-icon-dark {
+    color: #101010;
+    padding: 0;
+}
+
+.link-icon-dark:hover {
+    color: #101010;
+}
+
+.icon-dark:hover {
+    transform: rotate(180deg);
+    transition-duration: 0.5s;
 }
