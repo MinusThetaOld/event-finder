@@ -1,0 +1,36 @@
+.cover-location{
+    position: relative;
+}
+.event-image{
+    margin: 0;
+    width: 100%;
+    height: 260px;
+}
+.location-name{
+    padding: 15px 25px;
+    background-color: rgba(16, 16, 16, 0.5);
+    width: 18rem;
+    color: #f3f3f3;
+    position: absolute;
+    bottom: 15px;
+    left: 30px;
+    
+}
+.event-time{
+    color: #EE3A3A;
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    font-weight: bold;
+}
+.event-name-style{
+    font-weight: bolder;  
+    font-size: 1.5rem;
+    margin-top: 0;
+}
+.btn-nav{
+    min-width: 120px;
+}
+.active[data-nav-btn]{
+    background-color: #101010 !important;
+    color: #f6f6f6 !important;
+}
