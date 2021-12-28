@@ -80,6 +80,19 @@
             </div>
             <div class="row g-2 mt-1">
                 <div class="col">
+                    {{ form.event_fee.label(class="form-label mb-0") }}
+                    {% if form.event_fee.errors %}
+                    {{ form.event_fee(class="form-control input-box is-invalid", id="event_fee")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.event_fee.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.event_fee(class="form-control input-box", id="event_fee") }}
+                    {% endif %}
+                </div>
+                <div class="col">
                     {{ form.event_days_count.label(class="form-label mb-0") }}
                     {% if form.event_days_count.errors %}
                     {{ form.event_days_count(class="form-control input-box is-invalid", id="event_days_count")}}

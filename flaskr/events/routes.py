@@ -15,10 +15,10 @@ events = Blueprint("events", __name__)
 def create_event():
     form = CreateEventForm()
     if form.validate_on_submit():
-        event = Event(form.event_title.data, form.event_description.data, form.event_location.data, form.event_start_time.data,
-                      int(form.event_days_count.data), int(form.event_nights_count.data), int(
-                          current_user.profile.id), form.event_cover_photo.data,
-                      int(form.event_max_members.data), form.hotel_name.data, form.hotel_web_link.data)
+        event = Event(form.event_title.data, form.event_description.data, form.event_location.data, 
+                      form.event_start_time.data, form.event_days_count.data, form.event_nights_count.data,
+                      form.event_fee.data, current_user.profile.id, form.event_cover_photo.data, 
+                      form.event_max_members.data, form.hotel_name.data, form.hotel_web_link.data)
         if form.event_cover_photo.data:
             # saving
             photo_file = save_photos(
