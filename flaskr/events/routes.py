@@ -28,3 +28,7 @@ def create_event():
         db.session.commit()
         flash(f"Event information saved", "success")
     return render_template("events/create-event.html", form=form)
+
+@events.route("/events/<int:id>")
+def view_event(id: int):
+    return render_template("events/view-event.html")
