@@ -90,48 +90,45 @@
         </div>
         <a href="{{url_for('events.get_events')}}" class="btn btn-light">View all</a>
     </div>
-    <div class="row">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for event in events %}
-        <div class="mb-2 col-md-4">
-            <div class="px-1">
-                <div class="card shadow-card event-card">
-                    <img src="{{ url_for('static', filename=event.cover_photo) }}" class="card-img-top event-card-img"
-                        alt="Cover photo of the event">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ event.title }}</h5>
-                        {% if len(event.description) > 100 %}
-                        <p class="card-text">{{ event.description[:100] + "..."}}</p>
-                        {% else %}
-                        <p class="card-text">{{ event.description }}</p>
-                        {% endif %}
-                        <a href="{{ url_for('events.view_event', id=event.id) }}"
-                            class="btn btn-dark w-100 btn-sm">Explore the event</a>
-                    </div>
+        <div class="col">
+            <div class="card shadow-card event-card h-100">
+                <img src="{{ url_for('static', filename=event.cover_photo) }}" class="card-img-top event-card-img"
+                    alt="Cover photo of the event">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">{{ event.title }}</h5>
+                    {% if len(event.description) > 100 %}
+                    <p class="card-text">{{ event.description[:100] + "..."}}</p>
+                    {% else %}
+                    <p class="card-text">{{ event.description }}</p>
+                    {% endif %}
+                    <a href="{{ url_for('events.view_event', id=event.id) }}"
+                        class="btn btn-dark w-100 btn-sm">Explore the event</a>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
-</div>
-<!-- Scripts for Pie Chart -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-    google.charts.load('current', { 'packages': ['corechart'] });
-    google.charts.setOnLoadCallback(drawChart);
+    <!-- Scripts for Pie Chart -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-            ['Category', 'Number of users'],
-            {% for key, value in data.items() %}
-    ["{{key}}", {{ value }}],
-        {% endfor %}
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Category', 'Number of users'],
+                {% for key, value in data.items() %}
+        ["{{key}}", {{ value }}],
+            {% endfor %}
         ]);
-    var options = {
-        title: 'Server User Details',
-        is3D: true,
-    };
-    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-    chart.draw(data, options);
+        var options = {
+            title: 'Server User Details',
+            is3D: true,
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
     }
-</script>
-{% endblock %}
+    </script>
+    {% endblock %}

@@ -28,6 +28,7 @@ def create_event():
         db.session.add(event)
         db.session.commit()
         flash(f"Event information saved", "success")
+        return redirect(url_for("events.view_event", id=event.id))
     return render_template("events/create-event.html", form=form)
 
 
@@ -41,3 +42,18 @@ def get_events():
 def view_event(id: int):
     event = Event.query.get(id)
     return render_template("events/view-event.html", event=event)
+
+@events.route("/events/settings/info/<int:id>", methods=["GET", "POST"])
+@login_required
+def event_info(id: int):
+    event = Event.query.get(id)
+    if event.host.id != current_user.profile.id:
+        flash("Only the host can access this route", "danger")
+        return redirect(url_for("events.view_event", id=event.id))
+    form = EventInfoForm()
+    if form.validate_on_submit():
+        # post request
+        pass
+    # add the values
+    return render_template("events/event-info.html", active="event-info", form=form, event=event)
+ 
