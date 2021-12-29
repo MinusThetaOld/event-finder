@@ -274,3 +274,34 @@ def bookmarks():
             for id in profile_bookmark_ids:
                 bookmarks.append(Profile.query.get(id))
     return render_template("profiles/bookmarks.html", active=active, bookmarks=bookmarks)
+
+
+@profiles.route("/events")
+@login_required
+@is_unbanned
+def events():
+    # fetch query strings
+    filtered_event_str = request.args.get("filter")
+    events = []
+    active = None
+    if filtered_event_str == "joined":
+        # fetch joined events
+        active = "joined"
+        joined_event_ids = current_user.profile.joined_events
+        if joined_event_ids:
+            for id in joined_event_ids:
+                events.append(Event.query.get(id))
+    elif filtered_event_str == "pending":
+        # fetch pending events
+        active = "pending"
+        pending_event_ids = current_user.profile.pending_events
+        if pending_event_ids:
+            for id in pending_event_ids:
+                events.append(Event.query.get(id))
+    else:
+        # fetch self events
+        self_events = current_user.profile.hosted_events
+        if self_events:
+            for e in self_events:
+                events.append(e)
+    return render_template("profiles/events.html", len=len, active=active, events=events)

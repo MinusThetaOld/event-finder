@@ -14,7 +14,7 @@ events = Blueprint("events", __name__)
 @login_required
 @is_host
 def create_event():
-    form = CreateEventForm()
+    form = EventForm()
     if form.validate_on_submit():
         event = Event(form.event_title.data, form.event_description.data, form.event_location.data,
                       form.event_start_time.data, form.event_days_count.data, form.event_nights_count.data,
@@ -43,6 +43,7 @@ def view_event(id: int):
     event = Event.query.get(id)
     return render_template("events/view-event.html", event=event)
 
+
 @events.route("/events/settings/info/<int:id>", methods=["GET", "POST"])
 @login_required
 def event_info(id: int):
@@ -50,10 +51,24 @@ def event_info(id: int):
     if event.host.id != current_user.profile.id:
         flash("Only the host can access this route", "danger")
         return redirect(url_for("events.view_event", id=event.id))
-    form = EventInfoForm()
+    form = EventForm()
     if form.validate_on_submit():
         # post request
         pass
     # add the values
     return render_template("events/event-info.html", active="event-info", form=form, event=event)
- 
+
+
+@events.route("/events/settings/plans/<int:id>", methods=["GET", "POST"])
+@login_required
+def event_plans(id: int):
+    event = Event.query.get(id)
+    if event.host.id != current_user.profile.id:
+        flash("Only the host can access this route", "danger")
+        return redirect(url_for("events.view_event", id=event.id))
+    form = EventPlansForm()
+    if form.validate_on_submit():
+        # post request
+        pass
+    # add the values
+    return render_template("events/edit-plans.html", active="event-plans", form=form, event=event)

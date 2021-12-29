@@ -16,6 +16,10 @@
                             class="list-group-item btn btn-settings my-1 {{ 'btn-settings-active' if active == 'event-info' }}">
                             Event Info
                         </a>
+                        <a href="{{ url_for('events.event_plans', id=event.id) }}"
+                            class="list-group-item btn btn-settings my-1 {{ 'btn-settings-active' if active == 'event-plans' }}">
+                            Event Plans
+                        </a>
                         <!-- Button trigger modal -->
                         <button type="button" class="list-group-item btn btn-settings-danger my-1" data-bs-toggle="modal"
                         data-bs-target="#delete-event-modal">
@@ -27,19 +31,19 @@
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content modal-custom">
                                     <div class="modal-header modal-header-custom">
-                                        <h5 class="modal-title text-danger" id="deactive-modal">Deactive Account</h5>
+                                        <h5 class="modal-title text-danger" id="deactive-modal">Delete Event</h5>
                                         <button type="button" class="btn clr-white" data-bs-dismiss="modal"
                                             aria-label="Close"><i class="bi bi-x-lg"></i></button>
                                     </div>
                                     <div class="modal-body modal-body-custom">
-                                        Are you sure? You want to deactivate your account?
+                                        Are you sure? You want to delete the event?
                                         <br>
-                                        <small class="text-muted">You can log in back to your account to active it.</small>
+                                        <small class="text-muted">You cannot bring back a event after deleting.</small>
                                     </div>
                                     <div class="modal-footer modal-footer-custom">
                                         <button type="button" class="btn btn-sm btn-dark"
                                             data-bs-dismiss="modal">Close</button>
-                                        <a href="#" type="button" class="btn btn-sm btn-danger">Deactive</a>
+                                        <a href="#" type="button" class="btn btn-sm btn-danger">Delete</a>
                                     </div>
                                 </div>
                             </div>

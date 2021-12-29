@@ -9,7 +9,7 @@ from wtforms.validators import (URL, DataRequired, Length, Optional,
                                 ValidationError)
 
 
-class CreateEventForm(FlaskForm):
+class EventForm(FlaskForm):
     event_title = StringField("Event Title*", validators=[
         DataRequired(), Length(max=150, min=2)
     ], render_kw={"placeholder": "Enter a title of the event."})
@@ -65,5 +65,5 @@ class CreateEventForm(FlaskForm):
                 "Event nights count can not be a negative value.")
 
 
-class EventInfoForm(FlaskForm):
+class EventPlansForm(FlaskForm):
     pass
