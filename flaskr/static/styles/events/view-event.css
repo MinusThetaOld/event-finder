@@ -60,3 +60,10 @@
     transform: rotate(180deg);
     transition-duration: 0.5s;
 }
+
+.host-details-img{
+    border-radius: 50%;
+    border: 3px solid rgba(241, 241, 241, 0.5);
+    height: 150px;
+    width: 150px;
+}
