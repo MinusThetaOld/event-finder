@@ -38,7 +38,7 @@ class EventForm(FlaskForm):
     })
     event_cover_photo = FileField("Event Cover Photo", validators=[
                                   FileAllowed(["jpg", "jpeg", "png"])])
-    submit = SubmitField("Create the event")
+    submit = SubmitField("Submit")
 
     def validate_hotel_web_link(self, hotel_web_link):
         if not self.hotel_name.data and hotel_web_link.data:
