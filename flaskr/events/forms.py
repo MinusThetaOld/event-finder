@@ -63,3 +63,7 @@ class CreateEventForm(FlaskForm):
         if event_nights_count.data and event_nights_count.data < 0:
             raise ValidationError(
                 "Event nights count can not be a negative value.")
+
+
+class EventInfoForm(FlaskForm):
+    pass

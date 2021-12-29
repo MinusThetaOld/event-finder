@@ -1,0 +1,12 @@
+{% extends "events/event-settings-layout.html" %}
+
+{% block title %} Event Info {% endblock %}
+
+{% block event_settings %}
+<h2 class="settings-header">Event Informations</h2>
+<div class="card card-body shadow-card p-4">
+    <form method="POST">
+        {{ form.hidden_tag() }}
+    </form>
+</div>
+{% endblock %}

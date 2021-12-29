@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block add_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/events/event-settings.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-1">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="container">
+                <div class="col-10 offset-1">
+                    <!-- Sidebar -->
+                    <ul class="list-group text-center list-group-custom">
+                        <a href="{{ url_for('events.event_info', id=event.id) }}"
+                            class="list-group-item btn btn-settings my-1 {{ 'btn-settings-active' if active == 'event-info' }}">
+                            Event Info
+                        </a>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="list-group-item btn btn-settings-danger my-1" data-bs-toggle="modal"
+                        data-bs-target="#delete-event-modal">
+                            Delete the Event
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="delete-event-modal" tabindex="-1" aria-labelledby="delete-event-modal"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content modal-custom">
+                                    <div class="modal-header modal-header-custom">
+                                        <h5 class="modal-title text-danger" id="deactive-modal">Deactive Account</h5>
+                                        <button type="button" class="btn clr-white" data-bs-dismiss="modal"
+                                            aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                                    </div>
+                                    <div class="modal-body modal-body-custom">
+                                        Are you sure? You want to deactivate your account?
+                                        <br>
+                                        <small class="text-muted">You can log in back to your account to active it.</small>
+                                    </div>
+                                    <div class="modal-footer modal-footer-custom">
+                                        <button type="button" class="btn btn-sm btn-dark"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <a href="#" type="button" class="btn btn-sm btn-danger">Deactive</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            {% block event_settings %} {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
