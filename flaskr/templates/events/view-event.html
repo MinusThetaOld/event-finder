@@ -24,9 +24,15 @@
             </h1>
         </div>
         <div class="ms-auto align-self-center">
-            <a href="#" class="btn btn-sm btn-dark">
+            {% if current_user.profile and current_user.profile.is_event_bookmarked(event.id) %}
+            <a href="{{ url_for('profiles.unbookmark_event', id=event.id) }}" class="btn btn-sm btn-dark">
+                <i class="fas fa-bookmark"></i>
+            </a>
+            {% else %}
+            <a href="{{ url_for('profiles.bookmark_event', id=event.id) }}" class="btn btn-sm btn-dark">
                 <i class="far fa-bookmark"></i>
             </a>
+            {% endif %}
             {% if current_user.profile and current_user.profile.id == event.host.id %}
             <a href="{{ url_for('events.event_info', id=event.id) }}" class="btn btn-sm btn-dark">
                 <i class="fas fa-cog"></i>

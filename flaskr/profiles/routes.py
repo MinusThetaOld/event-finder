@@ -211,7 +211,7 @@ def view_complains():
     return render_template("profiles/complains.html", complains=complains, active=active)
 
 
-@profiles.route("/bookmark/<int:id>")
+@profiles.route("/bookmark-profile/<int:id>")
 @login_required
 @is_unbanned
 def bookmark_profile(id: int):
@@ -232,7 +232,46 @@ def bookmark_profile(id: int):
     return redirect(url_for("profiles.view_profile", id=id))
 
 
-@profiles.route("/unbookmark/<int:id>")
+@profiles.route("/bookmark-event/<int:id>")
+@login_required
+@is_unbanned
+def bookmark_event(id: int):
+    list_of_bookmark = []
+    bookmarks = current_user.profile.event_bookmarks
+    if bookmarks and id in bookmarks:
+        flash("Event already bookmarked.", "danger")
+    else:
+        if not bookmarks:
+            list_of_bookmark.append(id)
+        else:
+            for i in range(len(bookmarks)):
+                list_of_bookmark.append(bookmarks[i])
+            list_of_bookmark.append(id)
+        current_user.profile.event_bookmarks = list_of_bookmark
+        db.session.commit()
+        flash("Added to your event bookmark", "success")
+    return redirect(url_for("events.view_event", id=id))
+
+
+@profiles.route("/unbookmark-event/<int:id>")
+@login_required
+@is_unbanned
+def unbookmark_event(id: int):
+    list_of_bookmark = []
+    bookmarks = current_user.profile.event_bookmarks
+    if bookmarks and id not in bookmarks:
+        flash("Not in bookmark list.", "danger")
+    else:
+        for i in range(len(bookmarks)):
+            if bookmarks[i] != id:
+                list_of_bookmark.append(bookmarks[i])
+        current_user.profile.event_bookmarks = list_of_bookmark
+        db.session.commit()
+        flash("Remove from your event bookmark", "success")
+    return redirect(url_for("events.view_event", id=id))
+
+
+@profiles.route("/unbookmark-profile/<int:id>")
 @login_required
 @is_unbanned
 def unbookmark_profile(id: int):
@@ -273,7 +312,7 @@ def bookmarks():
         if profile_bookmark_ids:
             for id in profile_bookmark_ids:
                 bookmarks.append(Profile.query.get(id))
-    return render_template("profiles/bookmarks.html", active=active, bookmarks=bookmarks)
+    return render_template("profiles/bookmarks.html", len=len, active=active, bookmarks=bookmarks)
 
 
 @profiles.route("/events")

@@ -92,21 +92,24 @@ class Profile(db.Model):
     rating = db.Column(db.Float, default=0.0)
     bio = db.Column(db.String(500))
     nid_number = db.Column(db.String(11))
-    banned = db.relationship("AccountRestriction", backref="profile", uselist=False)
+    banned = db.relationship("AccountRestriction",
+                             backref="profile", uselist=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     hosted_events = db.relationship("Event", backref="host")
     joined_events = db.Column(db.ARRAY(db.Integer), default=[])
     pending_events = db.Column(db.ARRAY(db.Integer), default=[])
     declines = db.relationship("Decline", backref="profile")
     pending_payments = db.relationship("PaymentPending", backref="profile")
-    pending_req = db.relationship("PromotionPending", backref="profile", uselist=False)
+    pending_req = db.relationship(
+        "PromotionPending", backref="profile", uselist=False)
     notifications = db.relationship("Notification", backref="profile")
     message_sent = db.relationship("Message", backref="sender")
     complains = db.relationship("Complain", backref="complained_by")
     logs = db.relationship("Log", backref="profile")
     profile_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
     event_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
-    social_links = db.relationship("SocialConnection", backref="profile", uselist=False)
+    social_links = db.relationship(
+        "SocialConnection", backref="profile", uselist=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
@@ -142,6 +145,13 @@ class Profile(db.Model):
             if not self.notifications[i].is_readed:
                 count = count + 1
         return count
+
+    def is_event_bookmarked(self, event_id: int):
+        if self.event_bookmarks:
+            for id in self.event_bookmarks:
+                if id == event_id:
+                    return True
+        return False
 
 
 class SocialConnection(db.Model):
