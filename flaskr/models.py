@@ -40,7 +40,9 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self, email: str, password: str, verified_code: str, role: str) -> None:
+    def __init__(
+        self, email: str, password: str, verified_code: str, role: str
+    ) -> None:
         self.email = email
         self.password = password
         self.verified_code = verified_code
@@ -63,22 +65,16 @@ class User(db.Model, UserMixin):
         except SignatureExpired:
             return {
                 "is_authenticate": False,
-                "message": "Token is expired! Please re-generate the token."
+                "message": "Token is expired! Please re-generate the token.",
             }
         except BadTimeSignature:
-            return {
-                "is_authenticate": False,
-                "message": "Token is not valid."
-            }
+            return {"is_authenticate": False, "message": "Token is not valid."}
         if result != id:
             return {
                 "is_authenticate": False,
-                "message": "Token is not valid for this user."
+                "message": "Token is not valid for this user.",
             }
-        return {
-            "is_authenticate": True,
-            "message": "Password successfully changed."
-        }
+        return {"is_authenticate": True, "message": "Password successfully changed."}
 
 
 class Profile(db.Model):
@@ -88,35 +84,40 @@ class Profile(db.Model):
     date_of_birth = db.Column(db.DateTime, nullable=False)
     gender = db.Column(db.String, nullable=False)
     profile_photo = db.Column(
-        db.String, default="/images/default/ProfilePhotos/default.png")
+        db.String, default="/images/default/ProfilePhotos/default.png"
+    )
     cover_photo = db.Column(
-        db.String, default="/images/default/CoverPhotos/default.png")
+        db.String, default="/images/default/CoverPhotos/default.png"
+    )
     rating = db.Column(db.Float, default=0.0)
     bio = db.Column(db.String(500))
     nid_number = db.Column(db.String(11))
-    banned = db.relationship("AccountRestriction",
-                             backref="profile", uselist=False)
+    banned = db.relationship("AccountRestriction", backref="profile", uselist=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     hosted_events = db.relationship("Event", backref="host")
     joined_events = db.Column(db.ARRAY(db.Integer), default=[])
     pending_events = db.Column(db.ARRAY(db.Integer), default=[])
     declines = db.relationship("Decline", backref="profile")
     pending_payments = db.relationship("PaymentPending", backref="profile")
-    pending_req = db.relationship(
-        "PromotionPending", backref="profile", uselist=False)
+    pending_req = db.relationship("PromotionPending", backref="profile", uselist=False)
     notifications = db.relationship("Notification", backref="profile")
     message_sent = db.relationship("Message", backref="sender")
     complains = db.relationship("Complain", backref="complained_by")
     logs = db.relationship("Log", backref="profile")
     profile_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
     event_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
-    social_links = db.relationship(
-        "SocialConnection", backref="profile", uselist=False)
+    social_links = db.relationship("SocialConnection", backref="profile", uselist=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self, first_name: str, last_name: str,
-                 date_of_birth: date, gender: str, user_id: int) -> None:
+    def __init__(
+        self,
+        first_name: str,
+        last_name: str,
+        date_of_birth: date,
+        gender: str,
+        user_id: int,
+    ) -> None:
         self.first_name = first_name
         self.last_name = last_name
         self.date_of_birth = date_of_birth
@@ -139,7 +140,7 @@ class Profile(db.Model):
         count = 0
         for i in range(len(self.notifications)):
             if not self.notifications[i].is_readed:
-                count = count+1
+                count = count + 1
         return count
 
 
@@ -154,8 +155,15 @@ class SocialConnection(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self, facebook: str, twitter: str, github: str,
-                 linkedin: str, website: str, profile_id: int) -> None:
+    def __init__(
+        self,
+        facebook: str,
+        twitter: str,
+        github: str,
+        linkedin: str,
+        website: str,
+        profile_id: int,
+    ) -> None:
         self.facebook = facebook
         self.twitter = twitter
         self.github = github
@@ -179,7 +187,8 @@ class Event(db.Model):
     plans = db.Column(db.ARRAY(db.String), default=[])
     photos = db.Column(db.ARRAY(db.String), default=[])
     cover_photo = db.Column(
-        db.String, default="/images/default/CoverPhotos/event-default.png")
+        db.String, default="/images/default/CoverPhotos/event-default.png"
+    )
     max_member = db.Column(db.Integer, nullable=False)
     pending_members = db.Column(db.ARRAY(db.Integer), default=[])
     pending_payments = db.relationship("PaymentPending", backref="event")
@@ -190,9 +199,23 @@ class Event(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self, title: str, description: str, place_name: str,event_time: datetime, 
-                 day: int, night: int, fee: int, host_id: int, cover_photo: str, max_member: int, 
-                 hotel_name: str, hotel_weblink: str, plans=[], photos=[]) -> None:
+    def __init__(
+        self,
+        title: str,
+        description: str,
+        place_name: str,
+        event_time: datetime,
+        day: int,
+        night: int,
+        fee: int,
+        host_id: int,
+        cover_photo: str,
+        max_member: int,
+        hotel_name: str,
+        hotel_weblink: str,
+        plans=[],
+        photos=[],
+    ) -> None:
         self.title = title
         self.description = description
         self.place_name = place_name
@@ -213,7 +236,13 @@ class Event(db.Model):
 
     def get_start_date_time_str(self):
         return self.event_time.strftime("%b %d, %Y at %H:%M GMT+6")
-    
+
+    def get_start_date(self):
+        return self.event_time.strftime("%b %d, %Y")
+
+    def get_start_time(self):
+        return self.event_time.strftime("%H:%M GMT+6")
+
 
 class Complain(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -224,8 +253,13 @@ class Complain(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self, text: str, complain_category: ComplainCategory,
-                 complained_by: int, complain_for: int) -> None:
+    def __init__(
+        self,
+        text: str,
+        complain_category: ComplainCategory,
+        complained_by: int,
+        complain_for: int,
+    ) -> None:
         self.text = text
         self.category = complain_category
         self.profile_id = complained_by

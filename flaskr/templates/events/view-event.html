@@ -68,7 +68,7 @@
                 aria-labelledby="pills-details-tab">
                 <div class="row">
                     <div class="col-md-6">
-                        <!-- About he event -->
+                        <!-- About the event -->
                         <div class="card card-body shadow-card">
                             <div class="event-status-top-bar d-flex">
                                 <div class="fw-bold">
@@ -78,8 +78,56 @@
                                     <i class="fas fa-cog my-auto" style="font-size: 14px;"></i>
                                 </a>
                             </div>
-                            <div class="px-1 mt-1">
-sadasd
+                            <div class="px-1 mt-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-money-check-alt"></i>
+                                    <div class="fw-bold mx-2">
+                                        Register fee:
+                                    </div>
+                                    <div>
+                                        {{ event.fee }} Taka
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-calendar-times"></i>
+                                    <div class="fw-bold mx-2">
+                                        Event Date:
+                                    </div>
+                                    <div>
+                                        {{ event.get_start_date() }}
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-clock"></i>
+                                    <div class="fw-bold mx-2">
+                                        Event Time:
+                                    </div>
+                                    <div>
+                                        {{ event.get_start_time() }}
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-users"></i>
+                                    <div class="fw-bold mx-2">
+                                        Members Count:
+                                    </div>
+                                    <div>
+                                        36 out of 50
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="far fa-comment"></i>
+                                    <div class="fw-bold mx-2">
+                                        Total Posts:
+                                    </div>
+                                    <div>
+                                        26
+                                    </div>
+                                </div>
+                                <hr class="my-1" style="border: 1px solid black;">
+                                <div class="text-primary my-0 fw-bold">
+                                    Registration Ongoing
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -89,6 +137,69 @@ sadasd
                         </div>
                     </div>
                 </div>
+                <!-- Photos of event -->
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="event-status-top-bar d-flex">
+                            <div class="fw-bold">
+                                Photos
+                            </div>
+                            <a href="#" class="align-self-center ms-auto icon-dark link-icon-dark">
+                                <i class="fas fa-cog my-auto" style="font-size: 14px;"></i>
+                            </a>
+                        </div>
+                        <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0"
+                                    class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
+                                    aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
+                                    aria-label="Slide 3"></button>
+                            </div>
+                            <div class="carousel-inner mt-3">
+                                <div class="carousel-item active" data-bs-interval="10000">
+                                    <img src="https://nijhoom.com/wp-content/uploads/2018/06/jaflong-zero-point-600-o.jpg"
+                                        class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item" data-bs-interval="2000">
+                                    <img src="https://www.travelmate.com.bd/wp-content/uploads/2019/07/Jaflong-Travel.jpg"
+                                        class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="https://nijhoom.com/wp-content/uploads/2018/06/jaflong-zero-point-600-o.jpg"
+                                        class="d-block w-100" alt="...">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card card-body shadow-card">
+                            <div class="event-status-top-bar d-flex">
+                                <div class="fw-bold">
+                                    Description and Plan
+                                </div>
+                                <a href="#" class="align-self-center ms-auto icon-dark link-icon-dark">
+                                    <i class="fas fa-cog my-auto" style="font-size: 14px;"></i>
+                                </a>
+                            </div>
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam fugiat
+                            blanditiis voluptatum esse sit! Illum, alias. Fuga iste debitis quaerat.
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
 
 
