@@ -34,7 +34,7 @@ def create_event():
 @events.route("/events")
 def get_events():
     all_events = Event.query.order_by(desc(Event.created_at)).all()
-    return render_template("events/events.html", events=all_events)
+    return render_template("events/events.html", events=all_events, len=len)
 
 
 @events.route("/events/<int:id>")
