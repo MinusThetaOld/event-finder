@@ -1,14 +1,21 @@
-.cover-location{
+.cover-location {
     position: relative;
 }
 
-.event-image{
-    margin: 0;
-    width: 100%;
-    height: 260px;
+.cover-bg {
+    background-color: rgba(15, 15, 15, 0.3) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    backdrop-filter: blur(10px) !important;
 }
 
-.location-name{
+.event-image {
+    margin: 0;
+    width: 100%;
+    height: 450px;
+    border-radius: 5px;
+}
+
+.location-name {
     padding: 15px 25px;
     background-color: rgba(16, 16, 16, 0.5);
     width: 18rem;
@@ -19,7 +26,7 @@
     
 }
 
-.event-time{
+.event-time {
     color: #EE3A3A;
     font-size: 0.9rem;
     margin-bottom: 0;

@@ -38,7 +38,7 @@ def create_event():
         if form.event_cover_photo.data:
             # saving
             photo_file = save_photos(
-                form.event_cover_photo.data, current_user.id, "eventCover", 1040, 350)
+                form.event_cover_photo.data, current_user.id, "eventCover", 1180, 450)
             event.cover_photo = "/images/uploads/eventCover/" + photo_file
         db.session.add(event)
         db.session.commit()
@@ -66,7 +66,6 @@ def event_info(id: int):
         event.day = form.event_days_count.data
         event.night = form.event_nights_count.data
         event.fee = form.event_fee.data
-        event.cover_photo = form.event_cover_photo.data
         event.hotel_name = form.hotel_name.data
         event.hotel_weblink = form.hotel_web_link.data
         if form.event_cover_photo.data:
@@ -75,7 +74,7 @@ def event_info(id: int):
                 remove_photo(file_path)
             # saving
             photo_file = save_photos(
-                form.event_cover_photo.data, current_user.id, "eventCover", 1040, 350)
+                form.event_cover_photo.data, current_user.id, "eventCover", 1180, 450)
             event.cover_photo = "/images/uploads/eventCover/" + photo_file
         db.session.commit()
         flash(f"Event information saved", "success")

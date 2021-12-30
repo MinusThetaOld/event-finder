@@ -6,11 +6,13 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid cover-location px-0">
-    <img class="event-image" src="{{ url_for('static', filename=event.cover_photo) }}" alt="event_image">
-    <div class="card card-body location-name">
-        <span>Jaflong</span>
-        <span>Sylhet, Bangladesh</span>
+<div class="container-fluid px-0 cover-bg">
+    <div class="container cover-location">
+        <img class="event-image" src="{{ url_for('static', filename=event.cover_photo) }}" alt="event_image">
+        <div class="card card-body location-name">
+            <span>Jaflong</span>
+            <span>Sylhet, Bangladesh</span>
+        </div>
     </div>
 </div>
 <div class="container mt-2">
