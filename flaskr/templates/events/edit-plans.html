@@ -8,11 +8,11 @@
     <form method="POST">
         {% for i in range(event.day+event.night) %}
             <div class="form-floating my-3">
-                <textarea class="form-control input-box event-desc-edit" placeholder="Write your plans" id="event_plans" style="height: 100px"></textarea>
-                <label for="event_plans">Write your plans</label>
+                <textarea class="form-control input-box event-desc-edit" name="event_plans_{{ i }}" placeholder="Write your plans" id="event_plans_{{ i }}" style="height: 100px">{{ event.plans[i] }}</textarea>
+                <label for="event_plans">Plans in day {{ i }}</label>
               </div>
         {% endfor %}
-        <button type="button" class="btn btn-dark">Submit</button>
+        <button type="submit" class="btn btn-dark">Submit</button>
     </form>
 </div>
 {% endblock %}

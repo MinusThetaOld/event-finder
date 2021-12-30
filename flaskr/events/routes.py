@@ -100,7 +100,12 @@ def event_plans(id: int):
         flash("Only the host can access this route", "danger")
         return redirect(url_for("events.view_event", id=event.id))
     if request.method == "POST":
-        pass
+        list_of_plans = []
+        for i in range(event.day+event.night):
+            list_of_plans.append(request.form.get(f"event_plans_{i}"))
+        event.plans = list_of_plans
+        db.session.commit()
+        flash("Event updated successfully.", "success")
     return render_template("events/edit-plans.html", active="event-plans", event=event)
 
 
