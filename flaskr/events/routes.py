@@ -21,7 +21,7 @@ def view_event(id: int):
     event = Event.query.get(id)
     if not event:
         return render_template("mains/errors.html", status=404, message="Event not found!")
-    return render_template("events/view-event.html", len=len, event=event)
+    return render_template("events/view-event.html", len=len, str=str, event=event)
 
 
 @events.route("/create", methods=["GET", "POST"])
@@ -106,3 +106,15 @@ def event_plans(id: int):
         pass
     # add the values
     return render_template("events/edit-plans.html", active="event-plans", form=form, event=event)
+
+
+@events.route("/upload/<int:id>", methods=["POST"])
+@login_required
+def add_photos(id: int):
+    event = Event.query.get(id)
+    if not event:
+        return render_template("mains/errors.html", status=404, message="Event not found!")
+    if event.host.id != current_user.profile.id:
+        flash("Only the host can access this route", "danger")
+        return redirect(url_for("events.view_event", id=event.id))
+    pass

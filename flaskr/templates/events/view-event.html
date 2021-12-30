@@ -78,7 +78,8 @@
                         <div class="card card-body shadow-card h-100">
                             <div class="event-status-top-bar d-flex">
                                 <div class="fw-bold">About the event</div>
-                                <a href="{{ url_for('events.event_info', id=event.id) }}" class="align-self-center ms-auto icon-dark link-icon-dark">
+                                <a href="{{ url_for('events.event_info', id=event.id) }}"
+                                    class="align-self-center ms-auto icon-dark link-icon-dark">
                                     <i class="fas fa-cog my-auto sm-icon"></i>
                                 </a>
                             </div>
@@ -119,7 +120,8 @@
                                 <div class="fw-bold">Host Details</div>
                             </div>
                             <div class="d-flex align-items-center m-auto">
-                                <img src="{{ url_for('static', filename=event.host.profile_photo) }}" class="host-details-img">
+                                <img src="{{ url_for('static', filename=event.host.profile_photo) }}"
+                                    class="host-details-img">
                                 <div class="px-1 mt-3 mx-3">
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-address-book"></i>
@@ -132,7 +134,8 @@
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-star"></i>
                                         <div class="mx-2">
-                                            {{ event.host.user.profile.rating if event.host.user.profile.rating else 'Unrated'}}
+                                            {{ event.host.user.profile.rating if event.host.user.profile.rating else
+                                            'Unrated'}}
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center">
@@ -155,9 +158,10 @@
                             <div class="fw-bold">
                                 Photos
                             </div>
-                            <a href="#" class="align-self-center ms-auto icon-dark link-icon-dark">
+                            <button class="align-self-center ms-auto icon-dark link-icon-dark border-0"
+                                data-bs-toggle="modal" data-bs-target="#add-photo-modal">
                                 <i class="fas fa-plus sm-icon"></i>
-                            </a>
+                            </button>
                         </div>
                         <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
                             <div class="carousel-indicators">
@@ -197,19 +201,54 @@
                     <div class="col-md-6">
                         <div class="card card-body shadow-card">
                             <div class="event-status-top-bar d-flex">
-                                <div class="fw-bold">
-                                    Description and Plan
-                                </div>
-                                <a href="{{ url_for('events.event_info', id=event.id) }}" class="align-self-center ms-auto icon-dark link-icon-dark">
+                                <div class="fw-bold">Description and Plan</div>
+                                <a href="{{ url_for('events.event_info', id=event.id) }}"
+                                    class="align-self-center ms-auto icon-dark link-icon-dark">
                                     <i class="fas fa-cog my-auto sm-icon"></i>
                                 </a>
                             </div>
                             <div class="mt-1 mx-2" style="text-align: justify;">{{ event.description }}</div>
                         </div>
                     </div>
-
                 </div>
-
+                <div class="modal fade" id="add-photo-modal" tabindex="-1" aria-labelledby="add-photo-modal"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content modal-custom">
+                            <div class="modal-header modal-header-custom">
+                                <h5 class="modal-title text-light" id="add-photo-modal">
+                                    Add photos in the event
+                                </h5>
+                                <button type="button" class="btn clr-white" data-bs-dismiss="modal"
+                                    aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                            </div>
+                            <div class="modal-body modal-body-custom">
+                                <!-- Images -->
+                                <div class="d-flex align-content-start flex-wrap">
+                                    {% if len(event.get_photos()) == 0 %}
+                                    <p class="my-1 mx-auto">No photos uploaded yet.</p>
+                                    {% else %}
+                                    {% for photo in event.get_photos() %}
+                                    <img src="{{ url_for('static', filename=photo) }}" alt="Event photos" />
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <form action="{{ url_for('events.add_photos', id=event.id) }}" class="mt-2" method="POST"
+                                    enctype="multipart/form-data">
+                                    {% for i in range(3) %}
+                                    <div class="form-group mb-2">
+                                        <label for="photo-one">Photo {{i+1}}</label>
+                                        <input type="file" class="form-control input-box" name="photo-{{ str(i+1) }}" id="photo-{{ str(i+1) }}">
+                                    </div>
+                                    {% endfor %}
+                                </form>
+                            </div>
+                            <div class="modal-footer modal-footer-custom">
+                                <button type="button" class="btn btn-sm btn-dark" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
 
