@@ -112,7 +112,9 @@
                                     <div>26</div>
                                 </div>
                                 <hr class="my-1" style="border: 1px solid black;">
-                                <div class="text-primary my-0 fw-bold">Registration Ongoing</div>
+                                <div class="text-{{ event.event_status().category }} my-0 fw-bold">
+                                    {{ event.event_status().message }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -176,12 +178,14 @@
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
                                 data-bs-slide="prev">
-                                <span class="next-prev-slider-btn"><i class="fas fa-chevron-left" aria-hidden="true"></i></span>
+                                <span class="next-prev-slider-btn"><i class="fas fa-chevron-left"
+                                        aria-hidden="true"></i></span>
                                 <span class="visually-hidden">Previous</span>
                             </button>
                             <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
                                 data-bs-slide="next">
-                                <span class="next-prev-slider-btn"><i class="fas fa-chevron-right" aria-hidden="true"></i></span>
+                                <span class="next-prev-slider-btn"><i class="fas fa-chevron-right"
+                                        aria-hidden="true"></i></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
                         </div>
@@ -248,7 +252,6 @@
                 </div>
             </div>
 
-
             <!-- Post -->
             <div class="tab-pane fade" id="pills-event-posts" role="tabpanel" aria-labelledby="pills-event-posts-tab">
                 <div class="col-md-8 offset-md-2 col-sm-10 offset-sm-10">
@@ -259,8 +262,12 @@
                                     <img src="https://scontent.fdac116-1.fna.fbcdn.net/v/t39.30808-1/c0.69.320.320a/p320x320/242252182_3051200168534133_3468840385932885333_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=7206a8&_nc_ohc=_wzZSQnuvbEAX8DMoQJ&_nc_ht=scontent.fdac116-1.fna&oh=00_AT-aIXRfT_34dn2trDe3gzbWs_NoaRKmJygJX9eaM3kRog&oe=61D329A8"
                                         class="host-img-post">
                                     <div class="ms-2">
-                                        <div class="fw-bold my-0">
-                                            Shamsur Rahman
+                                        <div class="d-flex align-items-center">
+                                            <div class="fw-bold my-0">
+                                                Shamsur Rahman
+                                            </div>
+                                            <div class="ms-2" style="font-size: 0.7rem"><i class="fas fa-circle"></i>
+                                                Host</div>
                                         </div>
                                         <div class="text-muted my-0" style="font-size: 0.7rem;">
                                             Yesterday at 6:20 PM
@@ -299,7 +306,7 @@
                             Eum alias eaque, ut consectetur obcaecati quia in expedita
                             quam enim nobis.
                         </div>
-                        <div class=" d-flex justify-content-between">
+                        <div class="mb-2 d-flex justify-content-between">
                             <div class="d-flex mt-2">
                                 <div>
                                     <i class="fas fa-arrow-up"></i>
