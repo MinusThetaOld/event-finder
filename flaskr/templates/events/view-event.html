@@ -235,12 +235,13 @@
                                     {% endfor %}
                                     {% endif %}
                                 </div>
-                                <form action="{{ url_for('events.add_photos', id=event.id) }}" class="mt-2" method="POST"
-                                    enctype="multipart/form-data">
+                                <form action="{{ url_for('events.add_photos', id=event.id) }}" class="mt-2"
+                                    method="POST" enctype="multipart/form-data">
                                     {% for i in range(3) %}
                                     <div class="form-group mb-2">
                                         <label for="photo-one">Photo {{i+1}}</label>
-                                        <input type="file" class="form-control input-box" name="photo-{{ str(i+1) }}" id="photo-{{ str(i+1) }}">
+                                        <input type="file" class="form-control input-box" name="photo-{{ str(i+1) }}"
+                                            id="photo-{{ str(i+1) }}">
                                     </div>
                                     {% endfor %}
                                 </form>
@@ -254,9 +255,92 @@
             </div>
 
 
-            <!-- Rest -->
+            <!-- Post -->
             <div class="tab-pane fade" id="pills-event-posts" role="tabpanel" aria-labelledby="pills-event-posts-tab">
-                samsu</div>
+                <div class="col-md-8 offset-md-2 col-sm-10 offset-sm-10">
+                    <div class="card card-body shadow-card mt-1">
+                        <div class="px-1">
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <img src="https://scontent.fdac116-1.fna.fbcdn.net/v/t39.30808-1/c0.69.320.320a/p320x320/242252182_3051200168534133_3468840385932885333_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=7206a8&_nc_ohc=_wzZSQnuvbEAX8DMoQJ&_nc_ht=scontent.fdac116-1.fna&oh=00_AT-aIXRfT_34dn2trDe3gzbWs_NoaRKmJygJX9eaM3kRog&oe=61D329A8"
+                                        class="host-img-post">
+                                    <div class="ms-2">
+                                        <div class="fw-bold my-0">
+                                            Shamsur Rahman
+                                        </div>
+                                        <div class="text-muted my-0" style="font-size: 0.7rem;">
+                                            Yesterday at 6:20 PM
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="align-self-center">
+                                    <div class="btn-group dropstart">
+                                        <button type="button" style="border: 0; background: none;"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a class="dropdown-item dropdown-pin" href="#">
+                                                    <i class="fas fa-thumbtack"></i> Pin post
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item dropdown-edit" href="#">
+                                                    <i class="fas fa-pen-nib"></i> Edit post
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item dropdown-delete" href="#">
+                                                    <i class="fas fa-trash-alt"></i> Delete post
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                            Eum alias eaque, ut consectetur obcaecati quia in expedita
+                            quam enim nobis.
+                        </div>
+                        <div class=" d-flex justify-content-between">
+                            <div class="d-flex mt-2">
+                                <div>
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span class="fw-bold">10</span>
+                                </div>
+                                <div class="ms-2">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span class="fw-bold">2</span>
+                                </div>
+                            </div>
+                            <div class="fw-bold">
+                                6 Comments
+                            </div>
+                        </div>
+                        <hr class="my-0" />
+                        <div class="d-flex">
+                            <a href="#" class="flex-fill btn btn-sm btn-light btn-vote-comment m-2 py-2">
+                                <i class="fas fa-arrow-up"></i>
+                                Up Vote
+                            </a>
+                            <a href="#" class="flex-fill btn btn-sm btn-light btn-vote-comment m-2 py-2">
+                                <i class="fas fa-arrow-down"></i>
+                                Down Vote
+                            </a>
+                            <a href="#" class="flex-fill btn btn-sm btn-light btn-vote-comment m-2 py-2">
+                                <i class="far fa-comment-alt"></i>
+                                Comment
+                            </a>
+                        </div>
+                        <hr class="my-0" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rest -->
             <div class="tab-pane fade" id="pills-messagebox" role="tabpanel" aria-labelledby="pills-messagebox-tab">
                 bolod</div>
             <div class="tab-pane fade" id="pills-members-going" role="tabpanel"

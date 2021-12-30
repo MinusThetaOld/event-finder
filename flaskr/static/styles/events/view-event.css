@@ -78,3 +78,25 @@
 .sm-icon {
     font-size: 14px;
 }
+
+.host-img-post{
+    border-radius: 50%;
+    border: 3px solid rgba(241, 241, 241, 0.5);
+    height: 40px;
+    width: 40px;
+}
+
+.dropdown-edit:hover {
+    background-color: #0d6efd;
+    color: #f8f9fa;
+}
+
+.dropdown-delete:hover {
+    background-color: #dc3545;
+    color: #f8f9fa
+}
+
+.btn-vote-comment:hover {
+    background-color: #101010;
+    color: #ffffff;
+}
