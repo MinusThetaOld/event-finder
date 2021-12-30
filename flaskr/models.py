@@ -265,6 +265,7 @@ class Event(db.Model):
         for path in self.photos:
             list_of_photos.append(path)
         list_of_photos.append(file_path)
+        self.photos = list_of_photos
         db.session.commit()
 
     def get_photos(self):

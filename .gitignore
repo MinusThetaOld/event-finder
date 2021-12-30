@@ -25,3 +25,6 @@ flaskr/static/images/uploads/profile/*.png
 flaskr/static/images/uploads/eventCover/*.jpg
 flaskr/static/images/uploads/eventCover/*.jpeg
 flaskr/static/images/uploads/eventCover/*.png
+flaskr/static/images/uploads/eventPhotos/*.jpg
+flaskr/static/images/uploads/eventPhotos/*.jpeg
+flaskr/static/images/uploads/eventPhotos/*.png

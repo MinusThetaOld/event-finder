@@ -38,7 +38,7 @@ def create_event():
         if form.event_cover_photo.data:
             # saving
             photo_file = save_photos(
-                form.event_cover_photo.data, current_user.id, "eventCover", 1180, 450)
+                form.event_cover_photo.data, event.id, "eventCover", 1180, 450)
             event.cover_photo = "/images/uploads/eventCover/" + photo_file
         db.session.add(event)
         db.session.commit()
@@ -74,7 +74,7 @@ def event_info(id: int):
                 remove_photo(file_path)
             # saving
             photo_file = save_photos(
-                form.event_cover_photo.data, current_user.id, "eventCover", 1180, 450)
+                form.event_cover_photo.data, event.id, "eventCover", 1180, 450)
             event.cover_photo = "/images/uploads/eventCover/" + photo_file
         db.session.commit()
         flash(f"Event information saved", "success")
@@ -113,4 +113,26 @@ def add_photos(id: int):
     if event.host.id != current_user.profile.id:
         flash("Only the host can access this route", "danger")
         return redirect(url_for("events.view_event", id=event.id))
-    pass
+    photo_1 = request.files.get("photo_1")
+    photo_2 = request.files.get("photo_2")
+    photo_3 = request.files.get("photo_3")
+
+    flash(f"{bool(photo_1)}", "primary")
+    
+    if photo_1:
+        photo_file = save_photos(
+            photo_1, event.id, "eventPhotos", 1280, 720)
+        event.add_photo("/images/uploads/eventPhotos/" + photo_file)
+
+    if photo_2:
+        photo_file = save_photos(
+            photo_2, event.id, "eventPhotos", 1280, 720)
+        event.add_photo("/images/uploads/eventPhotos/" + photo_file)
+
+    if photo_3:
+        photo_file = save_photos(
+            photo_3, event.id, "eventPhotos", 1280, 720)
+        event.add_photo("/images/uploads/eventPhotos/" + photo_file)
+
+    flash("Photos uploaded successfully.", "success")
+    return redirect(url_for("events.view_event", id=event.id))

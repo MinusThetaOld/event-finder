@@ -166,36 +166,22 @@
                             </button>
                         </div>
                         <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
-                            <div class="carousel-indicators">
-                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0"
-                                    class="active" aria-current="true" aria-label="Slide 1"></button>
-                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
-                                    aria-label="Slide 2"></button>
-                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
-                                    aria-label="Slide 3"></button>
-                            </div>
                             <div class="carousel-inner mt-3">
-                                <div class="carousel-item active" data-bs-interval="10000">
-                                    <img src="https://nijhoom.com/wp-content/uploads/2018/06/jaflong-zero-point-600-o.jpg"
-                                        class="d-block w-100" alt="...">
+                                {% for i in range(len(event.photos)) %}
+                                <div class="carousel-item {{ 'active' if i==0 else '' }}">
+                                    <img src="{{ url_for('static', filename=event.photos[i]) }}" class="d-block w-100"
+                                        alt="Event photo">
                                 </div>
-                                <div class="carousel-item" data-bs-interval="2000">
-                                    <img src="https://www.travelmate.com.bd/wp-content/uploads/2019/07/Jaflong-Travel.jpg"
-                                        class="d-block w-100" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="https://nijhoom.com/wp-content/uploads/2018/06/jaflong-zero-point-600-o.jpg"
-                                        class="d-block w-100" alt="...">
-                                </div>
+                                {% endfor %}
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
                                 data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="next-prev-slider-btn"><i class="fas fa-chevron-left" aria-hidden="true"></i></span>
                                 <span class="visually-hidden">Previous</span>
                             </button>
                             <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
                                 data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="next-prev-slider-btn"><i class="fas fa-chevron-right" aria-hidden="true"></i></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
                         </div>
@@ -230,19 +216,28 @@
                                     {% if len(event.get_photos()) == 0 %}
                                     <p class="my-1 mx-auto">No photos uploaded yet.</p>
                                     {% else %}
+                                    <div class="text-muted w-100 mb-1">
+                                        Uploaded photos
+                                    </div>
                                     {% for photo in event.get_photos() %}
-                                    <img src="{{ url_for('static', filename=photo) }}" alt="Event photos" />
+                                    <img src="{{ url_for('static', filename=photo) }}" class="sm-img p-2"
+                                        alt="Event photos" />
                                     {% endfor %}
                                     {% endif %}
                                 </div>
-                                <form action="{{ url_for('events.add_photos', id=event.id) }}" class="mt-2" method="POST"
-                                    enctype="multipart/form-data">
+                                <form action="{{ url_for('events.add_photos', id=event.id) }}" class="mt-2"
+                                    method="POST" enctype="multipart/form-data">
+                                    <div class="text-muted w-100 mb-1">
+                                        Upload new photos
+                                    </div>
                                     {% for i in range(3) %}
                                     <div class="form-group mb-2">
                                         <label for="photo-one">Photo {{i+1}}</label>
-                                        <input type="file" class="form-control input-box" name="photo-{{ str(i+1) }}" id="photo-{{ str(i+1) }}">
+                                        <input type="file" class="form-control input-box" name="photo_{{ str(i+1) }}"
+                                            id="photo-{{ str(i+1) }}" />
                                     </div>
                                     {% endfor %}
+                                    <input type="submit" value="Upload Photos" class="btn btn-primary btn-sm" />
                                 </form>
                             </div>
                             <div class="modal-footer modal-footer-custom">
