@@ -4,6 +4,7 @@ from datetime import date, datetime
 from flask_login import UserMixin
 from itsdangerous import TimedSerializer
 from itsdangerous.exc import BadTimeSignature, SignatureExpired
+from sqlalchemy.orm import defaultload
 from timeago import format
 
 from flaskr import app, db, login_manager
@@ -199,6 +200,7 @@ class Event(db.Model):
     cover_photo = db.Column(
         db.String, default="/images/default/CoverPhotos/event-default.png"
     )
+    is_open = db.Column(db.Boolean, default=True)
     max_member = db.Column(db.Integer, nullable=False)
     pending_members = db.Column(db.ARRAY(db.Integer), default=[])
     pending_payments = db.relationship("PaymentPending", backref="event")
@@ -254,11 +256,20 @@ class Event(db.Model):
         return self.event_time.strftime("%I:%M %p")
 
     def event_status(self):
-        # @TODO implement the method
+        if self.event_time < datetime.utcnow():
+            return {
+                "message": "Register closed",
+                "category": "danger"
+            }
+        if self.is_open:
+            return {
+                "message": "Register ongoing",
+                "category": "primary"
+            }
         return {
-            "message": "Register ongoing",
-            "category": "primary"
-        }
+                "message": "Register closed",
+                "category": "danger"
+            }
 
     def add_photo(self, file_path):
         list_of_photos = []
