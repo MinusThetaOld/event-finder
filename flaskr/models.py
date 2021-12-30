@@ -251,7 +251,27 @@ class Event(db.Model):
         return self.event_time.strftime("%b %d, %Y")
 
     def get_start_time(self):
-        return self.event_time.strftime("%H:%M GMT+6")
+        return self.event_time.strftime("%I:%M %p")
+
+    def event_status(self):
+        # @TODO implement the method
+        return {
+            "message": "Register ongoing",
+            "category": "primary"
+        }
+
+    def add_photo(self, file_path):
+        list_of_photos = []
+        for path in self.photos:
+            list_of_photos.append(path)
+        list_of_photos.append(file_path)
+        db.session.commit()
+
+    def get_photos(self):
+        list_of_photos = []
+        for path in self.photos:
+            list_of_photos.append(path)
+        return list_of_photos
 
 
 class Complain(db.Model):

@@ -1,17 +1,32 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from flaskr import db
-from flaskr.decorators import is_host
+from flaskr.decorators import is_host, is_verified
 from flaskr.events.forms import *
-from flaskr.models import Event, Notification, Profile, Role, User
-from flaskr.profiles.utils import save_photos, remove_photo
+from flaskr.models import Event
+from flaskr.profiles.utils import remove_photo, save_photos
 from sqlalchemy import desc
 
-events = Blueprint("events", __name__)
+events = Blueprint("events", __name__, url_prefix="/events")
 
 
-@events.route("/events/create", methods=["GET", "POST"])
+@events.route("/")
+def get_events():
+    all_events = Event.query.order_by(desc(Event.created_at)).all()
+    return render_template("events/events.html", events=all_events, len=len)
+
+
+@events.route("/<int:id>")
+def view_event(id: int):
+    event = Event.query.get(id)
+    if not event:
+        return render_template("mains/errors.html", status=404, message="Event not found!")
+    return render_template("events/view-event.html", len=len, str=str, event=event)
+
+
+@events.route("/create", methods=["GET", "POST"])
 @login_required
+@is_verified
 @is_host
 def create_event():
     form = EventForm()
@@ -32,22 +47,12 @@ def create_event():
     return render_template("events/create-event.html", form=form)
 
 
-@events.route("/events")
-def get_events():
-    all_events = Event.query.order_by(desc(Event.created_at)).all()
-    return render_template("events/events.html", events=all_events, len=len)
-
-
-@events.route("/events/<int:id>")
-def view_event(id: int):
-    event = Event.query.get(id)
-    return render_template("events/view-event.html", event=event)
-
-
-@events.route("/events/settings/info/<int:id>", methods=["GET", "POST"])
+@events.route("/settings/info/<int:id>", methods=["GET", "POST"])
 @login_required
 def event_info(id: int):
     event = Event.query.get(id)
+    if not event:
+        return render_template("mains/errors.html", status=404, message="Event not found!")
     if event.host.id != current_user.profile.id:
         flash("Only the host can access this route", "danger")
         return redirect(url_for("events.view_event", id=event.id))
@@ -88,7 +93,7 @@ def event_info(id: int):
     return render_template("events/event-info.html", active="event-info", form=form, event=event)
 
 
-@events.route("/events/settings/plans/<int:id>", methods=["GET", "POST"])
+@events.route("/settings/plans/<int:id>", methods=["GET", "POST"])
 @login_required
 def event_plans(id: int):
     event = Event.query.get(id)
@@ -98,3 +103,15 @@ def event_plans(id: int):
     if request.method == "POST":
         pass
     return render_template("events/edit-plans.html", active="event-plans", event=event)
+
+
+@events.route("/upload/<int:id>", methods=["POST"])
+@login_required
+def add_photos(id: int):
+    event = Event.query.get(id)
+    if not event:
+        return render_template("mains/errors.html", status=404, message="Event not found!")
+    if event.host.id != current_user.profile.id:
+        flash("Only the host can access this route", "danger")
+        return redirect(url_for("events.view_event", id=event.id))
+    pass

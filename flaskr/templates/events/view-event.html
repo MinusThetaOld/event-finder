@@ -77,49 +77,32 @@
                         <!-- About the event -->
                         <div class="card card-body shadow-card h-100">
                             <div class="event-status-top-bar d-flex">
-                                <div class="fw-bold">
-                                    About the event
-                                </div>
-                                <a href="#" class="align-self-center ms-auto icon-dark link-icon-dark">
-                                    <i class="fas fa-cog my-auto" style="font-size: 14px;"></i>
+                                <div class="fw-bold">About the event</div>
+                                <a href="{{ url_for('events.event_info', id=event.id) }}"
+                                    class="align-self-center ms-auto icon-dark link-icon-dark">
+                                    <i class="fas fa-cog my-auto sm-icon"></i>
                                 </a>
                             </div>
                             <div class="px-1 mt-3">
                                 <div class="d-flex align-items-center">
                                     <i class="fas fa-money-check-alt"></i>
-                                    <div class="fw-bold mx-2">
-                                        Register fee:
-                                    </div>
-                                    <div>
-                                        {{ event.fee }} Taka
-                                    </div>
+                                    <div class="fw-bold mx-2">Register fee:</div>
+                                    <div>{{ event.fee }} Taka</div>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <i class="fas fa-calendar-times"></i>
-                                    <div class="fw-bold mx-2">
-                                        Event Date:
-                                    </div>
-                                    <div>
-                                        {{ event.get_start_date() }}
-                                    </div>
+                                    <div class="fw-bold mx-2">Event Date:</div>
+                                    <div>{{ event.get_start_date() }}</div>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <i class="fas fa-clock"></i>
-                                    <div class="fw-bold mx-2">
-                                        Event Time:
-                                    </div>
-                                    <div>
-                                        {{ event.get_start_time() }}
-                                    </div>
+                                    <div class="fw-bold mx-2">Event Time:</div>
+                                    <div>{{ event.get_start_time() }}</div>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <i class="fas fa-users"></i>
-                                    <div class="fw-bold mx-2">
-                                        Members Count:
-                                    </div>
-                                    <div>
-                                        36 out of 50
-                                    </div>
+                                    <div class="fw-bold mx-2">Members Count:</div>
+                                    <div>36 out of 50</div>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <i class="far fa-comment"></i>
@@ -134,44 +117,34 @@
                     <div class="col">
                         <div class="card card-body shadow-card  h-100">
                             <div class="event-status-top-bar d-flex">
-                                <div class="fw-bold">
-                                    Host Details
-                                </div>
+                                <div class="fw-bold">Host Details</div>
                             </div>
                             <div class="d-flex align-items-center m-auto">
-                                <div>
-                                    <img src="data:image/jpeg;base64,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" class="host-details-img">
-                                </div>
+                                <img src="{{ url_for('static', filename=event.host.profile_photo) }}"
+                                    class="host-details-img">
                                 <div class="px-1 mt-3 mx-3">
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-address-book"></i>
-                                        <div class="fw-bold mx-2">
-                                            Kopa Shamsu
-                                        </div>
+                                        <div class="fw-bold mx-2">{{ event.host.get_fullname() }}</div>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-at"></i>
-                                        <div class="mx-2">
-                                            kopasamsu@gmail.com
-                                        </div>
+                                        <div class="mx-2">{{ event.host.user.email }}</div>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-star"></i>
                                         <div class="mx-2">
-                                            4.5 Rated
+                                            {{ event.host.user.profile.rating if event.host.user.profile.rating else
+                                            'Unrated'}}
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-calendar-times"></i>
-                                        <div class="mx-2">
-                                            5 event hosted
-                                        </div>
+                                        <div class="mx-2">{{ len(event.host.hosted_events) }} event hosted</div>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-id-card"></i>
-                                        <div class="mx-2">
-                                            7613478545
-                                        </div>
+                                        <div class="mx-2">{{ event.host.nid_number }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -185,9 +158,10 @@
                             <div class="fw-bold">
                                 Photos
                             </div>
-                            <a href="#" class="align-self-center ms-auto icon-dark link-icon-dark">
-                                <i class="fas fa-cog my-auto" style="font-size: 14px;"></i>
-                            </a>
+                            <button class="align-self-center ms-auto icon-dark link-icon-dark border-0"
+                                data-bs-toggle="modal" data-bs-target="#add-photo-modal">
+                                <i class="fas fa-plus sm-icon"></i>
+                            </button>
                         </div>
                         <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
                             <div class="carousel-indicators">
@@ -227,20 +201,54 @@
                     <div class="col-md-6">
                         <div class="card card-body shadow-card">
                             <div class="event-status-top-bar d-flex">
-                                <div class="fw-bold">
-                                    Description and Plan
-                                </div>
-                                <a href="#" class="align-self-center ms-auto icon-dark link-icon-dark">
-                                    <i class="fas fa-cog my-auto" style="font-size: 14px;"></i>
+                                <div class="fw-bold">Description and Plan</div>
+                                <a href="{{ url_for('events.event_info', id=event.id) }}"
+                                    class="align-self-center ms-auto icon-dark link-icon-dark">
+                                    <i class="fas fa-cog my-auto sm-icon"></i>
                                 </a>
                             </div>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam fugiat
-                            blanditiis voluptatum esse sit! Illum, alias. Fuga iste debitis quaerat.
+                            <div class="mt-1 mx-2" style="text-align: justify;">{{ event.description }}</div>
                         </div>
                     </div>
-
                 </div>
-
+                <div class="modal fade" id="add-photo-modal" tabindex="-1" aria-labelledby="add-photo-modal"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content modal-custom">
+                            <div class="modal-header modal-header-custom">
+                                <h5 class="modal-title text-light" id="add-photo-modal">
+                                    Add photos in the event
+                                </h5>
+                                <button type="button" class="btn clr-white" data-bs-dismiss="modal"
+                                    aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                            </div>
+                            <div class="modal-body modal-body-custom">
+                                <!-- Images -->
+                                <div class="d-flex align-content-start flex-wrap">
+                                    {% if len(event.get_photos()) == 0 %}
+                                    <p class="my-1 mx-auto">No photos uploaded yet.</p>
+                                    {% else %}
+                                    {% for photo in event.get_photos() %}
+                                    <img src="{{ url_for('static', filename=photo) }}" alt="Event photos" />
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <form action="{{ url_for('events.add_photos', id=event.id) }}" class="mt-2" method="POST"
+                                    enctype="multipart/form-data">
+                                    {% for i in range(3) %}
+                                    <div class="form-group mb-2">
+                                        <label for="photo-one">Photo {{i+1}}</label>
+                                        <input type="file" class="form-control input-box" name="photo-{{ str(i+1) }}" id="photo-{{ str(i+1) }}">
+                                    </div>
+                                    {% endfor %}
+                                </form>
+                            </div>
+                            <div class="modal-footer modal-footer-custom">
+                                <button type="button" class="btn btn-sm btn-dark" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
 

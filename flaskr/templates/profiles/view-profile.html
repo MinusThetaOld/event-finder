@@ -70,10 +70,10 @@ endblock %} {% block content %}
                 {% if user.profile.nid_number %}
                 <p class="info"><i class="fas fa-address-card"></i> {{user.profile.nid_number}}</p>
                 {% endif %}
-                <p class="info"><i class="bi bi-star-fill"></i> {{user.profile.rating if user.profile.rating else
-                    'Unrated'}}
+                <p class="info">
+                    <i class="bi bi-star-fill"></i> {{ user.profile.rating if user.profile.rating else 'Unrated'}}
                 </p>
-                <p class="info mt-1">{{user.profile.bio if user.profile.bio}}</p>
+                <p class="info mt-1">{{ user.profile.bio if user.profile.bio }}</p>
             </div>
             <div class="sm-screen-hide">
                 <div class="d-flex flex-column mt-2 flex-shrink-1">

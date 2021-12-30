@@ -1,22 +1,30 @@
 import os
 
-import flask
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from flask_login import login_user as login_user_function
 from flask_login import logout_user as logout_user_function
 from flaskr import bcrypt, db
+from flaskr.decorators import is_admin, is_unbanned, is_verified
 from flaskr.mails import send_mail
-from flaskr.models import (Complain, ComplainCategory, Event, Notification, Profile,
-                           Role, User)
+from flaskr.models import (Complain, ComplainCategory, Event, Notification,
+                           Profile, Role, User)
 from flaskr.notifications.utils import NotificationMessage
 from flaskr.users.forms import *
 from flaskr.users.utils import generate_token, password_reset_key_mail_body
-from flaskr.decorators import is_admin, is_verified
-users = Blueprint("users", __name__)
+
+users = Blueprint("users", __name__, url_prefix="/users")
 
 
-@users.route("/users/register", methods=["GET", "POST"])
+@users.route("/")
+@login_required
+@is_admin
+def get_users():
+    all_users = User.query.all()
+    return render_template("users/view_all_user.html", users=all_users)
+
+
+@users.route("/register", methods=["GET", "POST"])
 def register_user():
     if current_user.is_authenticated:
         return redirect(url_for('mains.homepage'))
@@ -55,7 +63,7 @@ def register_user():
     return render_template("users/register.html", form=form, active='register')
 
 
-@users.route("/users/login", methods=["GET", "POST"])
+@users.route("/login", methods=["GET", "POST"])
 def login_user():
     if current_user.is_authenticated:
         return redirect(url_for('mains.homepage'))
@@ -74,14 +82,14 @@ def login_user():
     return render_template("users/login.html", form=form, active='login')
 
 
-@users.route("/users/logout")
+@users.route("/logout")
 @login_required
 def logout_user():
     logout_user_function()
     return redirect(url_for("users.login_user"))
 
 
-@users.route("/users/forget_password", methods=["GET", "POST"])
+@users.route("/forget_password", methods=["GET", "POST"])
 def forget_password():
     if current_user.is_authenticated:
         return redirect(url_for('mains.homepage'))
@@ -97,7 +105,7 @@ def forget_password():
     return render_template("users/forget_password.html", form=form)
 
 
-@users.route("/users/reset_password/<int:id>/<string:token>", methods=["GET", "POST"])
+@users.route("/reset_password/<int:id>/<string:token>", methods=["GET", "POST"])
 def reset_password(id: int, token: str):
     if current_user.is_authenticated:
         return redirect(url_for('mains.homepage'))
@@ -118,21 +126,13 @@ def reset_password(id: int, token: str):
     return render_template("users/reset_password.html", form=form)
 
 
-@users.route("/users/view-profile")
+@users.route("/view-profile")
 @login_required
 def view_user_profile():
     return redirect(url_for("profiles.view_profile", id=current_user.id))
 
 
-@users.route("/users")
-@login_required
-@is_admin
-def get_users():
-    all_users = User.query.all()
-    return render_template("users/view_all_user.html", users=all_users)
-
-
-@users.route("/users/report/<int:id>", methods=["POST"])
+@users.route("/report/<int:id>", methods=["POST"])
 @login_required
 @is_verified
 def report_user(id: int):
@@ -171,3 +171,19 @@ def report_user(id: int):
         db.session.commit()
         flash("Successfully reported the profile.", "success")
     return redirect(url_for("profiles.view_profile", id=id))
+
+
+@users.route("/resend-token")
+@login_required
+@is_unbanned
+def resend_token():
+    generated_token_for_email = generate_token(6)
+    hashed_token = bcrypt.generate_password_hash(
+        generated_token_for_email).decode("utf-8")
+    current_user.verified_code = hashed_token
+    db.session.commit()
+    # Sending email
+    send_mail(current_user.email, "Email Verification Code",
+              f"Your Token is {generated_token_for_email}")
+    flash("A new verification token has been sent to your email address.", "success")
+    return redirect(url_for("profiles.verify_email"))
