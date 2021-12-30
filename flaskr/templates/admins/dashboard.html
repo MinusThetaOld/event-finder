@@ -61,7 +61,7 @@
         <div class="flex-grow-1">
             <h1 class="profile-header user-font">New Users</h1>
         </div>
-        <a href="{{url_for('users.get_users')}}" class="btn btn-light">View all</a>
+        <a href="{{url_for('users.get_users')}}" class="text-reset">View all</a>
     </div>
     <div class="row">
         {% for user in users %}
@@ -88,23 +88,54 @@
         <div class="flex-grow-1">
             <h1 class="profile-header user-font">Newly created events</h1>
         </div>
-        <a href="{{url_for('events.get_events')}}" class="btn btn-light">View all</a>
+        <a href="{{url_for('events.get_events')}}" class="text-reset">View all</a>
     </div>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
         {% for event in events %}
         <div class="col">
             <div class="card shadow-card event-card h-100">
                 <img src="{{ url_for('static', filename=event.cover_photo) }}" class="card-img-top event-card-img"
                     alt="Cover photo of the event">
                 <div class="card-body">
-                    <h5 class="card-title fw-bold">{{ event.title }}</h5>
-                    {% if len(event.description) > 100 %}
-                    <p class="card-text">{{ event.description[:100] + "..."}}</p>
-                    {% else %}
-                    <p class="card-text">{{ event.description }}</p>
-                    {% endif %}
-                    <a href="{{ url_for('events.view_event', id=event.id) }}"
-                        class="btn btn-dark w-100 btn-sm">Explore the event</a>
+                    <h6 class="card-title fw-bold">{{ event.title }}</h6>
+                    <div class="card-text text-{{ event.event_status().category }} fw-bold mb-1">
+                        {{ event.event_status().message }}
+                    </div>
+                    <div class="card-text">
+                        <strong>
+                            <i class="fas fa-map-marker-alt"></i> Location:
+                        </strong>
+                        {{ event.place_name }}
+                    </div>
+                    <div class="card-text">
+                        <strong>
+                            <i class="fas fa-clock"></i> Date:
+                        </strong>
+                        {{ event.get_start_date() }} at {{ event.get_start_time() }}
+                    </div>
+                    <div class="card-text">
+                        <strong>
+                            <i class="fas fa-user-tie"></i> Host:
+                        </strong>
+                        <a href="{{ url_for('profiles.view_profile', id=event.host.id) }}" class="text-reset">
+                            {{ event.host.get_fullname() }}
+                        </a>
+                    </div>
+                    <div class="card-text">
+                        <strong>
+                            <i class="fas fa-money-check-alt"></i> Register Fee:
+                        </strong>
+                        {{ event.fee }} Taka
+                    </div>
+                    <div class="card-text">
+                        <strong>
+                            <i class="fas fa-users"></i> Members:
+                        </strong>
+                        {{ len(event.members) if event.members else 0 }} out of {{ event.max_member }}
+                    </div>
+                    <a href="{{ url_for('events.view_event', id=event.id) }}" class="btn btn-dark w-100 btn-sm mt-3">
+                        Explore the event
+                    </a>
                 </div>
             </div>
         </div>

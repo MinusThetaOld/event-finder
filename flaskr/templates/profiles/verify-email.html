@@ -25,11 +25,13 @@
             {%endif%}
         </div>
         <small class="text-muted">Token was sent via email to your email address. Please add that token and verify.</small>
-        <div class="mt-2">
+        <div class="mt-0">
             {% if current_user.is_verified %}
             <button disabled class="btn btn-dark btn-update">Save</button>
             {% else %}
-            {{form.save(class="btn btn-dark btn-update")}}
+            <a href="{{ url_for('users.resend_token') }}" class="text-reset">Resend the verification token</a>
+            <br />
+            {{ form.save(class="btn btn-dark btn-update mt-2") }}
             {% endif %}
         </div>
     </form>

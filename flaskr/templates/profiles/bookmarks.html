@@ -19,6 +19,11 @@
 
     {% if active == None or active == "profile" %}
     <div class="row">
+        {% if bookmarks == None or len(bookmarks) == 0 %}
+        <div class="col-md-8 offset-md-2 text-center fw-bold">
+            <p class="empty-status">No bookmarked profile available</p>
+        </div>
+        {% else %}
         {% for bookmark in bookmarks %}
         <div class="col-md-8 offset-md-2 col-sm-12">
             <div class="card card-body shadow-card mb-2">
@@ -37,9 +42,15 @@
             </div>
         </div>
         {% endfor %}
+        {% endif %}
     </div>
     {% else %}
     <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% if bookmarks == None or len(bookmarks) == 0 %}
+        <div class="col-md-8 offset-md-2 text-center fw-bold">
+            <p class="empty-status">No bookmarked event available</p>
+        </div>
+        {% else %}
         {% for bookmark in bookmarks %}
         <div class="col">
             <div class="card shadow-card event-card h-100">
@@ -58,6 +69,7 @@
             </div>
         </div>
         {% endfor %}
+        {% endif %}
     </div>        
     {% endif %}
 </div>

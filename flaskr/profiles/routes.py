@@ -208,7 +208,7 @@ def view_complains():
     else:
         complains = Complain.query \
             .filter_by(complain_for=current_user.profile.id).all()
-    return render_template("profiles/complains.html", complains=complains, active=active)
+    return render_template("profiles/complains.html", len=len, complains=complains, active=active)
 
 
 @profiles.route("/bookmark-profile/<int:id>")

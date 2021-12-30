@@ -5,9 +5,11 @@
 {% block content %}
 <div class="container mt-1">
     <div class="row">
-        <h4 class="fw-bold mt-2 mb-3" style="font-size: 1.2rem;">Viewing all users</h4>
+        <div class="card card-body shadow-card fw-bold" style="font-size: 1.2rem;">
+            Users
+        </div>
     </div>
-    <div class="row">
+    <div class="row mt-4">
         {% for user in users %}
         <div class="mb-2 col-md-12 col-lg-6">
             <div class="px-1">

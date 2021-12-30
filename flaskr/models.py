@@ -251,7 +251,14 @@ class Event(db.Model):
         return self.event_time.strftime("%b %d, %Y")
 
     def get_start_time(self):
-        return self.event_time.strftime("%H:%M GMT+6")
+        return self.event_time.strftime("%I:%M %p")
+    
+    def event_status(self):
+        # @TODO implement the method
+        return {
+            "message": "Register ongoing",
+            "category": "primary"
+        }
 
 
 class Complain(db.Model):
