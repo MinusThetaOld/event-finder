@@ -23,7 +23,7 @@ def create_event():
         if form.event_cover_photo.data:
             # saving
             photo_file = save_photos(
-                form.event_cover_photo.data, current_user.id, "eventCover", 1040, 260)
+                form.event_cover_photo.data, current_user.id, "eventCover", 1040, 350)
             event.cover_photo = "/images/uploads/eventCover/" + photo_file
         db.session.add(event)
         db.session.commit()
@@ -70,7 +70,7 @@ def event_info(id: int):
                 remove_photo(file_path)
             # saving
             photo_file = save_photos(
-                form.event_cover_photo.data, current_user.id, "eventCover", 1040, 260)
+                form.event_cover_photo.data, current_user.id, "eventCover", 1040, 350)
             event.cover_photo = "/images/uploads/eventCover/" + photo_file
         db.session.commit()
         flash(f"Event information saved", "success")
@@ -95,9 +95,6 @@ def event_plans(id: int):
     if event.host.id != current_user.profile.id:
         flash("Only the host can access this route", "danger")
         return redirect(url_for("events.view_event", id=event.id))
-    form = EventPlansForm()
-    if form.validate_on_submit():
-        # post request
+    if request.method == "POST":
         pass
-    # add the values
-    return render_template("events/edit-plans.html", active="event-plans", form=form, event=event)
+    return render_template("events/edit-plans.html", active="event-plans", event=event)
