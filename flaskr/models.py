@@ -256,29 +256,40 @@ class Event(db.Model):
         return self.event_time.strftime("%I:%M %p")
 
     def event_status(self):
-        if self.event_time < datetime.utcnow():
+        if self.event_time < datetime.utcnow() or not self.is_open:
             return {
                 "message": "Registration closed",
-                "category": "danger"
-            }
-        if self.is_open:
-            return {
-                "message": "Registration ongoing",
-                "category": "primary"
+                "category": "danger",
+                "status": False
             }
         return {
-                "message": "Registration closed",
-                "category": "danger"
-            }
+            "message": "Registration ongoing",
+            "category": "primary",
+            "status": True
+        }
 
-    def is_profile_going(self, profile_id: int):
+    def is_profile_going(self, profile_id: int) -> bool:
         return profile_id in self.members
 
-    def is_profile_pending(self, profile_id: int):
+    def is_profile_pending(self, profile_id: int) -> bool:
         for pending_payment in self.pending_payments:
             if pending_payment.profile.id == profile_id:
                 return True
         return False
+
+    def get_memebers(self) -> list:
+        list_of_members = []
+        for members_id in self.members:
+            list_of_members.append(Profile.query.get(members_id))
+        return list_of_members
+
+    def add_memebers(self, profile_id: int):
+        list_of_members = []
+        for members_id in self.members:
+            list_of_members.append(members_id)
+        list_of_members.append(profile_id)
+        self.members = list_of_members
+        db.session.commit()
 
     def add_photo(self, file_path):
         list_of_photos = []
@@ -288,7 +299,7 @@ class Event(db.Model):
         self.photos = list_of_photos
         db.session.commit()
 
-    def get_photos(self):
+    def get_photos(self) -> list:
         list_of_photos = []
         for path in self.photos:
             list_of_photos.append(path)

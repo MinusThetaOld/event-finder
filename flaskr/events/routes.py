@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 from flaskr import db
 from flaskr.decorators import is_host, is_verified
 from flaskr.events.forms import *
-from flaskr.models import Event
+from flaskr.models import Event, PaymentPending
 from flaskr.profiles.utils import remove_photo, save_photos
 from sqlalchemy import desc
 
@@ -24,16 +24,21 @@ def view_event(id: int):
     if not event:
         return render_template("mains/errors.html", status=404, message="Event not found!")
     query_str = request.args.get("filter")
+    members_sub_query = request.args.get("members")
     recive_number = str(os.environ.get("RECIVE_NUMBER")) or "xxx-xxxxxxxx"
-    
+
     if query_str == "messages":
         return render_template("events/view-event/messages.html",
                                len=len, str=str, event=event,
                                active='messages', recive_number=recive_number)
     if query_str == "members":
+        sub_menu = "members"
+        if members_sub_query == "pending":
+            sub_menu = "pending-members"
         return render_template("events/view-event/members.html",
-                               len=len, str=str, event=event,
-                               active='members', recive_number=recive_number)
+                    len=len, str=str, event=event,
+                    active="members", sub_menu=sub_menu,
+                    recive_number=recive_number)
     if query_str == "posts":
         return render_template("events/view-event/posts.html",
                                len=len, str=str, event=event,

@@ -46,7 +46,7 @@
             </a>
             {% if current_user.profile %}
             {% if current_user.profile.id == event.host.id %}
-            <a href="#" class="btn btn-sm btn-dark"><i class="fas fa-plus"></i> Invite</a>
+            <button class="btn btn-sm btn-dark">Hosting</button>
             {% elif event.is_profile_going(current_user.profile.id) %}
             <a href="#" class="btn btn-sm btn-dark"><i class="fas fa-check"></i> Registered</a>
             {% elif event.is_profile_pending(current_user.profile.id) %}
@@ -62,19 +62,19 @@
 
     <ul class="nav nav-pills mt-1 mb-3">
         <li class="nav-item me-1 text-center">
-            <a class="nav-link btn-nav {{ 'active' if active == 'details' }}"
+            <a class="nav-link btn-sm btn-nav {{ 'active' if active == 'details' }}"
                 href="{{ url_for('events.view_event', id=event.id, filter='details') }}">Details</a>
         </li>
         <li class="nav-item me-1 text-center">
-            <a class="nav-link btn-nav {{ 'active' if active == 'posts' }}"
+            <a class="nav-link btn-sm btn-nav {{ 'active' if active == 'posts' }}"
                 href="{{ url_for('events.view_event', id=event.id, filter='posts') }}">Event Posts</a>
         </li>
         <li class="nav-item me-1 text-center">
-            <a class="nav-link btn-nav {{ 'active' if active == 'messages' }}"
+            <a class="nav-link btn-sm btn-nav {{ 'active' if active == 'messages' }}"
                 href="{{ url_for('events.view_event', id=event.id, filter='messages') }}">Message Box</a>
         </li>
         <li class="nav-item me-1 text-center">
-            <a class="nav-link btn-nav {{ 'active' if active == 'members' }}"
+            <a class="nav-link btn-sm btn-nav {{ 'active' if active == 'members' }}"
                 href="{{ url_for('events.view_event', id=event.id, filter='members') }}">Members</a>
         </li>
     </ul>
