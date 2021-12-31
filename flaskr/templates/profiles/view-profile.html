@@ -307,7 +307,8 @@ endblock %} {% block content %}
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header modal-header-custom">
-                    <h5 class="modal-title" id="report-profile-modal">Report Against {{ user.profile.get_fullname() }}
+                    <h5 class="modal-title" id="report-profile-modal">
+                        Report Against {{ user.profile.get_fullname() }}
                     </h5>
                     <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close"><i
                             class="bi bi-x-lg"></i></button>

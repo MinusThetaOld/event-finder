@@ -1,3 +1,5 @@
+import os
+
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from flaskr import db
@@ -22,14 +24,24 @@ def view_event(id: int):
     if not event:
         return render_template("mains/errors.html", status=404, message="Event not found!")
     query_str = request.args.get("filter")
+    recive_number = str(os.environ.get("RECIVE_NUMBER")) or "xxx-xxxxxxxx"
+    
     if query_str == "messages":
-        return render_template("events/view-event/messages.html", len=len, str=str, event=event, active='messages')
+        return render_template("events/view-event/messages.html",
+                               len=len, str=str, event=event,
+                               active='messages', recive_number=recive_number)
     if query_str == "members":
-        return render_template("events/view-event/members.html", len=len, str=str, event=event, active='members')
+        return render_template("events/view-event/members.html",
+                               len=len, str=str, event=event,
+                               active='members', recive_number=recive_number)
     if query_str == "posts":
-        return render_template("events/view-event/posts.html", len=len, str=str, event=event, active='posts')
+        return render_template("events/view-event/posts.html",
+                               len=len, str=str, event=event,
+                               active='posts', recive_number=recive_number)
     # if none of the avobe is true
-    return render_template("events/view-event/details.html", len=len, str=str, event=event, active='details')
+    return render_template("events/view-event/details.html",
+                           len=len, str=str, event=event,
+                           active='details', recive_number=recive_number)
 
 
 @events.route("/create", methods=["GET", "POST"])
@@ -149,3 +161,37 @@ def add_photos(id: int):
 
     flash("Photos uploaded successfully.", "success")
     return redirect(url_for("events.view_event", id=event.id))
+
+
+@events.route("/register/<int:id>", methods=["POST"])
+@login_required
+def register_for_event(id: int):
+    """Register a user for an event
+
+    This route only accept post request.
+    This will validate the submited data and add
+    the user in a queue of pending payments member.
+
+    :param id: Event id which the logged in user want to register for
+    :type id: int
+    """
+    # create payment pending object and commit that to the db
+    pass
+
+
+@events.route("/<int:event_id>/accept/<int:profile_id>")
+@login_required
+def accept_pending_members(event_id: int, profile_id: int):
+    """Accept a users request for register in the event
+
+    This route only accept get request.
+    This route will add the profile in joined members list in the event model.
+    To access this route a logged in user must be the host of this event.
+
+    :param event_id: The event id
+    :type id: int
+
+    :param profile_id: The profile id who was at the pending member list
+    :type id: int
+    """
+    pass

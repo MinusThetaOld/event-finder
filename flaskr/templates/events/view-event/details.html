@@ -141,12 +141,12 @@
 <div class="modal fade" id="add-photo-modal" tabindex="-1" aria-labelledby="add-photo-modal"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modal-custom">
+        <div class="modal-content">
             <div class="modal-header modal-header-custom">
-                <h5 class="modal-title text-light" id="add-photo-modal">
+                <h5 class="modal-title" id="add-photo-modal">
                     Add photos in the event
                 </h5>
-                <button type="button" class="btn clr-white" data-bs-dismiss="modal"
+                <button type="button" class="btn" data-bs-dismiss="modal"
                     aria-label="Close"><i class="bi bi-x-lg"></i></button>
             </div>
             <div class="modal-body modal-body-custom">
@@ -171,16 +171,14 @@
                     </div>
                     {% for i in range(3) %}
                     <div class="form-group mb-2">
-                        <label for="photo-one">Photo {{i+1}}</label>
+                        <label for="photo-{{ str(i+1) }}" class="text-dark">Photo {{i+1}}</label>
                         <input type="file" class="form-control input-box" name="photo_{{ str(i+1) }}"
                             id="photo-{{ str(i+1) }}" />
                     </div>
                     {% endfor %}
                     <input type="submit" value="Upload Photos" class="btn btn-primary btn-sm" />
+                    <button type="button" class="btn btn-sm me-2 btn-dark" data-bs-dismiss="modal">Close</button>
                 </form>
-            </div>
-            <div class="modal-footer modal-footer-custom">
-                <button type="button" class="btn btn-sm btn-dark" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
