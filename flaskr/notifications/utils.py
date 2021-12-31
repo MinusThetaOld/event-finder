@@ -18,7 +18,19 @@ class NotificationMessage():
     @staticmethod
     def report_user(first_user_name: str, second_user_name: str):
         return f"{first_user_name} has reported {second_user_name}."
-    
+
     @staticmethod
     def want_promotion(user_name: str):
         return f"{user_name} wants to be a host."
+
+    @staticmethod
+    def complain_resolved_by_ban(name: str):
+        return f"Your complain against {name} has been considered. He is now banned from the service."
+
+    @staticmethod
+    def complain_resolved_by_warning(name: str):
+        return f"Your complain against {name} has been considered. He is given a warnning."
+
+    @staticmethod
+    def complain_not_acceptable(name: str):
+        return f"Your complain against {name} has been considered. Sorry, your complain is not acceptable."
