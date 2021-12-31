@@ -258,16 +258,16 @@ class Event(db.Model):
     def event_status(self):
         if self.event_time < datetime.utcnow():
             return {
-                "message": "Register closed",
+                "message": "Registration closed",
                 "category": "danger"
             }
         if self.is_open:
             return {
-                "message": "Register ongoing",
+                "message": "Registration ongoing",
                 "category": "primary"
             }
         return {
-                "message": "Register closed",
+                "message": "Registration closed",
                 "category": "danger"
             }
 

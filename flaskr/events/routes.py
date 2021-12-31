@@ -142,8 +142,6 @@ def add_photos(id: int):
     photo_2 = request.files.get("photo_2")
     photo_3 = request.files.get("photo_3")
 
-    flash(f"{bool(photo_1)}", "primary")
-
     if photo_1:
         photo_file = save_photos(
             photo_1, event.id, "eventPhotos", 1280, 720)
