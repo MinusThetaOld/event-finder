@@ -271,6 +271,15 @@ class Event(db.Model):
                 "category": "danger"
             }
 
+    def is_profile_going(self, profile_id: int):
+        return profile_id in self.members
+
+    def is_profile_pending(self, profile_id: int):
+        for pending_payment in self.pending_payments:
+            if pending_payment.profile.id == profile_id:
+                return True
+        return False
+
     def add_photo(self, file_path):
         list_of_photos = []
         for path in self.photos:
