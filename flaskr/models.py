@@ -337,6 +337,10 @@ class PaymentPending(db.Model):
         self.profile_id = profile_id
         self.event_id = event_id
 
+    def approve(self):
+        db.session.delete(self)
+        db.session.commit()
+
 
 class Decline(db.Model):
     id = db.Column(db.Integer, primary_key=True)

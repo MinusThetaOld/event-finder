@@ -3,9 +3,7 @@
 }
 
 .cover-bg {
-    background-color: rgba(15, 15, 15, 0.3) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-    backdrop-filter: blur(10px) !important;
+    background-color: rgba(15, 15, 15, 0.055);
 }
 
 .event-image {
@@ -39,11 +37,12 @@
     margin-top: 0;
 }
 
-.btn-nav{
+.btn-nav, .btn-nav:focus {
     min-width: 120px;
+    color: #101010;
 }
 
-.active[data-nav-btn]{
+.active, .btn-nav:hover {
     background-color: #101010 !important;
     color: #f6f6f6 !important;
 }
