@@ -39,11 +39,12 @@
     margin-top: 0;
 }
 
-.btn-nav{
+.btn-nav, .btn-nav:focus {
     min-width: 120px;
+    color: #101010;
 }
 
-.active[data-nav-btn]{
+.active, .btn-nav:hover {
     background-color: #101010 !important;
     color: #f6f6f6 !important;
 }

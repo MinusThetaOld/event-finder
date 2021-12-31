@@ -21,7 +21,15 @@ def view_event(id: int):
     event = Event.query.get(id)
     if not event:
         return render_template("mains/errors.html", status=404, message="Event not found!")
-    return render_template("events/view-event.html", len=len, str=str, event=event)
+    query_str = request.args.get("filter")
+    if query_str == "messages":
+        return render_template("events/view-event/messages.html", len=len, str=str, event=event, active='messages')
+    if query_str == "members":
+        return render_template("events/view-event/members.html", len=len, str=str, event=event, active='members')
+    if query_str == "posts":
+        return render_template("events/view-event/posts.html", len=len, str=str, event=event, active='posts')
+    # if none of the avobe is true
+    return render_template("events/view-event/details.html", len=len, str=str, event=event, active='details')
 
 
 @events.route("/create", methods=["GET", "POST"])
@@ -123,7 +131,7 @@ def add_photos(id: int):
     photo_3 = request.files.get("photo_3")
 
     flash(f"{bool(photo_1)}", "primary")
-    
+
     if photo_1:
         photo_file = save_photos(
             photo_1, event.id, "eventPhotos", 1280, 720)

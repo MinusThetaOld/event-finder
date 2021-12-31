@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block title %} Event {% endblock %}
+
+{% block add_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/events/view-event.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0 cover-bg">
+    <div class="container cover-location">
+        <img class="event-image" src="{{ url_for('static', filename=event.cover_photo) }}" alt="event_image">
+        <div class="card card-body location-name">
+            <span>{{ event.place_name }}</span>
+        </div>
+    </div>
+</div>
+<div class="container mt-2">
+    <div class="d-flex">
+        <div>
+            <div class="event-time text-uppercase">
+                {{ event.get_start_date_time_str() }}
+            </div>
+            <h1 class="event-name-style">
+                {{ event.title }}
+            </h1>
+        </div>
+        <div class="ms-auto align-self-center">
+            {% if current_user.profile and current_user.profile.is_event_bookmarked(event.id) %}
+            <a href="{{ url_for('profiles.unbookmark_event', id=event.id) }}" class="btn btn-sm btn-dark">
+                <i class="fas fa-bookmark"></i>
+            </a>
+            {% else %}
+            <a href="{{ url_for('profiles.bookmark_event', id=event.id) }}" class="btn btn-sm btn-dark">
+                <i class="far fa-bookmark"></i>
+            </a>
+            {% endif %}
+            {% if current_user.profile and current_user.profile.id == event.host.id %}
+            <a href="{{ url_for('events.event_info', id=event.id) }}" class="btn btn-sm btn-dark">
+                <i class="fas fa-cog"></i>
+            </a>
+            {% endif %}
+            <a href="#" class="btn btn-sm btn-dark">
+                <i class="fas fa-share-alt"></i>
+            </a>
+            {% if current_user.profile %}
+            {% if current_user.profile.id == event.host.id %}
+            <a href="#" class="btn btn-sm btn-dark"><i class="fas fa-plus"></i> Invite</a>
+            {% elif event.is_profile_going(current_user.profile.id) %}
+            <a href="#" class="btn btn-sm btn-dark"><i class="fas fa-check"></i> Registered</a>
+            {% elif event.is_profile_pending(current_user.profile.id) %}
+            <a href="#" class="btn btn-sm btn-dark"><i class="far fa-clock"></i> Pending</a>
+            {% else %}
+            <a href="#" class="btn btn-sm btn-dark"><i class="fas fa-signature"></i> Register</a>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <ul class="nav nav-pills mt-1 mb-3">
+        <li class="nav-item me-1 text-center">
+          <a class="nav-link btn-nav {{ 'active' if active == 'details' }}" href="{{ url_for('events.view_event', id=event.id, filter='details') }}">Details</a>
+        </li>
+        <li class="nav-item me-1 text-center">
+          <a class="nav-link btn-nav {{ 'active' if active == 'posts' }}" href="{{ url_for('events.view_event', id=event.id, filter='posts') }}">Event Posts</a>
+        </li>
+        <li class="nav-item me-1 text-center">
+          <a class="nav-link btn-nav {{ 'active' if active == 'messages' }}" href="{{ url_for('events.view_event', id=event.id, filter='messages') }}">Message Box</a>
+        </li>
+        <li class="nav-item me-1 text-center">
+          <a class="nav-link btn-nav {{ 'active' if active == 'members' }}" href="{{ url_for('events.view_event', id=event.id, filter='members') }}">Members</a>
+        </li>
+    </ul>
+
+    {% block event_data %} {% endblock %}
+</div>
+{% endblock %}
