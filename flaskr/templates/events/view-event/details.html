@@ -8,10 +8,12 @@
         <div class="card card-body shadow-card h-100">
             <div class="event-status-top-bar d-flex">
                 <div class="fw-bold">About the event</div>
+                {% if current_user.profile and event.host.id == current_user.profile.id %}
                 <a href="{{ url_for('events.event_info', id=event.id) }}"
                     class="align-self-center ms-auto icon-dark link-icon-dark">
                     <i class="fas fa-cog my-auto sm-icon"></i>
                 </a>
+                {% endif %}
             </div>
             <div class="px-1 mt-3">
                 <div class="d-flex align-items-center">
@@ -32,7 +34,7 @@
                 <div class="d-flex align-items-center">
                     <i class="fas fa-users"></i>
                     <div class="fw-bold mx-2">Members Count:</div>
-                    <div>36 out of 50</div>
+                    <div>{{ len(event.members) if event.members else 0 }} out of {{ event.max_member }} going</div>
                 </div>
                 <div class="d-flex align-items-center">
                     <i class="far fa-comment"></i>
@@ -90,10 +92,12 @@
             <div class="fw-bold">
                 Photos
             </div>
+            {% if current_user.profile and event.host.id == current_user.profile.id %}
             <button class="align-self-center ms-auto icon-dark link-icon-dark border-0"
                 data-bs-toggle="modal" data-bs-target="#add-photo-modal">
                 <i class="fas fa-plus sm-icon"></i>
             </button>
+            {% endif %}
         </div>
         <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
             <div class="carousel-inner mt-3">
@@ -122,15 +126,18 @@
         <div class="card card-body shadow-card">
             <div class="event-status-top-bar d-flex">
                 <div class="fw-bold">Description and Plan</div>
+                {% if current_user.profile and event.host.id == current_user.profile.id %}
                 <a href="{{ url_for('events.event_info', id=event.id) }}"
                     class="align-self-center ms-auto icon-dark link-icon-dark">
                     <i class="fas fa-cog my-auto sm-icon"></i>
                 </a>
+                {% endif %}
             </div>
             <div class="mt-1 mx-2" style="text-align: justify;">{{ event.description }}</div>
         </div>
     </div>
 </div>
+<!-- Modal for uploading images -->
 <div class="modal fade" id="add-photo-modal" tabindex="-1" aria-labelledby="add-photo-modal"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
