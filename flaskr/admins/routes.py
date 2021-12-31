@@ -238,13 +238,66 @@ def ban_user_and_close_complain(id: int):
     if not complain:
         flash("Complain object not found!", "danger")
         return redirect(url_for('admins.complain_box'))
-    ban_result = __ban_user(request.form, complain.complain_for)
-    if ban_result:
+    banned_profile = __ban_user(request.form, complain.complain_for)
+    if banned_profile:
+        complains_against_banned_profile = Complain.query.filter_by(
+            complain_for=banned_profile.id).all()
         notification = Notification(
             NotificationMessage.complain_resolved_by_ban(
                 complain.get_complain_for().get_fullname()), "",
             complain.complained_by.id)
+        for c in complains_against_banned_profile:
+            n = Notification(
+                NotificationMessage.user_banned_by_other_report(
+                    c.get_complain_for().get_fullname()), "",
+                c.complained_by.id)
+            db.session.delete(c)
+            db.session.add(n)
         db.session.delete(complain)
         db.session.add(notification)
         db.session.commit()
+        flash("User banned successfully.", "success")
+    return redirect(url_for("admins.complain_box"))
+
+
+@admins.route("/warn/<int:id>")
+@login_required
+@is_admin
+def warn_user(id: int):
+    complain = Complain.query.get(id)
+    if not complain:
+        flash("Complain object not found!", "danger")
+        return redirect(url_for('admins.complain_box'))
+    notification_for_victim = Notification(
+        NotificationMessage.complain_resolved_by_warning(
+            complain.get_complain_for().get_fullname()), "",
+        complain.complained_by.id)
+    notification_for_reported_profile = Notification(
+        NotificationMessage.warn_user(
+            "You were reported by other user. Please be kind otherwise we will take action against you next time."), "",
+        complain.get_complain_for().id)
+    db.session.delete(complain)
+    db.session.add(notification_for_victim)
+    db.session.add(notification_for_reported_profile)
+    db.session.commit()
+    flash("Warned the user successfully.", "success")
+    return redirect(url_for("admins.complain_box"))
+
+
+@admins.route("/not-acceptable-report/<int:id>")
+@login_required
+@is_admin
+def not_acceptable_report(id: int):
+    complain = Complain.query.get(id)
+    if not complain:
+        flash("Complain object not found!", "danger")
+        return redirect(url_for('admins.complain_box'))
+    notification = Notification(
+        NotificationMessage.complain_not_acceptable(
+            complain.get_complain_for().get_fullname()), "",
+        complain.complained_by.id)
+    db.session.delete(complain)
+    db.session.add(notification)
+    db.session.commit()
+    flash("Complain resolved successfully.", "success")
     return redirect(url_for("admins.complain_box"))

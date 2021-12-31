@@ -25,11 +25,19 @@ class NotificationMessage():
 
     @staticmethod
     def complain_resolved_by_ban(name: str):
-        return f"Your complain against {name} has been considered. He is now banned from the service."
+        return f"Your complain against {name} has been considered. The user is now banned from the service."
+
+    @staticmethod
+    def user_banned_by_other_report(name: str):
+        return f"The user {name}, you reported is now banned from the service."
 
     @staticmethod
     def complain_resolved_by_warning(name: str):
         return f"Your complain against {name} has been considered. He is given a warnning."
+
+    @staticmethod
+    def warn_user(reason: str):
+        return f"You are warned! {reason}"
 
     @staticmethod
     def complain_not_acceptable(name: str):

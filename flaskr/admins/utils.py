@@ -10,7 +10,7 @@ def __ban_user(form_data, id: int) -> bool:
     profile = Profile.query.get(id)
     if profile.is_banned():
         flash("Cannot ban a user who is already banned.", "danger")
-        return False
+        return None
     days = form_data.get("days")
     reason = form_data.get("reason")
     try:
@@ -26,4 +26,4 @@ def __ban_user(form_data, id: int) -> bool:
     db.session.add(notification)
     db.session.commit()
     flash(f"Account has been banned for {days} days.", "success")
-    return True
+    return profile

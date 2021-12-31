@@ -38,9 +38,11 @@
             <button href="{{ url_for('admins.ban_user_and_close_complain', id=complain.id) }}"
                 class="btn btn-dark btn-action-ban" data-bs-toggle="modal" data-bs-target="#banuser-modal"><i
                     class="fas fa-ban"></i> Ban User</button>
-            <a href="#" class="btn btn-dark mx-3 btn-action-warn"><i class="fas fa-exclamation-triangle"></i> Warn
+            <a href="{{ url_for('admins.warn_user', id=complain.id) }}" class="btn btn-dark mx-3 btn-action-warn"><i
+                    class="fas fa-exclamation-triangle"></i> Warn
                 User</a>
-            <a href="#" class="btn btn-dark btn-action-not-accept"><i class="fas fa-check-double"></i> Not
+            <a href="{{ url_for('admins.not_acceptable_report', id=complain.id) }}"
+                class="btn btn-dark btn-action-not-accept"><i class="fas fa-check-double"></i> Not
                 Acceptable</a>
         </div>
         <!-- Ban User Modal -->
