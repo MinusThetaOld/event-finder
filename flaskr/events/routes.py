@@ -211,10 +211,15 @@ def accept_pending_members(event_id: int, profile_id: int):
     :param profile_id: The profile id who was at the pending member list
     :type id: int
     """
-    event = Event.query.get(id)
+    event = Event.query.get(event_id)
+    if current_user.profile.id != event.host.id:
+        flash("You can not access the route.", "danger")
+        return redirect(url_for("events.view_event", id=event_id, filter="members",members="pending"))
     pending_payments = event.pending_payments
     for i in pending_payments:
         if profile_id == i.profile.id:
             i.approve()
             break
-    return redirect(url_for("events.view_event", id=id))
+    event.add_members(profile_id)
+    flash("Member approved.", "info")
+    return redirect(url_for("events.view_event", id=event_id, filter="members",members="pending"))

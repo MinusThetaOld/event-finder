@@ -279,13 +279,13 @@ class Event(db.Model):
                 return True
         return False
 
-    def get_memebers(self) -> list:
+    def get_members(self) -> list:
         list_of_members = []
         for members_id in self.members:
             list_of_members.append(Profile.query.get(members_id))
         return list_of_members
 
-    def add_memebers(self, profile_id: int):
+    def add_members(self, profile_id: int):
         list_of_members = []
         for members_id in self.members:
             list_of_members.append(members_id)

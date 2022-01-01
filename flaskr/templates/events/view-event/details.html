@@ -68,6 +68,11 @@
                         <div class="mx-2">{{ event.host.user.email }}</div>
                     </div>
                     <div class="d-flex align-items-center">
+                        <i class="fas fa-tty"></i>
+                        <div class="fw-bold mx-2">Contact:</div>
+                        <div>{{ event.phone_number }}</div>
+                    </div>
+                    <div class="d-flex align-items-center">
                         <i class="fas fa-star"></i>
                         <div class="mx-2">
                             {{ event.host.user.profile.rating if event.host.user.profile.rating else

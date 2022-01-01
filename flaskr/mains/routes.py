@@ -12,4 +12,4 @@ mains = Blueprint("mains", __name__)
 def homepage():
     eligable = is_eligable(current_user)
     events = Event.query.order_by(Event.event_time)[:12]
-    return render_template("mains/homepage.html", eligable=eligable, events=events)
+    return render_template("mains/homepage.html", eligable=eligable, events=events, len=len)
