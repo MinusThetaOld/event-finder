@@ -146,6 +146,19 @@
                 {% endif %}
             </div>
             <div class="mt-2">
+                {{ form.phone_number.label(class="form-label mb-0") }}
+                {% if form.phone_number.errors %}
+                {{ form.phone_number(class="form-control input-box is-invalid", id="phone_number")}}
+                <div class="invalid-feedback">
+                    {% for error in form.phone_number.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.phone_number(class="form-control input-box", id="phone_number") }}
+                {% endif %}
+            </div>
+            <div class="mt-2">
                 {{ form.event_cover_photo.label(class="form-label mb-0") }}
                 {% if form.event_cover_photo.errors %}
                 {{ form.event_cover_photo(class="form-control input-box is-invalid", id="event_cover_photo")}}

@@ -23,11 +23,15 @@ class EventForm(FlaskForm):
     event_description = TextAreaField("Description*", validators=[DataRequired()],
                                       render_kw={"placeholder": "Tell about the event."})
     event_fee = IntegerField("Event Fee*", validators=[DataRequired()],
-                             render_kw={"placeholder": "Enter the event fee(In Taka)."})
+                             render_kw={"placeholder": "Enter the event fee (In Taka)."})
     event_days_count = IntegerField(
-        "Number of days*", render_kw={"placeholder": "Event days"})
+        "Number of days*", render_kw={"placeholder": "Event days."})
     event_nights_count = IntegerField(
-        "Number of nights*", render_kw={"placeholder": "Event nights"})
+        "Number of nights*", render_kw={"placeholder": "Event nights."})
+    phone_number = StringField("Phone Number", validators=[DataRequired()],
+                             render_kw={
+                                 "placeholder": "Enter your phone number."
+                             })
     hotel_name = StringField("Hotel Name",
                              render_kw={
                                  "placeholder": "Enter the name of hotel if the \event includes it."

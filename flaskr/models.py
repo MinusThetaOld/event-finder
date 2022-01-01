@@ -202,12 +202,12 @@ class Event(db.Model):
     )
     is_open = db.Column(db.Boolean, default=True)
     max_member = db.Column(db.Integer, nullable=False)
-    pending_members = db.Column(db.ARRAY(db.Integer), default=[])
     pending_payments = db.relationship("PaymentPending", backref="event")
     hotel_name = db.Column(db.String(150))
     hotel_weblink = db.Column(db.String)
     declines = db.relationship("Decline", backref="event")
     logs = db.relationship("Log", backref="event")
+    phone_number = db.Column(db.String)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
@@ -225,6 +225,7 @@ class Event(db.Model):
         max_member: int,
         hotel_name: str,
         hotel_weblink: str,
+        phone_number: str,
         plans=[],
         photos=[],
     ) -> None:
@@ -236,6 +237,7 @@ class Event(db.Model):
         self.night = night
         self.fee = fee
         self.host_id = host_id
+        self.phone_number = phone_number
         if cover_photo:
             self.cover_photo = cover_photo
         self.max_member = max_member
@@ -338,13 +340,13 @@ class PaymentPending(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
     event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
-    trnx_id = db.Column(db.Integer, nullable=False)
+    trnx = db.Column(db.String)
     is_approved = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self, trnx_id: str, profile_id: int, event_id: int) -> None:
-        self.trnx_id = trnx_id
+    def __init__(self, trnx: str, profile_id: int, event_id: int) -> None:
+        self.trnx = trnx
         self.profile_id = profile_id
         self.event_id = event_id
 

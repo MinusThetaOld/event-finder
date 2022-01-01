@@ -42,3 +42,7 @@ class NotificationMessage():
     @staticmethod
     def complain_not_acceptable(name: str):
         return f"Your complain against {name} has been considered. Sorry, your complain is not acceptable."
+    
+    @staticmethod
+    def pending_payments(name: str):
+        return f"{name} has requested for join your event"

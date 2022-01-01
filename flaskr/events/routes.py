@@ -5,7 +5,8 @@ from flask_login import current_user, login_required
 from flaskr import db
 from flaskr.decorators import is_host, is_verified
 from flaskr.events.forms import *
-from flaskr.models import Event, PaymentPending
+from flaskr.models import Event, Notification, PaymentPending
+from flaskr.notifications.utils import NotificationMessage
 from flaskr.profiles.utils import remove_photo, save_photos
 from sqlalchemy import desc
 
@@ -25,7 +26,7 @@ def view_event(id: int):
         return render_template("mains/errors.html", status=404, message="Event not found!")
     query_str = request.args.get("filter")
     members_sub_query = request.args.get("members")
-    recive_number = str(os.environ.get("RECIVE_NUMBER")) or "xxx-xxxxxxxx"
+    recive_number = event.phone_number or "01xxxxxxxxx"
 
     if query_str == "messages":
         return render_template("events/view-event/messages.html",
@@ -36,9 +37,9 @@ def view_event(id: int):
         if members_sub_query == "pending":
             sub_menu = "pending-members"
         return render_template("events/view-event/members.html",
-                    len=len, str=str, event=event,
-                    active="members", sub_menu=sub_menu,
-                    recive_number=recive_number)
+                               len=len, str=str, event=event,
+                               active="members", sub_menu=sub_menu,
+                               recive_number=recive_number)
     if query_str == "posts":
         return render_template("events/view-event/posts.html",
                                len=len, str=str, event=event,
@@ -59,7 +60,7 @@ def create_event():
         event = Event(form.event_title.data, form.event_description.data, form.event_location.data,
                       form.event_start_time.data, form.event_days_count.data, form.event_nights_count.data,
                       form.event_fee.data, current_user.profile.id, form.event_cover_photo.data,
-                      form.event_max_members.data, form.hotel_name.data, form.hotel_web_link.data)
+                      form.event_max_members.data, form.hotel_name.data, form.hotel_web_link.data, form.phone_number.data)
         if form.event_cover_photo.data:
             # saving
             photo_file = save_photos(
@@ -93,6 +94,7 @@ def event_info(id: int):
         event.fee = form.event_fee.data
         event.hotel_name = form.hotel_name.data
         event.hotel_weblink = form.hotel_web_link.data
+        event.phone_number = form.phone_number.data
         if form.event_cover_photo.data:
             file_path = event.cover_photo
             if not ("/images/default/CoverPhotos/event-default.png" in file_path):
@@ -114,6 +116,7 @@ def event_info(id: int):
         form.event_fee.data = event.fee
         form.hotel_name.data = event.hotel_name
         form.hotel_web_link.data = event.hotel_weblink
+        form.phone_number.data = event.phone_number
     return render_template("events/event-info.html", active="event-info", form=form, event=event)
 
 
@@ -179,7 +182,18 @@ def register_for_event(id: int):
     :type id: int
     """
     # create payment pending object and commit that to the db
-    pass
+    trnx_id = request.form.get("trnx_id")
+    if not trnx_id:
+        return redirect(url_for("events.view_event", id=id))
+    pending = PaymentPending(trnx_id, current_user.profile.id, id)
+    db.session.add(pending)
+    event = Event.query.get(id)
+    notify = Notification(NotificationMessage.pending_payments(current_user.profile.get_fullname(
+    )), url_for("events.view_event", id=id, filter="members", members="pending"), event.host.id)
+    db.session.add(notify)
+    db.session.commit()
+    flash("Request successfully sent.", "success")
+    return redirect(url_for("events.view_event", id=id))
 
 
 @events.route("/<int:event_id>/accept/<int:profile_id>")
@@ -197,4 +211,10 @@ def accept_pending_members(event_id: int, profile_id: int):
     :param profile_id: The profile id who was at the pending member list
     :type id: int
     """
-    pass
+    event = Event.query.get(id)
+    pending_payments = event.pending_payments
+    for i in pending_payments:
+        if profile_id == i.profile.id:
+            i.approve()
+            break
+    return redirect(url_for("events.view_event", id=id))
