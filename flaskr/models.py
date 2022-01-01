@@ -105,6 +105,7 @@ class Profile(db.Model):
     notifications = db.relationship("Notification", backref="profile")
     message_sent = db.relationship("Message", backref="sender")
     complains = db.relationship("Complain", backref="complained_by")
+    posts = db.relationship("Post", backref="profile")
     logs = db.relationship("Log", backref="profile")
     profile_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
     event_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
@@ -194,6 +195,7 @@ class Event(db.Model):
     host_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
     members = db.Column(db.ARRAY(db.Integer), default=[])
     chat_room = db.relationship("Message", backref="event")
+    posts = db.relationship("Post", backref="event")
     plans = db.Column(db.ARRAY(db.String), default=[])
     photos = db.Column(db.ARRAY(db.String), default=[])
     cover_photo = db.Column(
@@ -453,3 +455,91 @@ class AccountRestriction(db.Model):
 
     def days_left(self):
         return self.expire_date.strftime("%d %B, %Y")
+
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
+    event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
+    content = db.Column(db.String)
+    photo = db.Column(db.String)
+    up_vote = db.Column(db.ARRAY(db.Integer), default=[])
+    down_vote = db.Column(db.ARRAY(db.Integer), default=[])
+    comments = db.relationship("Comment", backref="post")
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __init__(self, content: str, photo: str, profile_id: int, event_id: int) -> None:
+        self.content = content
+        self.photo = photo
+        self.profile_id = profile_id
+        self.event_id = event_id
+
+    def get_up_votes(self):
+        list_of_profiles = []
+        for profile_id in self.up_vote:
+            list_of_profiles.append(Profile.query.get(profile_id))
+        return list_of_profiles
+
+    def get_down_votes(self):
+        list_of_profiles = []
+        for profile_id in self.down_vote:
+            list_of_profiles.append(Profile.query.get(profile_id))
+        return list_of_profiles
+
+    def add_up_vote(self, profile_id: int):
+        up_voters = []
+        for id in self.up_vote:
+            up_voters.append(id)
+        up_voters.append(profile_id)
+        self.up_vote = up_voters
+        db.session.commit()
+
+    def add_down_vote(self, profile_id: int):
+        down_voters = []
+        for id in self.down_vote:
+            down_voters.append(id)
+        down_voters.append(profile_id)
+        self.up_vote = down_voters
+        db.session.commit()
+
+    def remove_up_vote(self, profile_id: int):
+        up_voters = []
+        for id in self.up_vote:
+            if profile_id != id:
+                up_voters.append(id)
+        self.up_vote = up_voters
+        db.session.commit()
+
+    def remove_down_vote(self, profile_id: int):
+        down_voters = []
+        for id in self.down_vote:
+            if profile_id != id:
+                down_voters.append(id)
+        self.up_vote = down_voters
+        db.session.commit()
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
+    content = db.Column(db.String, nullable=False)
+    replies = db.relationship("Reply", backref="comment")
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __init__(self, content: str, post_id: int) -> None:
+        self.content = content
+        self.post_id = post_id
+
+
+class Reply(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String, nullable=False)
+    comment_id = db.Column(db.Integer, db.ForeignKey("comment.id"))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __init__(self, content: str, comment_id: int) -> None:
+        self.content = content
+        self.comment_id = comment_id
