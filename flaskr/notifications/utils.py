@@ -46,3 +46,11 @@ class NotificationMessage():
     @staticmethod
     def pending_payments(name: str):
         return f"{name} has requested for join your event"
+    
+    @staticmethod
+    def approve_event_registration():
+        return "You are not approved to join by the host."
+    
+    @staticmethod
+    def declin_event_registration():
+        return "Host has delcined your registration."

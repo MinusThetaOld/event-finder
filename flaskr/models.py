@@ -99,7 +99,6 @@ class Profile(db.Model):
     hosted_events = db.relationship("Event", backref="host")
     joined_events = db.Column(db.ARRAY(db.Integer), default=[])
     pending_events = db.Column(db.ARRAY(db.Integer), default=[])
-    declines = db.relationship("Decline", backref="profile")
     pending_payments = db.relationship("PaymentPending", backref="profile")
     pending_req = db.relationship(
         "PromotionPending", backref="profile", uselist=False)
@@ -205,7 +204,6 @@ class Event(db.Model):
     pending_payments = db.relationship("PaymentPending", backref="event")
     hotel_name = db.Column(db.String(150))
     hotel_weblink = db.Column(db.String)
-    declines = db.relationship("Decline", backref="event")
     logs = db.relationship("Log", backref="event")
     phone_number = db.Column(db.String)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
@@ -341,6 +339,7 @@ class PaymentPending(db.Model):
     profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
     event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
     trnx = db.Column(db.String)
+    decline = db.relationship("Decline", backref="payment", uselist=False)
     is_approved = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
@@ -351,20 +350,22 @@ class PaymentPending(db.Model):
         self.event_id = event_id
 
     def approve(self):
-        db.session.delete(self)
+        self.is_approved = True
         db.session.commit()
 
 
 class Decline(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
-    event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
     message = db.Column(db.String, nullable=False)
+    payment_id = db.Column(db.Integer, db.ForeignKey("payment_pending.id"))
 
-    def __init__(self, message: str, profile_id: int, event_id: int) -> None:
+    def __init__(self, message: str,  payment_id: int) -> None:
         self.message = message
-        self.profile_id = profile_id
-        self.event_id = event_id
+        self.payment_id = payment_id
+
+    def resolve(self):
+        db.session.delete(self)
+        db.session.commit()
 
 
 class PromotionPending(db.Model):

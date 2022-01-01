@@ -19,8 +19,7 @@ def get_notifications():
 @login_required
 def mark_read(id: int):
     notification = Notification.query.get(id)
-    # If the user is not the owner of that notifiid != current_user.prcation
-    if notification.profile.ofile.id:
+    if notification.profile.id != current_user.profile.id:
         flash("Not authorized for this action.", "danger")
     else:
         notification.mark_read()
@@ -49,4 +48,3 @@ def mark_all():
         if not notification.is_readed:
             notification.mark_read()
     return redirect(url_for("notifications.get_notifications"))
-    
