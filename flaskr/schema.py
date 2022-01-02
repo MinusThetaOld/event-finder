@@ -3,15 +3,37 @@ from marshmallow import fields
 from flaskr import ma
 
 
+class UserSchemaForProfile(ma.Schema):
+    id = fields.Integer()
+    email = fields.Email()
+    is_verified = fields.Boolean()
+    role = fields.String()
+
+
+class ProfileSchemaForPost(ma.Schema):
+    id = fields.Integer()
+    first_name = fields.String()
+    last_name = fields.String()
+    profile_photo = fields.String()
+    user = fields.Nested(UserSchemaForProfile)
+
+
+class EventSchemaForPost(ma.Schema):
+    id = fields.Integer()
+    title = fields.String()
+
+
 class ReplySchema(ma.Schema):
     id = fields.Integer()
     content = fields.String()
+    created_at = fields.DateTime()
 
 
 class CommentSchema(ma.Schema):
     id = fields.Integer()
     content = fields.String()
     replies = fields.List(fields.Nested(ReplySchema))
+    created_at = fields.DateTime()
 
 
 class PostSchema(ma.Schema):
@@ -20,7 +42,9 @@ class PostSchema(ma.Schema):
     up_vote = fields.List(fields.Integer())
     down_vote = fields.List(fields.Integer())
     comments = fields.List(fields.Nested(CommentSchema))
-
+    created_at = fields.DateTime()
+    profile = fields.Nested(ProfileSchemaForPost)
+    event = fields.Nested(EventSchemaForPost)
 
 
 post_schema = PostSchema()
