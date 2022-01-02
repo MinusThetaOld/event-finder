@@ -1,10 +1,10 @@
 import os
 
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, request, url_for, session
 from flask_login import current_user, login_required
 from flask_login import login_user as login_user_function
 from flask_login import logout_user as logout_user_function
-from flaskr import bcrypt, db
+from flaskr import bcrypt, db, app
 from flaskr.decorators import is_admin, is_unbanned, is_verified
 from flaskr.mails import send_mail
 from flaskr.models import (Complain, ComplainCategory, Event, Notification,
@@ -12,6 +12,7 @@ from flaskr.models import (Complain, ComplainCategory, Event, Notification,
 from flaskr.notifications.utils import NotificationMessage
 from flaskr.users.forms import *
 from flaskr.users.utils import generate_token, password_reset_key_mail_body
+from jwt import encode
 
 users = Blueprint("users", __name__, url_prefix="/users")
 
@@ -75,8 +76,16 @@ def login_user():
         if fetched_user and bcrypt.check_password_hash(fetched_user.password, form.password.data):
             login_user_function(fetched_user, remember=form.remember_me.data)
             next_page = request.args.get("next")
+            response = redirect(next_page) if next_page else redirect(
+                url_for('mains.homepage'))
+            # jtw
+            jwt_token = encode({
+                "id": fetched_user.id,
+                "email": fetched_user.email,
+            }, app.config.get("JWT_SECRET_KEY"), algorithm="HS256")
+            response.set_cookie("access_token", jwt_token)
             flash("Login Successfull.", "success")
-            return redirect(next_page) if next_page else redirect(url_for('mains.homepage'))
+            return response
         else:
             flash("Login Failed! Please Check Email and Password.", "danger")
     return render_template("users/login.html", form=form, active='login')
