@@ -114,3 +114,15 @@
     height: 100px;
     width: 100px;
 }
+
+.comment-img-post {
+    border-radius: 50%;
+    height: 32px;
+    width: 32px;
+}
+
+.reply-img-post {
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+}
