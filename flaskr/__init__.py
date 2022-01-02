@@ -5,6 +5,7 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
@@ -32,6 +33,9 @@ app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
 # Database
 db = SQLAlchemy(app)
 
+# Marshmallow
+ma = Marshmallow(app)
+
 # Migration
 migrate = Migrate(app, db)
 
@@ -54,6 +58,9 @@ import flaskr.models
 db.create_all()
 
 from flaskr.admins.routes import admins
+from flaskr.api.comment import comments
+from flaskr.api.post import posts
+from flaskr.api.reply import replies
 from flaskr.events.routes import events
 from flaskr.mains.routes import mains
 from flaskr.notifications.routes import notifications
@@ -67,3 +74,6 @@ app.register_blueprint(mains)
 app.register_blueprint(admins)
 app.register_blueprint(events)
 app.register_blueprint(notifications)
+app.register_blueprint(posts)
+app.register_blueprint(comments)
+app.register_blueprint(replies)
