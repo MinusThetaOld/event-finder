@@ -35,8 +35,13 @@
         </div>
         {% endif %}
     </div>
-    <p>{{ comment.content }}</p>
+    <p class="mb-0">{{ comment.content }}</p>
     <div class="ms-5">
+        <!-- Reply Box -->
+        {% for reply in comment.replies %}
+        <div class="vr"></div>
+        {% include "events/view-event/post-sub-file/reply-card.html" %}
+        {% endfor %}
         {% if current_user.profile %}
         <div class="d-flex align-items-center mb-2">
             <img src="{{ url_for('static', filename=current_user.profile.profile_photo) }}"
@@ -49,9 +54,5 @@
             </div>
         </div>
         {% endif %}
-        <!-- Reply Box -->
-        {% for reply in comment.replies %}
-        {% include "events/view-event/post-sub-file/reply-card.html" %}
-        {% endfor %}
     </div>
 </div>

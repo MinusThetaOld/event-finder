@@ -1,4 +1,4 @@
-<div class="mt-2">
+<div>
     <div class="d-flex justify-content-between">
         <div class="d-flex align-items-center">
             <img src="{{ url_for('static', filename=reply.profile.profile_photo) }}"
@@ -35,5 +35,5 @@
         </div>
         {% endif %}
     </div>
-    <p style="font-size: 0.9rem;">{{ reply.content }}</p>
+    <p class="mb-0" style="font-size: 0.9rem;">{{ reply.content }}</p>
 </div>
