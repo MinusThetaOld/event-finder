@@ -160,7 +160,7 @@ class Profile(db.Model):
         list_of_events = []
         if self.joined_events:
             for event_id in self.joined_events:
-                list_of_events.append(Profile.query.get(event_id))
+                list_of_events.append(Event.query.get(event_id))
         return list_of_events
     
     def add_joined_events(self, event_id: int):
