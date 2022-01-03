@@ -64,13 +64,13 @@ endblock %} {% block content %}
         </div>
         <div class="d-flex w-100">
             <div class="mt-2 w-100 profile-info">
-                <h2 class="name">{{user.profile.first_name}} {{user.profile.last_name}}</h2>
-                <p class="info text-capitalize"><i class="bi bi-award-fill"></i> {{user.role.value}}</p>
-                <p class="info"><i class="bi bi-envelope-fill"></i> {{user.email}}</p>
+                <h2 class="name fw-bold">{{user.profile.first_name}} {{user.profile.last_name}}</h2>
+                <p class="info text-capitalize fw-bold"><i class="bi bi-award-fill"></i> {{user.role.value}}</p>
+                <p class="info fw-bold"><i class="bi bi-envelope-fill"></i> {{user.email}}</p>
                 {% if user.profile.nid_number %}
-                <p class="info"><i class="fas fa-address-card"></i> {{user.profile.nid_number}}</p>
+                <p class="info fw-bold"><i class="fas fa-address-card"></i> {{user.profile.nid_number}}</p>
                 {% endif %}
-                <p class="info">
+                <p class="info fw-bold">
                     <i class="bi bi-star-fill"></i> {{ user.profile.rating if user.profile.rating else 'Unrated'}}
                 </p>
                 <p class="info mt-1">{{ user.profile.bio if user.profile.bio }}</p>
@@ -222,9 +222,188 @@ endblock %} {% block content %}
             <!-- End -->
         </div>
         <div class="col-md-8">
-            <h1 class="profile-header"><i class="bi bi-calendar-event-fill"></i> Events</h1>
-            <div class="card card-body">
-                Nothing
+            <!-- Events -->
+
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-dark active" id="pills-joined-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-joined" type="button" role="tab" aria-controls="pills-joined"
+                        aria-selected="true">Joined Events</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-dark" id="pills-hosted-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-hosted" type="button" role="tab" aria-controls="pills-hosted"
+                        aria-selected="false">Hosted Events</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-dark" id="pills-ongoing-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-ongoing" type="button" role="tab" aria-controls="pills-ongoing"
+                        aria-selected="false">Ongoing Events</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-joined" role="tabpanel"
+                    aria-labelledby="pills-joined-tab">
+                    {% for event in joined_events %}
+                    <div class="col">
+                        <div class="card shadow-card event-card h-100 mt-2">
+                            <img src="{{ url_for('static', filename=event.cover_photo) }}"
+                                class="card-img-top event-card-img" alt="Cover photo of the event">
+                            <div class="card-body">
+                                <h6 class="card-title fw-bold">{{ event.title }}</h6>
+                                <div class="card-text text-{{ event.event_status().category }} fw-bold mb-1">
+                                    {{ event.event_status().message }}
+                                </div>
+                                <div class="card-text">
+                                    <strong>
+                                        <i class="fas fa-map-marker-alt"></i> Location:
+                                    </strong>
+                                    {{ event.place_name }}
+                                </div>
+                                <div class="card-text">
+                                    <strong>
+                                        <i class="fas fa-clock"></i> Date:
+                                    </strong>
+                                    {{ event.get_start_date() }} at {{ event.get_start_time() }}
+                                </div>
+                                <div class="card-text">
+                                    <strong>
+                                        <i class="fas fa-user-tie"></i> Host:
+                                    </strong>
+                                    <a href="{{ url_for('profiles.view_profile', id=event.host.id) }}"
+                                        class="text-reset">
+                                        {{ event.host.get_fullname() }}
+                                    </a>
+                                </div>
+                                <div class="card-text">
+                                    <strong>
+                                        <i class="fas fa-money-check-alt"></i> Register Fee:
+                                    </strong>
+                                    {{ event.fee }} Taka
+                                </div>
+                                <div class="card-text">
+                                    <strong>
+                                        <i class="fas fa-users"></i> Members:
+                                    </strong>
+                                    {{ len(event.members) if event.members else 0 }} out of {{ event.max_member }}
+                                </div>
+                                <a href="{{ url_for('events.view_event', id=event.id) }}"
+                                    class="btn btn-dark w-100 btn-sm mt-3">
+                                    Explore the event
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="tab-pane fade" id="pills-hosted" role="tabpanel" aria-labelledby="pills-hosted-tab">
+                    {% for event in hosted_events %}
+                    <div class="col">
+                        <div class="card shadow-card event-card h-100  mt-2">
+                            <img src="{{ url_for('static', filename=event.cover_photo) }}"
+                                class="card-img-top event-card-img" alt="Cover photo of the event">
+                            <div class="card-body">
+                                <h6 class="card-title fw-bold">{{ event.title }}</h6>
+                                <div class="card-text text-{{ event.event_status().category }} fw-bold mb-1">
+                                    {{ event.event_status().message }}
+                                </div>
+                                <div class="card-text">
+                                    <strong>
+                                        <i class="fas fa-map-marker-alt"></i> Location:
+                                    </strong>
+                                    {{ event.place_name }}
+                                </div>
+                                <div class="card-text">
+                                    <strong>
+                                        <i class="fas fa-clock"></i> Date:
+                                    </strong>
+                                    {{ event.get_start_date() }} at {{ event.get_start_time() }}
+                                </div>
+                                <div class="card-text">
+                                    <strong>
+                                        <i class="fas fa-user-tie"></i> Host:
+                                    </strong>
+                                    <a href="{{ url_for('profiles.view_profile', id=event.host.id) }}"
+                                        class="text-reset">
+                                        {{ event.host.get_fullname() }}
+                                    </a>
+                                </div>
+                                <div class="card-text">
+                                    <strong>
+                                        <i class="fas fa-money-check-alt"></i> Register Fee:
+                                    </strong>
+                                    {{ event.fee }} Taka
+                                </div>
+                                <div class="card-text">
+                                    <strong>
+                                        <i class="fas fa-users"></i> Members:
+                                    </strong>
+                                    {{ len(event.members) if event.members else 0 }} out of {{ event.max_member }}
+                                </div>
+                                <a href="{{ url_for('events.view_event', id=event.id) }}"
+                                    class="btn btn-dark w-100 btn-sm mt-3">
+                                    Explore the event
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="tab-pane fade" id="pills-ongoing" role="tabpanel" aria-labelledby="pills-ongoing-tab">
+                    {% for event in joined_events %}
+                    <div class="col">
+                        {% if event.event_status().status %}
+                        <div class="card shadow-card event-card h-100 mt-2">
+                            <img src="{{ url_for('static', filename=event.cover_photo) }}"
+                                class="card-img-top event-card-img" alt="Cover photo of the event">
+                            <div class="card-body">
+                                <h6 class="card-title fw-bold">{{ event.title }}</h6>
+                                <div class="card-text text-{{ event.event_status().category }} fw-bold mb-1">
+                                    {{ event.event_status().message }}
+                                </div>
+                                <div class="card-text">
+                                    <strong>
+                                        <i class="fas fa-map-marker-alt"></i> Location:
+                                    </strong>
+                                    {{ event.place_name }}
+                                </div>
+                                <div class="card-text">
+                                    <strong>
+                                        <i class="fas fa-clock"></i> Date:
+                                    </strong>
+                                    {{ event.get_start_date() }} at {{ event.get_start_time() }}
+                                </div>
+                                <div class="card-text">
+                                    <strong>
+                                        <i class="fas fa-user-tie"></i> Host:
+                                    </strong>
+                                    <a href="{{ url_for('profiles.view_profile', id=event.host.id) }}"
+                                        class="text-reset">
+                                        {{ event.host.get_fullname() }}
+                                    </a>
+                                </div>
+                                <div class="card-text">
+                                    <strong>
+                                        <i class="fas fa-money-check-alt"></i> Register Fee:
+                                    </strong>
+                                    {{ event.fee }} Taka
+                                </div>
+                                <div class="card-text">
+                                    <strong>
+                                        <i class="fas fa-users"></i> Members:
+                                    </strong>
+                                    {{ len(event.members) if event.members else 0 }} out of {{ event.max_member }}
+                                </div>
+                                <a href="{{ url_for('events.view_event', id=event.id) }}"
+                                    class="btn btn-dark w-100 btn-sm mt-3">
+                                    Explore the event
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>

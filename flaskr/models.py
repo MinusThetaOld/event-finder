@@ -155,6 +155,22 @@ class Profile(db.Model):
                 if id == event_id:
                     return True
         return False
+    
+    def get_joined_events(self) -> list:
+        list_of_events = []
+        if self.joined_events:
+            for event_id in self.joined_events:
+                list_of_events.append(Profile.query.get(event_id))
+        return list_of_events
+    
+    def add_joined_events(self, event_id: int):
+        list_of_events = []
+        if self.joined_events:
+            for event_id in self.joined_events:
+                list_of_events.append(event_id)
+        list_of_events.append(event_id)
+        self.joined_events = list_of_events
+        db.session.commit()
 
 
 class SocialConnection(db.Model):

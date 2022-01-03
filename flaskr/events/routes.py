@@ -71,6 +71,7 @@ def create_event():
             event.cover_photo = "/images/uploads/eventCover/" + photo_file
         db.session.add(event)
         db.session.commit()
+        current_user.profile.add_joined_events(event.id)
         flash(f"Event information saved", "success")
         return redirect(url_for("events.view_event", id=event.id))
     return render_template("events/create-event.html", form=form)
@@ -215,9 +216,16 @@ def accept_pending_members(event_id: int, profile_id: int):
     :type id: int
     """
     event = Event.query.get(event_id)
+    profile = Profile.query.get(profile_id)
+    
     if not event:
         flash("Event not found!.", "danger")
         return redirect(url_for("events.view_event", id=event_id, filter="members", members="pending"))
+    
+    if not profile:
+        flash("Profile not found!.", "danger")
+        return redirect(url_for("events.view_event", id=event_id, filter="members", members="pending"))
+    
     if current_user.profile.id != event.host.id:
         flash("You can not access the route.", "danger")
         return redirect(url_for("events.view_event", id=event_id, filter="members", members="pending"))
@@ -229,6 +237,7 @@ def accept_pending_members(event_id: int, profile_id: int):
                 i.decline.resolve()
             break
     event.add_members(profile_id)
+    profile.add_joined_events(event.id)
     notification = Notification(NotificationMessage.approve_event_registration(),
                                 url_for("events.view_event", id=event.id),
                                 profile_id)

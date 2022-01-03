@@ -8,6 +8,11 @@
     text-decoration: none;
 }
 
+button.active {
+    background-color: #101010 !important;
+    color: #f5f4f4 !important;
+}
+
 .profile-photo {
     border: 1px solid #f5f4f4;
     margin-top: -75px;

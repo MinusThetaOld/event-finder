@@ -20,7 +20,12 @@ def view_profile(id: int):
     user = User.query.get(id)
     if not user:
         return render_template("mains/errors.html", status=404, message="User not found!")
-    return render_template("profiles/view-profile.html", user=user, ban_form=ban_user_form)
+    hosted_events = user.profile.hosted_events
+    joined_events = user.profile.get_joined_events()
+    return render_template("profiles/view-profile.html", user=user,
+                           len=len, ban_form=ban_user_form,
+                           hosted_events=hosted_events,
+                           joined_events=joined_events)
 
 
 @profiles.route("/settings/change-info", methods=["GET", "POST"])

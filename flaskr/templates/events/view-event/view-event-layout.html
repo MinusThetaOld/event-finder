@@ -27,30 +27,33 @@
         <div class="ms-auto align-self-center">
             {% if current_user.profile %}
             {% if current_user.profile and current_user.profile.is_event_bookmarked(event.id) %}
-            <a href="{{ url_for('profiles.unbookmark_event', id=event.id) }}" class="btn btn-sm btn-dark">
+            <a href="{{ url_for('profiles.unbookmark_event', id=event.id) }}"
+                title="Remove the event from bookmarked list." class="btn btn-sm btn-dark">
                 <i class="fas fa-bookmark"></i>
             </a>
             {% else %}
-            <a href="{{ url_for('profiles.bookmark_event', id=event.id) }}" class="btn btn-sm btn-dark">
+            <a href="{{ url_for('profiles.bookmark_event', id=event.id) }}"
+                title="Bookmark the event." class="btn btn-sm btn-dark">
                 <i class="far fa-bookmark"></i>
             </a>
             {% endif %}
             {% endif %}
             {% if current_user.profile and current_user.profile.id == event.host.id %}
-            <a href="{{ url_for('events.event_info', id=event.id) }}" class="btn btn-sm btn-dark">
+            <a href="{{ url_for('events.event_info', id=event.id) }}"
+                title="Edit the events info." class="btn btn-sm btn-dark">
                 <i class="fas fa-cog"></i>
             </a>
             {% endif %}
-            <a href="#" class="btn btn-sm btn-dark">
+            <button class="btn btn-sm btn-dark" title="Click to copy the event link.">
                 <i class="fas fa-share-alt"></i>
-            </a>
+            </button>
             {% if current_user.profile %}
             {% if current_user.profile.id == event.host.id %}
             <button class="btn btn-sm btn-dark">Hosting</button>
             {% elif event.is_profile_going(current_user.profile.id) %}
-            <a href="#" class="btn btn-sm btn-dark"><i class="fas fa-check"></i> Registered</a>
+            <button class="btn btn-sm btn-dark"><i class="fas fa-check"></i> Registered</button>
             {% elif event.is_profile_pending(current_user.profile.id) %}
-            <a href="#" class="btn btn-sm btn-dark"><i class="far fa-clock"></i> Pending</a>
+            <button class="btn btn-sm btn-dark"><i class="far fa-clock"></i> Pending</button>
             {% else %}
             <button class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#event-register-modal">
                 <i class="fas fa-signature"></i> Register
