@@ -106,6 +106,8 @@ class Profile(db.Model):
     message_sent = db.relationship("Message", backref="sender")
     complains = db.relationship("Complain", backref="complained_by")
     posts = db.relationship("Post", backref="profile")
+    comments = db.relationship("Comment", backref="profile")
+    replies = db.relationship("Reply", backref="profile")
     logs = db.relationship("Log", backref="profile")
     profile_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
     event_bookmarks = db.Column(db.ARRAY(db.Integer), default=[])
@@ -518,28 +520,41 @@ class Post(db.Model):
                 down_voters.append(id)
         self.up_vote = down_voters
         db.session.commit()
+    
+    def times_ago(self):
+        return format(self.created_at, datetime.utcnow())
 
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
     post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
     content = db.Column(db.String, nullable=False)
     replies = db.relationship("Reply", backref="comment")
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self, content: str, post_id: int) -> None:
+    def __init__(self, content: str, post_id: int, profile_id: int) -> None:
         self.content = content
         self.post_id = post_id
+        self.profile_id = profile_id
+        
+    def times_ago(self):
+        return format(self.created_at, datetime.utcnow())
 
 
 class Reply(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
     content = db.Column(db.String, nullable=False)
     comment_id = db.Column(db.Integer, db.ForeignKey("comment.id"))
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __init__(self, content: str, comment_id: int) -> None:
+    def __init__(self, content: str, comment_id: int, profile_id: int) -> None:
         self.content = content
         self.comment_id = comment_id
+        self.profile_id = profile_id
+    
+    def times_ago(self):
+        return format(self.created_at, datetime.utcnow())

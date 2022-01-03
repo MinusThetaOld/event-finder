@@ -1,0 +1,44 @@
+<div class="mt-2">
+    <div class="d-flex justify-content-between">
+        <div class="d-flex align-items-center">
+            <img src="https://scontent.fdac116-1.fna.fbcdn.net/v/t39.30808-1/c0.69.320.320a/p320x320/242252182_3051200168534133_3468840385932885333_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=7206a8&_nc_ohc=_wzZSQnuvbEAX8DMoQJ&_nc_ht=scontent.fdac116-1.fna&oh=00_AT-aIXRfT_34dn2trDe3gzbWs_NoaRKmJygJX9eaM3kRog&oe=61D329A8"
+                class="reply-img-post">
+            <div class="ms-2">
+                <div class="d-flex align-items-center">
+                    <div class="fw-bold my-0" style="font-size: 0.8rem;">
+                        Shamsur Rahman
+                    </div>
+                    <div class="ms-2" style="font-size: 0.6rem"><i class="fas fa-circle"></i>
+                        Host
+                    </div>
+                </div>
+                <div class="text-muted my-0" style="font-size: 0.6rem;">
+                    Yesterday at 6:20 PM
+                </div>
+            </div>
+        </div>
+        {% if reply.profile.id == current_user.profile.id %}
+        <div class="align-self-center">
+            <div class="btn-group dropstart">
+                <button type="button" style="border: 0; background: none;" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item dropdown-edit" href="#">
+                            <i class="fas fa-pen-nib"></i> Edit reply
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item dropdown-delete" href="#">
+                            <i class="fas fa-trash-alt"></i> Delete reply
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <p style="font-size: 0.8rem;">{{ reply.content }}</p>
+</div>

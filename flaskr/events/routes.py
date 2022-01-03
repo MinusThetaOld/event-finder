@@ -3,7 +3,8 @@ from flask_login import current_user, login_required
 from flaskr import db
 from flaskr.decorators import is_host, is_verified
 from flaskr.events.forms import *
-from flaskr.models import Decline, Event, Notification, PaymentPending, Profile
+from flaskr.models import (Decline, Event, Notification, PaymentPending, Post,
+                           Profile)
 from flaskr.notifications.utils import NotificationMessage
 from flaskr.profiles.utils import remove_photo, save_photos
 from sqlalchemy import desc
@@ -41,9 +42,11 @@ def view_event(id: int):
                                active="members", sub_menu=sub_menu,
                                recive_number=recive_number)
     if query_str == "posts":
+        posts = Post.query.filter_by(event_id=id).order_by(desc(Post.created_at)).all()
         return render_template("events/view-event/posts.html",
                                len=len, str=str, event=event,
-                               active='posts', recive_number=recive_number)
+                               active='posts', recive_number=recive_number,
+                               posts=posts)
     # if none of the avobe is true
     return render_template("events/view-event/details.html",
                            len=len, str=str, event=event,
