@@ -2,6 +2,7 @@ const post_input = document.getElementById("post-input-box");
 const post_submit_btn = document.getElementById("post-input-submit");
 const post_holder = document.getElementById("post-holder");
 
+const delete_btn = document.getElementById("delete-post");
 
 function getCookie(cname) {
     let name = cname + "=";
@@ -52,13 +53,54 @@ post_submit_btn.addEventListener('click', function () {
         });
 });
 
+// delete_btn.addEventListener("click", function() {
+//     console.log("heloo")
+//     let headers = new Headers();
+//     headers.append('Accept', 'Application/JSON');
+//     headers.append('Content-Type', 'Application/JSON');
+//     headers.append('Authorization', getCookie("access_token"));
+//     let id = delete_btn.getAttribute("data-postId")
+//     let req = new Request(`/api/v1/posts/${id}`, {
+//         method: 'DELETE',
+//         mode: 'cors',
+//         headers,
+//     });
+//     fetch(req)
+//         .then((res) => res.json())
+//         .then((data) => {
+//             console.log(data.content)
+//         })
+//         .catch((e) => {
+//             console.error(e);
+//         });
+// })
 
+function delete_post(id) {
+    let headers = new Headers();
+    headers.append('Accept', 'Application/JSON');
+    headers.append('Content-Type', 'Application/JSON');
+    headers.append('Authorization', getCookie("access_token"));
+    let req = new Request(`/api/v1/posts/${id}`, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers,
+    });
+    fetch(req)
+        .then((res) => res.json())
+        .then((data) => {
+           let post_card = document.getElementById(`card-comment-${id}`);
+           post_card.remove()
+        })
+        .catch((e) => {
+            console.error(e);
+        });
+}
 function update_timeline(data) {
     const innerHTML = `
     <div class="px-1">
             <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center">
-                    <img src="${ "http://www." + window.location.host + "/static" + data.profile.profile_photo}"
+                    <img src="${ "http://" + window.location.host + "/static" + data.profile.profile_photo}"
                         class="host-img-post">
                     <div class="ms-2">
                         <div class="fw-bold my-0">${data.profile.first_name} ${data.profile.last_name}</div>
@@ -80,9 +122,9 @@ function update_timeline(data) {
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item dropdown-delete" href="#">
-                                    <i class="fas fa-trash-alt"></i> Delete post
-                                </a>
+                            <button class="dropdown-item dropdown-delete" onclick="delete_post(${ data.id })" data-postId="{{ post.id }}">
+                                <i class="fas fa-trash-alt"></i> Delete post
+                            </button>
                             </li>
                         </ul>
                     </div>
@@ -124,7 +166,7 @@ function update_timeline(data) {
         </div>
         <hr class="my-0 mb-2" />
         <div class="d-flex align-items-center mb-2">
-            <img src="${ "http://www." + window.location.host + "/static" + data.profile.profile_photo}"
+            <img src="${ "http://" + window.location.host + "/static" + data.profile.profile_photo}"
                 class="comment-img-post">
             <div class="d-flex w-100 px-2">
                 <input type="text" name="comment" id="comment-box-input" data-postid="${data.id}" class="form-control input-box me-2"
@@ -136,6 +178,7 @@ function update_timeline(data) {
 
     let div = document.createElement("div");
     div.className = "card card-body shadow-card mt-2";
+    div.id = `card-comment-${data.id}`
     div.innerHTML = innerHTML;
 
     return div;

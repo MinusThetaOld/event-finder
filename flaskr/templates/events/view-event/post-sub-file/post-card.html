@@ -24,9 +24,9 @@
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item dropdown-delete" href="#">
+                        <button class="dropdown-item dropdown-delete" onclick="delete_post({{ post.id }})" data-postId="{{ post.id }}">
                             <i class="fas fa-trash-alt"></i> Delete post
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </div>
