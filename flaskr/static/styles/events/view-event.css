@@ -126,3 +126,18 @@
     height: 25px;
     width: 25px;
 }
+
+.day-title {
+    font-size: 1.1rem;
+    line-height: 1.1rem;
+    text-transform: uppercase;
+    color: #dc3545;
+}
+
+.day-title:before {
+    content: "";
+    display: inline-block;
+    height: 0.9rem;
+    width: 2px;
+    background-color: #101010;
+}
