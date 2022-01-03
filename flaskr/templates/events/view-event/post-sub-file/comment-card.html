@@ -4,20 +4,15 @@
             <img src="{{ url_for('static', filename=comment.profile.profile_photo) }}"
                 class="comment-img-post">
             <div class="ms-2">
-                <div class="d-flex align-items-center">
-                    <div class="fw-bold my-0" style="font-size: 0.9rem;">
-                        {{ comment.profile.get_fullname() }}
-                    </div>
-                    <div class="ms-2 text-uppercase" style="font-size: 0.7rem"><i class="fas fa-circle"></i>
-                        {{ comment.profile.user.role.value }}
-                    </div>
+                <div class="fw-bold my-0" style="font-size: 0.9rem;">
+                    {{ comment.profile.get_fullname() }}
                 </div>
                 <div class="text-muted my-0" style="font-size: 0.7rem;">
                     {{ comment.times_ago() }}
                 </div>
             </div>
         </div>
-        {% if comment.profile.id == current_user.profile.id %}
+        {% if current_user.profile and comment.profile.id == current_user.profile.id %}
         <div class="align-self-center">
             <div class="btn-group dropstart">
                 <button type="button" style="border: 0; background: none;" data-bs-toggle="dropdown"
