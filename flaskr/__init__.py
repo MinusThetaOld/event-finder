@@ -59,8 +59,6 @@ mail = Mail(app)
 
 import flaskr.models
 
-db.create_all()
-
 from flaskr.admins.routes import admins
 from flaskr.api.comment import comments
 from flaskr.api.post import posts

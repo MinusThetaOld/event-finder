@@ -16,6 +16,8 @@ dist/
 build/
 *.egg-info/
 
+migrations/versions/*.py
+
 flaskr/static/images/uploads/cover/*.jpg
 flaskr/static/images/uploads/cover/*.jpeg
 flaskr/static/images/uploads/cover/*.png
