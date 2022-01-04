@@ -1,11 +1,11 @@
 from flask import Blueprint, request
 from flask.json import jsonify
 from flaskr import db
+from flaskr.api.utils import get_user
 from flaskr.decorators import is_token_verified
 from flaskr.models import Comment, Post, Profile, Reply, User
 from flaskr.schema import (comment_schema, comment_schemas, post_schema,
                            post_schemas, reply_schema, reply_schemas)
-from flaskr.api.utils import get_user
 
 replies = Blueprint("replies", __name__, url_prefix="/api/v1/replies")
 
@@ -19,7 +19,7 @@ def create():
     profile = Profile.query.get(profile_id)
     comment = Comment.query.get(comment_id)
     
-    if not content or not comment_id or not profile:
+    if not content or not comment or not profile:
         return jsonify({
             "error": "Request data is not valid. Some field is missing."
         }), 400

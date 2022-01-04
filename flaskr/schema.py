@@ -26,6 +26,7 @@ class EventSchemaForPost(ma.Schema):
 class ReplySchema(ma.Schema):
     id = fields.Integer()
     content = fields.String()
+    profile = fields.Nested(ProfileSchemaForPostCommentReply)
     created_at = fields.DateTime()
 
 

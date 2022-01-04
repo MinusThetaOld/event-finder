@@ -38,18 +38,24 @@
     <p class="mb-0">{{ comment.content }}</p>
     <div class="ms-5">
         <!-- Reply Box -->
-        {% for reply in comment.replies %}
-        <div class="vr"></div>
-        {% include "events/view-event/post-sub-file/reply-card.html" %}
-        {% endfor %}
+        <div id="reply-holder-{{ comment.id }}">
+            {% for reply in comment.replies %}
+            <div id="card-reply-{{ reply.id }}">
+                <div class="vr"></div>
+                {% include "events/view-event/post-sub-file/reply-card.html" %}
+            </div>
+            {% endfor %}
+        </div>
         {% if current_user.profile and (current_user.profile.id in event.members or event.host.id == current_user.profile.id) %}
         <div class="d-flex align-items-center mb-2">
             <img src="{{ url_for('static', filename=current_user.profile.profile_photo) }}"
                 class="reply-img-post">
             <div class="d-flex w-100 px-2">
-                <input type="text" name="comment" id="comment-box" class="form-control input-box me-2"
+                <input type="text" name="comment"
+                    id="reply-box-{{ comment.id }}" class="form-control input-box me-2"
                     style="border-radius: 35px; font-size: 0.8rem;" placeholder="Write a reply..." />
-                <button class="btn btn-sm btn-light px-3" type="submit"><i
+                <button class="btn btn-sm btn-light px-3" type="submit"
+                    onclick="create_reply({{ current_user.profile.id }}, {{ comment.id }})"><i
                         class="fas fa-paper-plane"></i></button>
             </div>
         </div>
