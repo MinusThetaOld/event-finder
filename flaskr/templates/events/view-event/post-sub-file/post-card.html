@@ -73,14 +73,19 @@
     <img src="{{ url_for('static', filename=current_user.profile.profile_photo) }}"
         class="comment-img-post">
     <div class="d-flex w-100 px-2">
-        <input type="text" name="comment" id="comment-box" class="form-control input-box me-2"
-            style="border-radius: 35px;" placeholder="Write a comment..." />
-        <button class="btn btn-sm btn-light px-3" type="submit"><i class="fas fa-paper-plane"></i></button>
+        <input type="text" name="comment" id="comment-box-{{ post.id }}" class="form-control input-box me-2"
+            style="border-radius: 35px;" placeholder="Write a comment..." data-postId="{{ post.id }}" data-profileId="{{ current_user.profile.id }}" />
+        <button class="btn btn-sm btn-light px-3" id="comment-box-submit"
+            onclick="create_comment({{ current_user.profile.id }}, {{ post.id }})" type="submit"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 {% endif %}
 <!-- Comment Box -->
+<div id="comment-holder-{{ post.id }}">
 {% for comment in post.comments %}
+<div id="card-comment-{{ comment.id }}">
 <div class="vr"></div>
 {% include "events/view-event/post-sub-file/comment-card.html" %}
+</div>
 {% endfor %}
+</div>

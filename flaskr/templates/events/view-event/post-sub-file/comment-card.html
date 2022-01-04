@@ -26,9 +26,9 @@
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item dropdown-delete" href="#">
+                        <button class="dropdown-item dropdown-delete" onclick="delete_comment({{ comment.id }})">
                             <i class="fas fa-trash-alt"></i> Delete comment
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -42,7 +42,7 @@
         <div class="vr"></div>
         {% include "events/view-event/post-sub-file/reply-card.html" %}
         {% endfor %}
-        {% if current_user.profile %}
+        {% if current_user.profile and (current_user.profile.id in event.members or event.host.id == current_user.profile.id) %}
         <div class="d-flex align-items-center mb-2">
             <img src="{{ url_for('static', filename=current_user.profile.profile_photo) }}"
                 class="reply-img-post">

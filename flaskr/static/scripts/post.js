@@ -2,24 +2,6 @@ const post_input = document.getElementById("post-input-box");
 const post_submit_btn = document.getElementById("post-input-submit");
 const post_holder = document.getElementById("post-holder");
 
-const delete_btn = document.getElementById("delete-post");
-
-function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-
 
 post_submit_btn.addEventListener('click', function () {
     let headers = new Headers();
@@ -41,7 +23,7 @@ post_submit_btn.addEventListener('click', function () {
     fetch(req)
         .then((res) => res.json())
         .then((data) => {
-            let commentElement = update_timeline(data);
+            let commentElement = update_post_card(data);
             post_holder.insertBefore(
                 commentElement,
                 post_holder.children[0]
@@ -52,28 +34,6 @@ post_submit_btn.addEventListener('click', function () {
             console.error(e);
         });
 });
-
-// delete_btn.addEventListener("click", function() {
-//     console.log("heloo")
-//     let headers = new Headers();
-//     headers.append('Accept', 'Application/JSON');
-//     headers.append('Content-Type', 'Application/JSON');
-//     headers.append('Authorization', getCookie("access_token"));
-//     let id = delete_btn.getAttribute("data-postId")
-//     let req = new Request(`/api/v1/posts/${id}`, {
-//         method: 'DELETE',
-//         mode: 'cors',
-//         headers,
-//     });
-//     fetch(req)
-//         .then((res) => res.json())
-//         .then((data) => {
-//             console.log(data.content)
-//         })
-//         .catch((e) => {
-//             console.error(e);
-//         });
-// })
 
 function delete_post(id) {
     let headers = new Headers();
@@ -88,14 +48,14 @@ function delete_post(id) {
     fetch(req)
         .then((res) => res.json())
         .then((data) => {
-           let post_card = document.getElementById(`card-comment-${id}`);
+           let post_card = document.getElementById(`card-post-${id}`);
            post_card.remove()
         })
         .catch((e) => {
             console.error(e);
         });
 }
-function update_timeline(data) {
+function update_post_card(data) {
     const innerHTML = `
     <div class="px-1">
             <div class="d-flex justify-content-between">
@@ -178,7 +138,7 @@ function update_timeline(data) {
 
     let div = document.createElement("div");
     div.className = "card card-body shadow-card mt-2";
-    div.id = `card-comment-${data.id}`
+    div.id = `card-post-${data.id}`
     div.innerHTML = innerHTML;
 
     return div;

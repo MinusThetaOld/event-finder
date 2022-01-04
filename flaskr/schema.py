@@ -10,7 +10,7 @@ class UserSchemaForProfile(ma.Schema):
     role = fields.String()
 
 
-class ProfileSchemaForPost(ma.Schema):
+class ProfileSchemaForPostCommentReply(ma.Schema):
     id = fields.Integer()
     first_name = fields.String()
     last_name = fields.String()
@@ -33,6 +33,7 @@ class CommentSchema(ma.Schema):
     id = fields.Integer()
     content = fields.String()
     replies = fields.List(fields.Nested(ReplySchema))
+    profile = fields.Nested(ProfileSchemaForPostCommentReply)
     created_at = fields.DateTime()
 
 
@@ -43,7 +44,7 @@ class PostSchema(ma.Schema):
     down_vote = fields.List(fields.Integer())
     comments = fields.List(fields.Nested(CommentSchema))
     created_at = fields.DateTime()
-    profile = fields.Nested(ProfileSchemaForPost)
+    profile = fields.Nested(ProfileSchemaForPostCommentReply)
     event = fields.Nested(EventSchemaForPost)
 
 

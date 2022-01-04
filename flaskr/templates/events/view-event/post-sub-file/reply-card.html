@@ -19,6 +19,7 @@
                     aria-expanded="false">
                     <i class="fas fa-ellipsis-h"></i>
                 </button>
+                {% if current_user.profile and reply.profile.id == current_user.profile.id %}
                 <ul class="dropdown-menu">
                     <li>
                         <a class="dropdown-item dropdown-edit" href="#">
@@ -31,6 +32,7 @@
                         </a>
                     </li>
                 </ul>
+                {% endif %}
             </div>
         </div>
         {% endif %}
