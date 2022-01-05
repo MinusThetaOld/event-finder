@@ -129,9 +129,10 @@ function update_post_card(data) {
             <img src="${ "http://" + window.location.host + "/static" + data.profile.profile_photo}"
                 class="comment-img-post">
             <div class="d-flex w-100 px-2">
-                <input type="text" name="comment" id="comment-box-input" data-postid="${data.id}" class="form-control input-box me-2"
+                <input type="text" name="comment" id="comment-box-${data.id}" data-postid="${data.id}" class="form-control input-box me-2"
                     style="border-radius: 35px;" placeholder="Write a comment..." />
-                <button class="btn btn-sm btn-light px-3" type="submit" id="comment-box-submit"><i class="fas fa-paper-plane"></i></button>
+                <button class="btn btn-sm btn-light px-3" id="comment-box-submit"
+                    onclick="create_comment(${data.profile.id}, ${data.id})" type="submit"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
     `;

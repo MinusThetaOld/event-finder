@@ -26,7 +26,7 @@
                         </a>
                     </li>
                     <li>
-                        <button class="dropdown-item dropdown-delete" onclick="delete_comment({{ comment.id }})">
+                        <button class="dropdown-item dropdown-delete" onclick="delete_comment({{ comment.id }}, {{ post.id }})">
                             <i class="fas fa-trash-alt"></i> Delete comment
                         </button>
                     </li>
@@ -40,7 +40,7 @@
         <!-- Reply Box -->
         <div id="reply-holder-{{ comment.id }}">
             {% for reply in comment.replies %}
-            <div id="card-reply-{{ reply.id }}">
+            <div id="card-reply-{{ comment.id }}">
                 <div class="vr"></div>
                 {% include "events/view-event/post-sub-file/reply-card.html" %}
             </div>

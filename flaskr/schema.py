@@ -35,6 +35,7 @@ class CommentSchema(ma.Schema):
     content = fields.String()
     replies = fields.List(fields.Nested(ReplySchema))
     profile = fields.Nested(ProfileSchemaForPostCommentReply)
+    post_id = fields.Integer()
     created_at = fields.DateTime()
 
 

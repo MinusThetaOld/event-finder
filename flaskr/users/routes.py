@@ -1,10 +1,11 @@
 import os
 
-from flask import Blueprint, flash, redirect, render_template, request, url_for, session
+from flask import (Blueprint, flash, redirect, render_template, request,
+                   session, url_for)
 from flask_login import current_user, login_required
 from flask_login import login_user as login_user_function
 from flask_login import logout_user as logout_user_function
-from flaskr import bcrypt, db, app
+from flaskr import app, bcrypt, db
 from flaskr.decorators import is_admin, is_unbanned, is_verified
 from flaskr.mails import send_mail
 from flaskr.models import (Complain, ComplainCategory, Event, Notification,
@@ -83,7 +84,7 @@ def login_user():
                 "id": fetched_user.id,
                 "email": fetched_user.email,
             }, app.config.get("JWT_SECRET_KEY"), algorithm="HS256")
-            response.set_cookie("access_token", jwt_token)
+            response.set_cookie("access_token", jwt_token, max_age=60*60*30)
             flash("Login Successfull.", "success")
             return response
         else:

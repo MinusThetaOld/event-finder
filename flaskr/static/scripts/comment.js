@@ -28,13 +28,15 @@ function create_comment(profile_id, post_id) {
                 comment_holder.children[comment_holder.children.length]
             );
             comment_input.value = ""
+            let comment_len = document.getElementById(`comment-len-${post_id}`)
+            comment_len.innerText = `${parseInt(comment_len.innerText[0])+1} comments`
         })
         .catch((e) => {
             console.error(e);
         });
 }
 
-function delete_comment(id) {
+function delete_comment(id, post_id) {
     let headers = new Headers();
     headers.append('Accept', 'Application/JSON');
     headers.append('Content-Type', 'Application/JSON');
@@ -46,9 +48,11 @@ function delete_comment(id) {
     });
     fetch(req)
         .then((res) => res.json())
-        .then((data) => {
-           let comment_card = document.getElementById(`card-comment-${id}`);
-           comment_card.remove()
+        .then(() => {
+            let comment_len = document.getElementById(`comment-len-${post_id}`)
+            let comment_card = document.getElementById(`card-comment-${id}`);
+            comment_len.innerText = `${parseInt(comment_len.innerText[0])-1} comments`
+            comment_card.remove()
         })
         .catch((e) => {
             console.error(e);
@@ -95,15 +99,18 @@ function update_comment_card(data) {
         <p class="mb-0">${data.content}</p>
     </div>
     <div class="ms-5">
-        <div class="vr"></div>
+        <div id="reply-holder-${ data.id }">
+            <div id="card-reply-${ data.id }"></div>
+        </div>
         <div class="d-flex align-items-center mb-2">
             <img src="${ "http://" + window.location.host + "/static" + data.profile.profile_photo}"
                 class="reply-img-post">
             <div class="d-flex w-100 px-2">
-                <input type="text" name="comment" id="comment-box" class="form-control input-box me-2"
-                    style="border-radius: 35px; font-size: 0.8rem;" placeholder="Write a reply..." />
-                <button class="btn btn-sm btn-light px-3" type="submit"><i
-                        class="fas fa-paper-plane"></i></button>
+                <input type="text" name="comment" id="reply-box-${data.id}" class="form-control input-box me-2"
+                    style="border-radius: 35px; font-size: 0.8rem;" placeholder="Write a reply..." />               
+                <button class="btn btn-sm btn-light px-3" type="submit"
+                        onclick="create_reply(${ data.profile.id }, ${ data.id })"><i
+                            class="fas fa-paper-plane"></i></button>
             </div>
         </div>
     </div>
