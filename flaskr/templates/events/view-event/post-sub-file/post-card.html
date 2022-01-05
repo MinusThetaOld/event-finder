@@ -83,7 +83,7 @@
 <!-- Comment Box -->
 <div id="comment-holder-{{ post.id }}">
 {% for comment in post.comments %}
-<div id="card-comment-{{ comment.id }}">
+<div id="card-comment-{{ post.id }}">
     <div class="vr"></div>
     {% include "events/view-event/post-sub-file/comment-card.html" %}
 </div>

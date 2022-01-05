@@ -103,7 +103,7 @@ function update_post_card(data) {
                     <span class="fw-bold">0</span>
                 </div>
             </div>
-            <div class="fw-bold text-decoration-underline">
+            <div class="fw-bold text-decoration-underline" id="comment-len-${data.id}">
                 ${data.comments.length} comments
             </div>
         </div>
@@ -134,6 +134,9 @@ function update_post_card(data) {
                 <button class="btn btn-sm btn-light px-3" id="comment-box-submit"
                     onclick="create_comment(${data.profile.id}, ${data.id})" type="submit"><i class="fas fa-paper-plane"></i></button>
             </div>
+        </div>
+        <div id="comment-holder-${ data.id }">
+            <div id="card-comment-${data.id}"></div>
         </div>
     `;
 

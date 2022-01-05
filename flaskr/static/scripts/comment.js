@@ -50,7 +50,7 @@ function delete_comment(id, post_id) {
         .then((res) => res.json())
         .then(() => {
             let comment_len = document.getElementById(`comment-len-${post_id}`)
-            let comment_card = document.getElementById(`card-comment-${id}`);
+            let comment_card = document.getElementById(`card-comment-${post_id}`);
             comment_len.innerText = `${parseInt(comment_len.innerText[0])-1} comments`
             comment_card.remove()
         })
@@ -58,6 +58,7 @@ function delete_comment(id, post_id) {
             console.error(e);
         });
 }
+
 function update_comment_card(data) {
     const innerHTML = `
     <div class="vr"></div>
@@ -88,7 +89,7 @@ function update_comment_card(data) {
                         </a>
                     </li>
                     <li>
-                        <button class="dropdown-item dropdown-delete" onclick="delete_comment(${ data.id })">
+                        <button class="dropdown-item dropdown-delete" onclick="delete_comment(${ data.id }, ${data.post_id})">
                             <i class="fas fa-trash-alt"></i> Delete comment
                         </button>
                     </li>
