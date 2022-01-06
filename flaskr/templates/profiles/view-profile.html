@@ -216,9 +216,34 @@ endblock %} {% block content %}
                 {% endif %}
             </div>
             <!-- All the reviews there -->
-            <div class="card card-body review-card mt-2">
-                Nothing
+            <div class="card card-body review-card mt-2"> 
+                    <span style="font-weight: bold; font-size: 1.1rem;">
+                        Kopa Samsu
+                    </span>
+                    <span>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i
+                    </span>
+                    <div style="font-size: 0.8rem;">
+                        Very bad organizer. Absolutely disgusting.
+                    </div>
             </div>
+            <div class="card card-body review-card mt-2"> 
+                <span style="font-weight: bold; font-size: 1.1rem;">
+                    Shamsur sins
+                </span>
+                <span>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i
+                </span>
+                <div style="font-size: 0.8rem;">
+                    Very bad organizer. Absolutely disgusting.
+                </div>
+        </div>
             <!-- End -->
         </div>
         <div class="col-md-8">
@@ -410,22 +435,36 @@ endblock %} {% block content %}
     <!-- Modal -->
     <div class="modal fade" id="write-review-modal" tabindex="-1" aria-labelledby="review-modal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content modal-custom">
-                <div class="modal-header modal-header-custom">
-                    <h5 class="modal-title text-light" id="review-modal">Writre a review of {{
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="review-modal">Writre a review of {{
                         user.profile.get_fullname() }}
                     </h5>
-                    <button type="button" class="btn clr-white" data-bs-dismiss="modal" aria-label="Close"><i
+                    <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close"><i
                             class="bi bi-x-lg"></i></button>
                 </div>
-                <div class="modal-body modal-body-custom">
-                    Are you sure? You want to deactivate your account?
-                    <br>
-                    <small class="text-muted">You can log in back to your account to active it.</small>
-                </div>
-                <div class="modal-footer modal-footer-custom">
-                    <button type="button" class="btn btn-sm btn-dark" data-bs-dismiss="modal">Close</button>
-                    <a href="#" type="button" class="btn btn-sm btn-danger">Deactive</a>
+                <div class="modal-body">
+                    <form action="#" method="POST">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="review" name="review" placeholder="Write a short review" />
+                            <label for="review">
+                                Write a short review
+                            </label>
+                        </div>
+                        <select class="form-select mb-3" aria-label="rate-user" name="rating">
+                            <option selected disabled class="d-none">Rate this user</option>
+                            <option  value="1">Very Bad - 1 Star</option>
+                            <option value="2">Bad - 2 Star</option>
+                            <option value="3">Good - 3 Star</option>
+                            <option value="4">Very Good - 4 Star</option>
+                            <option value="5">Best - 5 Star</option>
+                          </select>
+                        <div class="d-flex align-items-center">
+                            <button type="submit" class="btn btn-sm btn-primary me-2 px-2">Submit</button>
+                            <button type="button" class="btn btn-sm btn-dark px-2" data-bs-dismiss="modal">Close</button>
+                            
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
