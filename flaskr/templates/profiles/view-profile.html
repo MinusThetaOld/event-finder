@@ -3,10 +3,10 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/profiles/view-profile.css') }}"> {%
 endblock %} {% block content %}
 <div class="container mt-1">
-    <img src="{{url_for('static', filename=user.profile.cover_photo)}}" alt="Cover photo" class="cover-photo">
+    <img src="{{ url_for('static', filename=user.profile.cover_photo) }}" alt="Cover photo" class="cover-photo">
     <div class="d-flex-custom">
         <div class="flex-shrink-1 profile-photo-container d-flex">
-            <img src="{{url_for('static', filename=user.profile.profile_photo)}}" alt="Profile Photo"
+            <img src="{{ url_for('static', filename=user.profile.profile_photo) }}" alt="Profile Photo"
                 class="profile-photo flex-grow-1">
             <div class="sm-screen-only flex-row w-100">
                 {% if user.id == current_user.id %}
@@ -71,7 +71,7 @@ endblock %} {% block content %}
                 <p class="info fw-bold"><i class="fas fa-address-card"></i> {{user.profile.nid_number}}</p>
                 {% endif %}
                 <p class="info fw-bold">
-                    <i class="bi bi-star-fill"></i> {{ user.profile.rating if user.profile.rating else 'Unrated'}}
+                    <i class="bi bi-star-fill"></i> {{ user.profile.get_rating() }}
                 </p>
                 <p class="info mt-1">{{ user.profile.bio if user.profile.bio }}</p>
             </div>
@@ -211,39 +211,31 @@ endblock %} {% block content %}
                     <h1 class="profile-header">Reviews</h1>
                 </div>
                 {% if user.id != current_user.id %}
-                <a href="#" class="btn btn-light review-write-btn" data-bs-toggle="modal"
-                    data-bs-target="#write-review-modal"><i class="bi bi-vector-pen me-1"></i><span>Write</span></a>
+                <button class="btn btn-light review-write-btn" data-bs-toggle="modal"
+                    data-bs-target="#write-review-modal"><i
+                        class="bi bi-vector-pen me-1"></i><span>Write</span></button>
                 {% endif %}
             </div>
             <!-- All the reviews there -->
-            <div class="card card-body review-card mt-2"> 
-                    <span style="font-weight: bold; font-size: 1.1rem;">
-                        Kopa Samsu
-                    </span>
-                    <span>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i
-                    </span>
-                    <div style="font-size: 0.8rem;">
-                        Very bad organizer. Absolutely disgusting.
-                    </div>
-            </div>
-            <div class="card card-body review-card mt-2"> 
+            {% if not user.profile.reviews or len(user.profile.reviews) == 0 %}
+            <p class="text-center fw-bold">No reviews available</p>
+            {% else %}
+            {% for review in user.profile.reviews %}
+            <div class="card card-body review-card mt-2">
                 <span style="font-weight: bold; font-size: 1.1rem;">
-                    Shamsur sins
+                    {{ review.get_reviewed_by().get_fullname() }}
                 </span>
                 <span>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i
+                    {% for i in range(review.rating) %}
+                    <i class="fas fa-star"></i>
+                    {% endfor %}
                 </span>
                 <div style="font-size: 0.8rem;">
-                    Very bad organizer. Absolutely disgusting.
+                    {{ review.text }}
                 </div>
-        </div>
+            </div>
+            {% endfor %}
+            {% endif %}
             <!-- End -->
         </div>
         <div class="col-md-8">
@@ -444,25 +436,27 @@ endblock %} {% block content %}
                             class="bi bi-x-lg"></i></button>
                 </div>
                 <div class="modal-body">
-                    <form action="#" method="POST">
+                    <form action="{{ url_for('profiles.review_profile', id=user.id) }}" method="POST">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="review" name="review" placeholder="Write a short review" />
+                            <input type="text" class="form-control" id="review" name="review"
+                                placeholder="Write a short review" />
                             <label for="review">
                                 Write a short review
                             </label>
                         </div>
                         <select class="form-select mb-3" aria-label="rate-user" name="rating">
                             <option selected disabled class="d-none">Rate this user</option>
-                            <option  value="1">Very Bad - 1 Star</option>
+                            <option value="1">Very Bad - 1 Star</option>
                             <option value="2">Bad - 2 Star</option>
                             <option value="3">Good - 3 Star</option>
                             <option value="4">Very Good - 4 Star</option>
                             <option value="5">Best - 5 Star</option>
-                          </select>
+                        </select>
                         <div class="d-flex align-items-center">
                             <button type="submit" class="btn btn-sm btn-primary me-2 px-2">Submit</button>
-                            <button type="button" class="btn btn-sm btn-dark px-2" data-bs-dismiss="modal">Close</button>
-                            
+                            <button type="button" class="btn btn-sm btn-dark px-2"
+                                data-bs-dismiss="modal">Close</button>
+
                         </div>
                     </form>
                 </div>

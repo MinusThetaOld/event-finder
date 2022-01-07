@@ -54,3 +54,7 @@ class NotificationMessage():
     @staticmethod
     def declin_event_registration():
         return "Host has delcined your registration."
+    
+    @staticmethod
+    def review_profile(name):
+        return f"{name} has reviewed your profile."

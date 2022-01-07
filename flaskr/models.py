@@ -90,7 +90,7 @@ class Profile(db.Model):
     cover_photo = db.Column(
         db.String, default="/images/default/CoverPhotos/default.png"
     )
-    rating = db.Column(db.Float, default=0.0)
+    reviews = db.relationship("Review", backref="profile")
     bio = db.Column(db.String(500))
     nid_number = db.Column(db.String(11))
     banned = db.relationship("AccountRestriction",
@@ -155,14 +155,14 @@ class Profile(db.Model):
                 if id == event_id:
                     return True
         return False
-    
+
     def get_joined_events(self) -> list:
         list_of_events = []
         if self.joined_events:
             for event_id in self.joined_events:
                 list_of_events.append(Event.query.get(event_id))
         return list_of_events
-    
+
     def add_joined_events(self, event_id: int):
         list_of_events = []
         if self.joined_events:
@@ -171,6 +171,33 @@ class Profile(db.Model):
         list_of_events.append(event_id)
         self.joined_events = list_of_events
         db.session.commit()
+
+    def get_rating(self):
+        if not self.reviews or len(self.reviews) == 0:
+            return "Unrated"
+        rating_sum = 0
+        for review in self.reviews:
+            rating_sum = rating_sum+review.rating
+        return rating_sum/len(self.reviews)
+
+
+class Review(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    profile_id = db.Column(db.Integer, db.ForeignKey("profile.id"))
+    reviewed_by = db.Column(db.Integer, nullable=False)
+    text = db.Column(db.String, nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __init__(self, text: str, rating: int, profile_id: int, reviewed_by: int) -> None:
+        self.text = text
+        self.rating = rating
+        self.profile_id = profile_id
+        self.reviewed_by = reviewed_by
+
+    def get_reviewed_by(self):
+        return Profile.query.get(self.reviewed_by)
 
 
 class SocialConnection(db.Model):
@@ -536,7 +563,7 @@ class Post(db.Model):
                 down_voters.append(id)
         self.up_vote = down_voters
         db.session.commit()
-    
+
     def times_ago(self):
         return format(self.created_at, datetime.utcnow())
 
@@ -554,7 +581,7 @@ class Comment(db.Model):
         self.content = content
         self.post_id = post_id
         self.profile_id = profile_id
-        
+
     def times_ago(self):
         return format(self.created_at, datetime.utcnow())
 
@@ -571,6 +598,6 @@ class Reply(db.Model):
         self.content = content
         self.comment_id = comment_id
         self.profile_id = profile_id
-    
+
     def times_ago(self):
         return format(self.created_at, datetime.utcnow())

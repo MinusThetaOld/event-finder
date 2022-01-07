@@ -4,7 +4,8 @@ from flaskr import bcrypt, db
 from flaskr.admins.forms import BanUserForm
 from flaskr.decorators import is_general, is_unbanned, is_verified
 from flaskr.models import (Complain, Event, Notification, Profile,
-                           PromotionPending, Role, SocialConnection, User)
+                           PromotionPending, Review, Role, SocialConnection,
+                           User)
 from flaskr.notifications.utils import NotificationMessage
 from flaskr.profiles.forms import *
 from flaskr.profiles.utils import remove_photo, save_photos
@@ -349,3 +350,33 @@ def events():
             for e in self_events:
                 events.append(e)
     return render_template("profiles/events.html", len=len, active=active, events=events)
+
+
+@profiles.route("/review/<int:id>", methods=["POST"])
+@login_required
+def review_profile(id: int):
+    text = request.form.get("review")
+    rating = request.form.get("rating")
+    try:
+        rating = int(rating)
+    except ValueError:
+        flash("Rating variable must be a integer.", "danger")
+        return redirect(url_for("profiles.view_profile", id=id))
+
+    if text and len(text) < 3 and len(text) > 200:
+        flash("Review description must be less than 200 and greater than 3 characters.", "danger")
+        return redirect(url_for("profiles.view_profile", id=id))
+
+    if rating and rating > 5 and rating < 0:
+        flash("Rating must be between 0 to 5 star.", "danger")
+        return redirect(url_for("profiles.view_profile", id=id))
+
+    review = Review(text, rating, id, current_user.profile.id)
+    db.session.add(review)
+    # push notification
+    notification = Notification(NotificationMessage.review_profile(current_user.profile.get_fullname()),
+                                url_for("profiles.view_profile", id=id), id)
+    db.session.add(notification)
+    db.session.commit()
+    flash("Reviewed successfully", "success")
+    return redirect(url_for("profiles.view_profile", id=id))
