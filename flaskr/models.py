@@ -545,7 +545,7 @@ class Post(db.Model):
         for id in self.down_vote:
             down_voters.append(id)
         down_voters.append(profile_id)
-        self.up_vote = down_voters
+        self.down_vote = down_voters
         db.session.commit()
 
     def remove_up_vote(self, profile_id: int):
@@ -561,7 +561,7 @@ class Post(db.Model):
         for id in self.down_vote:
             if profile_id != id:
                 down_voters.append(id)
-        self.up_vote = down_voters
+        self.down_vote = down_voters
         db.session.commit()
 
     def times_ago(self):

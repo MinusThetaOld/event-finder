@@ -39,11 +39,11 @@
     <div class="d-flex mt-2">
         <div>
             <i class="fas fa-arrow-up"></i>
-            <span class="fw-bold">{{ len(post.up_vote) }}</span>
+            <span class="fw-bold" id="up-vote-counter-{{ post.id }}">{{ len(post.up_vote) }}</span>
         </div>
         <div class="ms-2">
             <i class="fas fa-arrow-down"></i>
-            <span class="fw-bold">{{ len(post.down_vote) }}</span>
+            <span class="fw-bold" id="down-vote-counter-{{ post.id }}">{{ len(post.down_vote) }}</span>
         </div>
     </div>
     <div class="fw-bold text-decoration-underline" id="comment-len-{{ post.id }}">
@@ -53,16 +53,20 @@
 <hr class="my-0" />
 <div class="d-flex">
     <div class="d-flex">
-        <a href="#" class="flex-fill btn btn-sm btn-light btn-vote-comment m-2 py-2 px-5">
+        <button class="flex-fill btn btn-sm btn-light btn-vote-comment m-2 py-2 px-5 
+            {{ 'btn-clicked' if current_user.profile.id in post.up_vote }}" id="up-vote-btn-{{ post.id }}"
+            onclick="up_vote({{ post.id }}, {{ current_user.profile.id }})">
             <i class="fas fa-arrow-up"></i>
             Up Vote
-        </a>
-        <a href="#" class="flex-fill btn btn-sm btn-light btn-vote-comment m-2 py-2 px-5">
+        </button>
+        <button class="flex-fill btn btn-sm btn-light btn-vote-comment m-2 py-2 px-5 
+            {{ 'btn-clicked' if current_user.profile.id in post.down_vote }}" id="down-vote-btn-{{ post.id }}"
+            onclick="down_vote({{ post.id }}, {{ current_user.profile.id }})">
             <i class="fas fa-arrow-down"></i>
             Down Vote
-        </a>
+        </button>
     </div>
-    <button class="flex-fill btn btn-sm btn-light btn-vote-comment m-2 py-2 px-5">
+    <button class="flex-fill btn btn-sm btn-light btn-vote-comment m-2 py-2 px-5" onclick="active_comment({{ post.id }})">
         <i class="far fa-comment-alt"></i>
         Comment
     </button>

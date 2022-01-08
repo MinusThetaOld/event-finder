@@ -59,6 +59,11 @@ function delete_comment(id, post_id) {
         });
 }
 
+function active_comment(post_id) {
+    const comment_input = document.getElementById(`comment-box-${post_id}`)
+    comment_input.focus()
+}
+
 function update_comment_card(data) {
     const innerHTML = `
     <div class="vr"></div>

@@ -103,7 +103,7 @@
     color: #f8f9fa
 }
 
-.btn-vote-comment:hover {
+.btn-vote-comment:hover, .btn-clicked {
     background-color: #101010;
     color: #ffffff;
 }
