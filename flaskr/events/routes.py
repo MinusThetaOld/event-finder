@@ -183,7 +183,7 @@ def register_for_event(id: int):
         return redirect(url_for("mains.homepage"))
     if not trnx_id:
         return redirect(url_for("events.view_event", id=id))
-    if not event.event_status().status:
+    if not event.event_status().get("status"):
         flash("Registration closed.", "danger")
         return redirect(url_for("events.view_event", id=id))
     pending = PaymentPending(trnx_id, current_user.profile.id, id)
@@ -265,3 +265,21 @@ def decline_pending_members(event_id: int, payment_id: int):
     db.session.commit()
     flash("Member declined.", "info")
     return redirect(url_for("events.view_event", id=event_id, filter="members", members="pending"))
+
+
+@events.route("/make-registration-closed/<int:id>")
+@login_required
+def make_registration_close(id: int):
+    event = Event.query.get(id)
+    if not event:
+        flash("Event not found!.", "danger")
+        return redirect(url_for("events.view_event", id=id))
+
+    if current_user.profile.id != event.host.id:
+        flash("You can not access the route.", "danger")
+        return redirect(url_for("events.view_event", id=id))
+    
+    event.is_open = False
+    db.session.commit()
+    flash("Event registration is now close.", "info")
+    return redirect(url_for("events.view_event", id=id))

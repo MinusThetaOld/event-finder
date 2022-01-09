@@ -24,6 +24,9 @@
                             class="list-group-item btn btn-settings my-1 {{ 'btn-settings-active' if active == 'event-plans' }}">
                             Event Plans
                         </a>
+                        <a href="{{ url_for('events.make_registration_close', id=event.id) }}" type="button" class="list-group-item btn btn-settings-danger my-1">
+                            Close the registration
+                        </a>
                     </ul>
                 </div>
             </div>
