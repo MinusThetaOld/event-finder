@@ -48,7 +48,9 @@
                 <i class="fas fa-share-alt"></i>
             </button>
             {% if current_user.profile %}
-            {% if current_user.profile.id == event.host.id %}
+            {% if not event.event_status().status %}
+            <button class="btn btn-sm btn-danger">Registration Closed</button>
+            {% elif current_user.profile.id == event.host.id %}
             <button class="btn btn-sm btn-dark">Hosting</button>
             {% elif event.is_profile_going(current_user.profile.id) %}
             <button class="btn btn-sm btn-dark"><i class="fas fa-check"></i> Registered</button>
