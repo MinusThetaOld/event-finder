@@ -176,22 +176,18 @@ def add_photos(id: int):
 @events.route("/register/<int:id>", methods=["POST"])
 @login_required
 def register_for_event(id: int):
-    """Register a user for an event
-
-    This route only accept post request.
-    This will validate the submited data and add
-    the user in a queue of pending payments member.
-
-    :param id: Event id which the logged in user want to register for
-    :type id: int
-    """
-    # create payment pending object and commit that to the db
     trnx_id = request.form.get("trnx_id")
+    event = Event.query.get(id)
+    if not event:
+        flash("Event not found!", "danger")
+        return redirect(url_for("mains.homepage"))
     if not trnx_id:
+        return redirect(url_for("events.view_event", id=id))
+    if not event.event_status().status:
+        flash("Registration closed.", "danger")
         return redirect(url_for("events.view_event", id=id))
     pending = PaymentPending(trnx_id, current_user.profile.id, id)
     db.session.add(pending)
-    event = Event.query.get(id)
     notify = Notification(NotificationMessage.pending_payments(current_user.profile.get_fullname(
     )), url_for("events.view_event", id=id, filter="members", members="pending"), event.host.id)
     db.session.add(notify)
@@ -203,18 +199,6 @@ def register_for_event(id: int):
 @events.route("/<int:event_id>/accept/<int:profile_id>")
 @login_required
 def accept_pending_members(event_id: int, profile_id: int):
-    """Accept a users request for register in the event
-
-    This route only accept get request.
-    This route will add the profile in joined members list in the event model.
-    To access this route a logged in user must be the host of this event.
-
-    :param event_id: The event id
-    :type id: int
-
-    :param profile_id: The profile id who was at the pending member list
-    :type id: int
-    """
     event = Event.query.get(event_id)
     profile = Profile.query.get(profile_id)
     
