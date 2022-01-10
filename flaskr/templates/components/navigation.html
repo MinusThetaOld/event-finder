@@ -5,11 +5,10 @@
                 class="nav-brand-logo">
         </a>
         <div class="nav-item sm-screen">
-            <form action="#" method="post" class="d-flex">
-                <input type="text" class="form-control search-bar" placeholder="Search..." />
-                <button type="submit" class="btn search-btn">
-                    <i class="fas fa-search"></i>
-                </button>
+            <form action="{{ url_for('mains.search') }}" method="post" class="d-flex">
+                {{ form.hidden_tag() }}
+                {{ form.search(class="form-control search-bar", id="search") }}
+                {{form.submit(class="btn search-btn")}}
             </form>
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -19,12 +18,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="nav-item ms-4 big-screen">
-                    <form action="#" method="post" class="d-flex">
-                        <input type="text" class="form-control search-bar" placeholder="Search..." />
-                        <button type="submit" class="btn search-btn">
-                            <i class="fas fa-search"></i>
-                            <span class="me-2">Search</span>
-                        </button>
+                    <form action="{{ url_for('mains.search') }}" method="post" class="d-flex">
+                        {{ form.hidden_tag() }}
+                        {{ form.search(class="form-control search-bar-sm", id="search") }}
+                        {{form.submit(class="btn search-btn")}}
                     </form>
                 </div>
                 <ul class="navbar-nav ms-auto mb-lg-0 big-screen">
@@ -133,11 +130,10 @@
                     </div>
                 </ul>
                 <div class="d-flex flex-column">
-                    <form action="#" method="post" class="d-flex flex-row xsm-screen">
-                        <input type="text" class="form-control search-bar-sm" placeholder="Search..." />
-                        <button type="submit" class="btn search-btn-sm">
-                            <i class="fas fa-search"></i>
-                        </button>
+                    <form action="{{ url_for('mains.search') }}" method="post" class="d-flex flex-row xsm-screen">
+                        {{ form.hidden_tag() }}
+                        {{ form.search(class="form-control search-bar-sm", id="search") }}
+                        {{form.submit(class="btn search-btn-sm")}}
                     </form>
                     <div class="d-flex flex-column sm-screen {{'d-none' if not current_user.is_authenticated}}">
                         {% if current_user.role and current_user.role.value == "host" %}
