@@ -21,7 +21,7 @@ def homepage():
 @app.context_processor
 def base():
     form = SearchForm()
-    return dict(form=form)
+    return dict(s_form=form)
 
 @mains.route("/search", methods=["GET", "POST"])
 def search():
@@ -46,7 +46,7 @@ def search():
         for profile in profiles_by_last:
             profile_set.add(profile)
         
-        return render_template("mains/search.html", form=form, searched=searched, events=event_set, profiles=profile_set, len=len)
+        return render_template("mains/search.html", s_form=form, searched=searched, events=event_set, profiles=profile_set, len=len)
     flash("No search input given.", "danger")
     return redirect(url_for("mains.homepage"))
     
